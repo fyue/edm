@@ -1,0 +1,4 @@
+branch_id	label	lr	ema	kimg	latest_loss	loss_status	sec_per_kimg	gpumem_gb	reserved_gb	state	snapshot
+lr1e-3-ema0.5-repro	reproduce_lr0.001_ema0.5	0.001	0.5	160000	0.162112565	ok	6.50	16.50	17.19	experiments/3/training-runs/lr1e-3-ema0.5-repro/training-state-160000.pt	experiments/3/training-runs/lr1e-3-ema0.5-repro/network-snapshot-160000.pkl
+lr5e-4-ema0.5	lr0.0005_ema0.5	0.0005	0.5	160000	0.160591714	ok	6.54	16.50	17.19	experiments/3/training-runs/lr5e-4-ema0.5/training-state-160000.pt	experiments/3/training-runs/lr5e-4-ema0.5/network-snapshot-160000.pkl
+lr1e-3-ema1.0	lr0.001_ema1.0	0.001	1.0	160000	0.162039515	ok	6.50	16.50	17.19	experiments/3/training-runs/lr1e-3-ema1.0/training-state-160000.pt	experiments/3/training-runs/lr1e-3-ema1.0/network-snapshot-160000.pkl

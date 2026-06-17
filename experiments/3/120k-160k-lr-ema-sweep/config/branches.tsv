@@ -1,0 +1,4 @@
+branch_id	label	lr	ema
+lr1e-3-ema0.5-repro	reproduce_lr0.001_ema0.5	0.001	0.5
+lr5e-4-ema0.5	lr0.0005_ema0.5	0.0005	0.5
+lr1e-3-ema1.0	lr0.001_ema1.0	0.001	1.0

@@ -1,0 +1,48 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="920" height="560" viewBox="0 0 920 560">
+<rect width="100%" height="100%" fill="white"/>
+<text x="82" y="30" font-family="Arial, sans-serif" font-size="22" font-weight="700" fill="#222">Stage 0 3x2: FID-1k vs S_churn</text>
+<text x="82" y="50" font-family="Arial, sans-serif" font-size="13" fill="#666">samples=1024, seeds=0-1023, steps=18; FID-1k is for relative screening only.</text>
+<line x1="82" y1="499.40" x2="710" y2="499.40" stroke="#e8e8e8"/>
+<text x="72" y="503.40" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#555">30</text>
+<line x1="82" y1="387.33" x2="710" y2="387.33" stroke="#e8e8e8"/>
+<text x="72" y="391.33" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#555">30.2</text>
+<line x1="82" y1="275.26" x2="710" y2="275.26" stroke="#e8e8e8"/>
+<text x="72" y="279.26" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#555">30.4</text>
+<line x1="82" y1="163.19" x2="710" y2="163.19" stroke="#e8e8e8"/>
+<text x="72" y="167.19" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#555">30.6</text>
+<line x1="82" y1="51.12" x2="710" y2="51.12" stroke="#e8e8e8"/>
+<text x="72" y="55.12" text-anchor="end" font-family="Arial, sans-serif" font-size="12" fill="#555">30.8</text>
+<line x1="82.00" y1="58" x2="82.00" y2="484" stroke="#f0f0f0"/>
+<text x="82.00" y="509" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">0</text>
+<line x1="710.00" y1="58" x2="710.00" y2="484" stroke="#f0f0f0"/>
+<text x="710.00" y="509" text-anchor="middle" font-family="Arial, sans-serif" font-size="12" fill="#555">20</text>
+<line x1="82" y1="484" x2="710" y2="484" stroke="#222" stroke-width="1.5"/>
+<line x1="82" y1="58" x2="82" y2="484" stroke="#222" stroke-width="1.5"/>
+<text x="396.0" y="536" text-anchor="middle" font-family="Arial, sans-serif" font-size="15" fill="#222">S_churn</text>
+<text x="22" y="271.0" text-anchor="middle" transform="rotate(-90 22 271.0)" font-family="Arial, sans-serif" font-size="15" fill="#222">FID-1k</text>
+<polyline points="82.00,107.15 710.00,161.34" fill="none" stroke="#0072b2" stroke-width="2.5"/>
+<circle cx="82.00" cy="107.15" r="4.5" fill="#0072b2" stroke="white" stroke-width="1.5"/>
+<text x="89.00" y="100.15" font-family="Arial, sans-serif" font-size="11" fill="#0072b2">30.7</text>
+<circle cx="710.00" cy="161.34" r="4.5" fill="#0072b2" stroke="white" stroke-width="1.5"/>
+<text x="717.00" y="154.34" font-family="Arial, sans-serif" font-size="11" fill="#0072b2">30.6</text>
+<polyline points="82.00,277.22 710.00,288.48" fill="none" stroke="#009e73" stroke-width="2.5"/>
+<circle cx="82.00" cy="277.22" r="4.5" fill="#009e73" stroke="white" stroke-width="1.5"/>
+<text x="89.00" y="270.22" font-family="Arial, sans-serif" font-size="11" fill="#009e73">30.4</text>
+<circle cx="710.00" cy="288.48" r="4.5" fill="#009e73" stroke="white" stroke-width="1.5"/>
+<text x="717.00" y="281.48" font-family="Arial, sans-serif" font-size="11" fill="#009e73">30.38</text>
+<polyline points="82.00,434.85 710.00,123.68" fill="none" stroke="#cc79a7" stroke-width="2.5"/>
+<circle cx="82.00" cy="434.85" r="4.5" fill="#cc79a7" stroke="white" stroke-width="1.5"/>
+<text x="89.00" y="427.85" font-family="Arial, sans-serif" font-size="11" fill="#cc79a7">30.12</text>
+<circle cx="710.00" cy="123.68" r="4.5" fill="#cc79a7" stroke="white" stroke-width="1.5"/>
+<text x="717.00" y="116.68" font-family="Arial, sans-serif" font-size="11" fill="#cc79a7">30.67</text>
+<text x="742" y="58" font-family="Arial, sans-serif" font-size="14" font-weight="700" fill="#222">checkpoint</text>
+<line x1="742" y1="76" x2="770" y2="76" stroke="#0072b2" stroke-width="2.5"/>
+<circle cx="756" cy="76" r="4.5" fill="#0072b2" stroke="white" stroke-width="1.5"/>
+<text x="782" y="81" font-family="Arial, sans-serif" font-size="13" fill="#333">40k</text>
+<line x1="742" y1="104" x2="770" y2="104" stroke="#009e73" stroke-width="2.5"/>
+<circle cx="756" cy="104" r="4.5" fill="#009e73" stroke="white" stroke-width="1.5"/>
+<text x="782" y="109" font-family="Arial, sans-serif" font-size="13" fill="#333">120k</text>
+<line x1="742" y1="132" x2="770" y2="132" stroke="#cc79a7" stroke-width="2.5"/>
+<circle cx="756" cy="132" r="4.5" fill="#cc79a7" stroke="white" stroke-width="1.5"/>
+<text x="782" y="137" font-family="Arial, sans-serif" font-size="13" fill="#333">pretrained</text>
+</svg>
