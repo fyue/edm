@@ -1,0 +1,3 @@
+kimg	latest_loss	loss_status	sec_per_kimg	gpumem_gb	reserved_gb	state	snapshot
+180000	0.159596182	ok	6.51	16.50	17.19	experiments/3/2_160k-200k-lr5e-4-ema0.5/training-runs/lr5e-4-ema0.5-160k-200k/training-state-180000.pt	experiments/3/2_160k-200k-lr5e-4-ema0.5/training-runs/lr5e-4-ema0.5-160k-200k/network-snapshot-180000.pkl
+200000	0.159203466	ok	6.50	16.50	17.19	experiments/3/2_160k-200k-lr5e-4-ema0.5/training-runs/lr5e-4-ema0.5-160k-200k/training-state-200000.pt	experiments/3/2_160k-200k-lr5e-4-ema0.5/training-runs/lr5e-4-ema0.5-160k-200k/network-snapshot-200000.pkl

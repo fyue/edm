@@ -1,0 +1,7 @@
+kimg	seeds	fid	lr	ema	snapshot	images
+180000	0-49999	2.3154	0.0002	0.5	experiments/3/5_170k-200k-lr2e-4-ema0.5/training-runs/lr2e-4-ema0.5-170k-200k/network-snapshot-180000.pkl	experiments/3/5_170k-200k-lr2e-4-ema0.5/fid-evals/lr2e-4-ema0.5-170k-200k/images-180000-0-49999
+180000	50000-99999	2.29836	0.0002	0.5	experiments/3/5_170k-200k-lr2e-4-ema0.5/training-runs/lr2e-4-ema0.5-170k-200k/network-snapshot-180000.pkl	experiments/3/5_170k-200k-lr2e-4-ema0.5/fid-evals/lr2e-4-ema0.5-170k-200k/images-180000-50000-99999
+180000	100000-149999	2.27989	0.0002	0.5	experiments/3/5_170k-200k-lr2e-4-ema0.5/training-runs/lr2e-4-ema0.5-170k-200k/network-snapshot-180000.pkl	experiments/3/5_170k-200k-lr2e-4-ema0.5/fid-evals/lr2e-4-ema0.5-170k-200k/images-180000-100000-149999
+175018	0-49999	2.30433	0.0002	0.5	experiments/3/5_170k-200k-lr2e-4-ema0.5/training-runs/lr2e-4-ema0.5-170k-200k/network-snapshot-175018.pkl	experiments/3/5_170k-200k-lr2e-4-ema0.5/fid-evals/lr2e-4-ema0.5-170k-200k/images-175018-0-49999
+175018	50000-99999	2.27209	0.0002	0.5	experiments/3/5_170k-200k-lr2e-4-ema0.5/training-runs/lr2e-4-ema0.5-170k-200k/network-snapshot-175018.pkl	experiments/3/5_170k-200k-lr2e-4-ema0.5/fid-evals/lr2e-4-ema0.5-170k-200k/images-175018-50000-99999
+175018	100000-149999	2.24667	0.0002	0.5	experiments/3/5_170k-200k-lr2e-4-ema0.5/training-runs/lr2e-4-ema0.5-170k-200k/network-snapshot-175018.pkl	experiments/3/5_170k-200k-lr2e-4-ema0.5/fid-evals/lr2e-4-ema0.5-170k-200k/images-175018-100000-149999

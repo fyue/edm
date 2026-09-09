@@ -1,0 +1,3 @@
+snapshot_kimg	num_results	fid_mean	fid_std	fid_min	fid_max
+172509	3	2.00938	0.0220658	1.99356	2.03459
+175000	3	2.01434	0.0208516	1.99677	2.03738

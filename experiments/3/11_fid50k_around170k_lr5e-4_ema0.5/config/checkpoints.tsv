@@ -1,0 +1,5 @@
+label	requested_kimg	snapshot_kimg	network
+165k	165000	165018	experiments/3/2_160k-200k-lr5e-4-ema0.5/training-runs/lr5e-4-ema0.5-160k-200k/network-snapshot-165018.pkl
+167.5k	167500	167526	experiments/3/2_160k-200k-lr5e-4-ema0.5/training-runs/lr5e-4-ema0.5-160k-200k/network-snapshot-167526.pkl
+170k	170000	170035	experiments/3/2_160k-200k-lr5e-4-ema0.5/training-runs/lr5e-4-ema0.5-160k-200k/network-snapshot-170035.pkl
+172.5k	172500	172544	experiments/3/2_160k-200k-lr5e-4-ema0.5/training-runs/lr5e-4-ema0.5-160k-200k/network-snapshot-172544.pkl

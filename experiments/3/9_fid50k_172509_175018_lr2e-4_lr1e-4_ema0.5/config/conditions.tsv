@@ -1,0 +1,5 @@
+condition	lr	ema	snapshot_kimg	network
+lr2e-4-172509	0.0002	0.5	172509	experiments/3/5_170k-200k-lr2e-4-ema0.5/training-runs/lr2e-4-ema0.5-170k-200k/network-snapshot-172509.pkl
+lr2e-4-175018	0.0002	0.5	175018	experiments/3/5_170k-200k-lr2e-4-ema0.5/training-runs/lr2e-4-ema0.5-170k-200k/network-snapshot-175018.pkl
+lr1e-4-172509	0.0001	0.5	172509	experiments/3/6_170k-180k-lr1e-4-ema0.5/training-runs/lr1e-4-ema0.5-170k-180k/network-snapshot-172509.pkl
+lr1e-4-175000	0.0001	0.5	175000	experiments/3/6_170k-180k-lr1e-4-ema0.5/training-runs/lr1e-4-ema0.5-170k-180k/network-snapshot-175000.pkl
