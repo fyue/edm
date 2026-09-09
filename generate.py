@@ -81,12 +81,63 @@ def edm_sampler(
     return x_next
 
 #----------------------------------------------------------------------------
+# EDMのprobability flow ODEを古典的4次Runge-Kuttaで解くsampler。
+
+def rk4_sampler(
+    net, latents, class_labels=None, randn_like=torch.randn_like,
+    num_steps=18, sigma_min=0.002, sigma_max=80, rho=7,
+    S_churn=0, S_min=0, S_max=float('inf'), S_noise=1,
+):
+    """EDM座標系で古典的4次Runge-Kutta法を使ってサンプリングする。
+
+    EDM samplerと同じsigma scheduleとchurn操作を使い、各区間のODE
+
+        dx/dt = (x - D(x,t)) / t
+
+    をRK4で積分する。最後の区間は t_next=0 なので network を sigma=0 で
+    評価せず、始点の微分によるEuler stepで閉じる。
+    """
+    sigma_min = max(sigma_min, net.sigma_min)
+    sigma_max = min(sigma_max, net.sigma_max)
+
+    step_indices = torch.arange(num_steps, dtype=torch.float64, device=latents.device)
+    t_steps = (sigma_max ** (1 / rho) + step_indices / (num_steps - 1) * (sigma_min ** (1 / rho) - sigma_max ** (1 / rho))) ** rho
+    t_steps = torch.cat([net.round_sigma(t_steps), torch.zeros_like(t_steps[:1])]) # t_N = 0
+
+    def ode_derivative(x, t):
+        denoised = net(x, t, class_labels).to(torch.float64)
+        return (x - denoised) / t
+
+    x_next = latents.to(torch.float64) * t_steps[0]
+    for i, (t_cur, t_next) in enumerate(zip(t_steps[:-1], t_steps[1:])): # 0, ..., N-1
+        x_cur = x_next
+
+        gamma = min(S_churn / num_steps, np.sqrt(2) - 1) if S_min <= t_cur <= S_max else 0
+        t_hat = net.round_sigma(t_cur + gamma * t_cur)
+        x_hat = x_cur + (t_hat ** 2 - t_cur ** 2).sqrt() * S_noise * randn_like(x_cur)
+
+        h = t_next - t_hat
+        d_1 = ode_derivative(x_hat, t_hat)
+        if i == num_steps - 1:
+            x_next = x_hat + h * d_1
+            continue
+
+        t_mid = t_hat + h * 0.5
+        d_2 = ode_derivative(x_hat + h * 0.5 * d_1, t_mid)
+        d_3 = ode_derivative(x_hat + h * 0.5 * d_2, t_mid)
+        d_4 = ode_derivative(x_hat + h * d_3, t_next)
+        x_next = x_hat + h * (d_1 + 2 * d_2 + 2 * d_3 + d_4) / 6
+
+    return x_next
+
+#----------------------------------------------------------------------------
 # EDMのprobability flow ODEに合わせて移植したPNDM風sampler。
 
 def pndm_sampler(
     net, latents, class_labels=None, randn_like=torch.randn_like,
     num_steps=18, sigma_min=0.002, sigma_max=80, rho=7,
     S_churn=0, S_min=0, S_max=float('inf'), S_noise=1,
+    linear_schedule=False, rk_warmup=True,
 ):
     """EDM座標系でPNDM/F-PNDM風のODE solverを使ってサンプリングする。
 
@@ -97,21 +148,30 @@ def pndm_sampler(
         dx/dt = (x - D(x,t)) / t.
 
     この実装ではEDMのsigma scheduleと任意のchurn stepはそのまま使い、
-    EDMのHeun補正をPNDMの高次積分パターンに置き換える。まずRunge-Kuttaで
-    微分履歴を作り、その後Adams-Bashforthで直近4つの微分を再利用する。
+    EDMのHeun補正をPNDMの高次積分パターンに置き換える。既定では
+    Runge-Kuttaで微分履歴を作り、その後Adams-Bashforthで直近4つの微分を
+    再利用する。rk_warmup=FalseではEuler, AB2, AB3で履歴を立ち上げる。
     """
     # networkが対応している範囲に合わせてノイズレベルを丸める。
     sigma_min = max(sigma_min, net.sigma_min)
     sigma_max = min(sigma_max, net.sigma_max)
 
-    # sampler同士の比較でノイズレベルを揃えるため、edm_samplerと同じEDM rho
-    # scheduleを使う。数式は上のEDM samplerと同じ
-    #   t_i = (sigma_max^(1/rho) + i/(N-1) * (sigma_min^(1/rho)-sigma_max^(1/rho)))^rho
-    # で、末尾に追加するt_N=0はノイズなし画像の終点だが、network自体は
-    # sigma=0では評価しない。
-    step_indices = torch.arange(num_steps, dtype=torch.float64, device=latents.device)
-    t_steps = (sigma_max ** (1 / rho) + step_indices / (num_steps - 1) * (sigma_min ** (1 / rho) - sigma_max ** (1 / rho))) ** rho
-    t_steps = torch.cat([net.round_sigma(t_steps), torch.zeros_like(t_steps[:1])]) # t_N = 0
+    if linear_schedule:
+        # 固定係数Adams-Bashforthの等間隔step仮定に合わせるため、
+        # sigma_maxから0までをnum_steps区間で線形に刻む。networkは最後の
+        # sigma=0では評価せず、直前の正のsigmaで得た微分から最終stepを行う。
+        step_indices = torch.arange(num_steps + 1, dtype=torch.float64, device=latents.device)
+        t_steps = sigma_max * (1 - step_indices / num_steps)
+        t_steps = torch.cat([net.round_sigma(t_steps[:-1]), torch.zeros_like(t_steps[:1])]) # t_N = 0
+    else:
+        # sampler同士の比較でノイズレベルを揃えるため、edm_samplerと同じEDM rho
+        # scheduleを使う。数式は上のEDM samplerと同じ
+        #   t_i = (sigma_max^(1/rho) + i/(N-1) * (sigma_min^(1/rho)-sigma_max^(1/rho)))^rho
+        # で、末尾に追加するt_N=0はノイズなし画像の終点だが、network自体は
+        # sigma=0では評価しない。
+        step_indices = torch.arange(num_steps, dtype=torch.float64, device=latents.device)
+        t_steps = (sigma_max ** (1 / rho) + step_indices / (num_steps - 1) * (sigma_min ** (1 / rho) - sigma_max ** (1 / rho))) ** rho
+        t_steps = torch.cat([net.round_sigma(t_steps), torch.zeros_like(t_steps[:1])]) # t_N = 0
 
     def ode_derivative(x, t):
         # EDM denoiserの予測をprobability flow ODEの向きに変換する。
@@ -147,9 +207,9 @@ def pndm_sampler(
         if len(d_history) > 4:
             d_history.pop(0)
 
-        if i == num_steps - 1:
-            # 最後の区間では終点t_nextが0になる。net(..., sigma=0)を呼ぶ
-            # RK/Heun型の補正は避け、使える履歴で可能な最も高次の
+        if i == num_steps - 1 or (not rk_warmup and len(d_history) < 4):
+            # no-RK warmupでは履歴数に応じてEuler, AB2, AB3を使う。最後の
+            # 区間でもnet(..., sigma=0)を避け、使える履歴で可能な最も高次の
             # Adams-Bashforth stepを使う。例えばAB4は
             #   x_{n+1} = x_n + h/24 * (55 f_n - 59 f_{n-1} + 37 f_{n-2} - 9 f_{n-3})
             # で、履歴が足りない場合はAB3、AB2、Eulerへ落とす。
@@ -187,6 +247,150 @@ def pndm_sampler(
             # 毎回新しくRK/Heun補正を行う場合よりnetwork評価を節約できる。
             d = (55 * d_history[-1] - 59 * d_history[-2] + 37 * d_history[-3] - 9 * d_history[-4]) / 24
             x_next = x_hat + h * d
+
+    return x_next
+
+#----------------------------------------------------------------------------
+# EDMのprobability flow ODEに合わせて移植したS-PNDM風sampler。
+
+def spndm_sampler(
+    net, latents, class_labels=None, randn_like=torch.randn_like,
+    num_steps=18, sigma_min=0.002, sigma_max=80, rho=7,
+    S_churn=0, S_min=0, S_max=float('inf'), S_noise=1,
+):
+    """EDM座標系でS-PNDM風の2次ODE solverを使ってサンプリングする。
+
+    公式S-PNDMは初回をimproved Eulerで始め、その後は2次Adams-Bashforth
+    でnoise予測の履歴を使う。ここではEDMのprobability flow ODE
+
+        f(x,t) = dx/dt = (x - D(x,t)) / t
+
+    を対象にして、初回はHeun型2次補正、2回目以降は
+
+        f_AB2 = (3 f_n - f_{n-1}) / 2
+        x_{n+1} = x_n + h * f_AB2
+
+    で更新する。
+    """
+    # networkが対応している範囲に合わせてノイズレベルを丸める。
+    sigma_min = max(sigma_min, net.sigma_min)
+    sigma_max = min(sigma_max, net.sigma_max)
+
+    # PNDM/F-PNDM版と同じく、EDM samplerと同じrho scheduleを使う。
+    step_indices = torch.arange(num_steps, dtype=torch.float64, device=latents.device)
+    t_steps = (sigma_max ** (1 / rho) + step_indices / (num_steps - 1) * (sigma_min ** (1 / rho) - sigma_max ** (1 / rho))) ** rho
+    t_steps = torch.cat([net.round_sigma(t_steps), torch.zeros_like(t_steps[:1])]) # t_N = 0
+
+    def ode_derivative(x, t):
+        # EDM denoiserの予測からODE右辺 f(x,t)=(x-D(x,t))/t を作る。
+        denoised = net(x, t, class_labels).to(torch.float64)
+        return (x - denoised) / t
+
+    # x_0 = t_0 * z から開始し、sigmaを下げる方向へ積分する。
+    x_next = latents.to(torch.float64) * t_steps[0]
+    d_prev = None
+    for i, (t_cur, t_next) in enumerate(zip(t_steps[:-1], t_steps[1:])): # 0, ..., N-1
+        x_cur = x_next
+
+        # EDMと同じchurn操作。S_churn=0なら決定的なS-PNDMになる。
+        gamma = min(S_churn / num_steps, np.sqrt(2) - 1) if S_min <= t_cur <= S_max else 0
+        t_hat = net.round_sigma(t_cur + gamma * t_cur)
+        x_hat = x_cur + (t_hat ** 2 - t_cur ** 2).sqrt() * S_noise * randn_like(x_cur)
+
+        h = t_next - t_hat
+        d_cur = ode_derivative(x_hat, t_hat)
+
+        if d_prev is None:
+            # 初回は履歴が無いので、公式S-PNDMのimproved Eulerに対応する
+            # Heun型補正で開始する。最終区間だけはsigma=0評価を避けてEulerにする。
+            x_next = x_hat + h * d_cur
+            if i < num_steps - 1:
+                d_prime = ode_derivative(x_next, t_next)
+                x_next = x_hat + h * (0.5 * d_cur + 0.5 * d_prime)
+        else:
+            # 2回目以降は2次Adams-Bashforth:
+            #   x_{n+1} = x_n + h * (3 f_n - f_{n-1}) / 2
+            d = (3 * d_cur - d_prev) / 2
+            x_next = x_hat + h * d
+
+        d_prev = d_cur
+
+    return x_next
+
+#----------------------------------------------------------------------------
+# EDMのprobability flow ODEをAdams-Bashforth多段法で解くsampler。
+
+def ab_sampler(
+    net, latents, class_labels=None, randn_like=torch.randn_like,
+    num_steps=18, sigma_min=0.002, sigma_max=80, rho=7,
+    S_churn=0, S_min=0, S_max=float('inf'), S_noise=1,
+):
+    """EDM座標系で明示的Adams-Bashforth多段法を使ってサンプリングする。
+
+    対象のODEは他のEDM座標系samplerと同じ
+
+        dx/dt = (x - D(x,t)) / t.
+
+    純粋なmultiple-step法として、各stepでは始点のnetwork評価を1回だけ行い、
+    直近の微分履歴を使って更新する。履歴が少ない序盤はEuler, AB2, AB3と
+    低次から始め、4本そろった後はAB4を使う。EDMのrho scheduleは非等間隔
+    なので、固定係数ではなく各区間のLagrange補間を積分して係数を作る。
+    """
+    sigma_min = max(sigma_min, net.sigma_min)
+    sigma_max = min(sigma_max, net.sigma_max)
+
+    step_indices = torch.arange(num_steps, dtype=torch.float64, device=latents.device)
+    t_steps = (sigma_max ** (1 / rho) + step_indices / (num_steps - 1) * (sigma_min ** (1 / rho) - sigma_max ** (1 / rho))) ** rho
+    t_steps = torch.cat([net.round_sigma(t_steps), torch.zeros_like(t_steps[:1])]) # t_N = 0
+
+    def ode_derivative(x, t):
+        denoised = net(x, t, class_labels).to(torch.float64)
+        return (x - denoised) / t
+
+    def ab_coefficients(t_start, t_end, times):
+        # Lagrange基底 L_j(t) を [t_start, t_end] で積分し、
+        # x_{n+1}=x_n+sum_j coeff_j*f(t_j,x_j) の係数にする。
+        coeffs = []
+        one = torch.ones((), dtype=torch.float64, device=latents.device)
+        zero = torch.zeros((), dtype=torch.float64, device=latents.device)
+        for j, t_j in enumerate(times):
+            poly = [one]
+            for m, t_m in enumerate(times):
+                if m == j:
+                    continue
+                denom = t_j - t_m
+                updated = [zero for _ in range(len(poly) + 1)]
+                for degree, value in enumerate(poly):
+                    updated[degree] = updated[degree] - value * t_m / denom
+                    updated[degree + 1] = updated[degree + 1] + value / denom
+                poly = updated
+            integral = zero
+            for degree, value in enumerate(poly):
+                integral = integral + value * (t_end ** (degree + 1) - t_start ** (degree + 1)) / (degree + 1)
+            coeffs.append(integral)
+        return coeffs
+
+    x_next = latents.to(torch.float64) * t_steps[0]
+    t_history = []
+    d_history = []
+    max_order = 4
+    for t_cur, t_next in zip(t_steps[:-1], t_steps[1:]):
+        x_cur = x_next
+
+        gamma = min(S_churn / num_steps, np.sqrt(2) - 1) if S_min <= t_cur <= S_max else 0
+        t_hat = net.round_sigma(t_cur + gamma * t_cur)
+        x_hat = x_cur + (t_hat ** 2 - t_cur ** 2).sqrt() * S_noise * randn_like(x_cur)
+
+        t_history.append(t_hat)
+        d_history.append(ode_derivative(x_hat, t_hat))
+        if len(t_history) > max_order:
+            t_history.pop(0)
+            d_history.pop(0)
+
+        coeffs = ab_coefficients(t_hat, t_next, t_history)
+        x_next = x_hat
+        for coeff, d_cur in zip(coeffs, d_history):
+            x_next = x_next + coeff * d_cur
 
     return x_next
 
@@ -420,7 +624,7 @@ def parse_int_list(s):
 @click.option('--S_max', 'S_max',          help='Stoch. max noise level', metavar='FLOAT',                          type=click.FloatRange(min=0), default='inf', show_default=True)
 @click.option('--S_noise', 'S_noise',      help='Stoch. noise inflation', metavar='FLOAT',                          type=float, default=1, show_default=True)
 
-@click.option('--sampler',                 help='Sampling method', metavar='edm|pndm',                              type=click.Choice(['edm', 'pndm']), default='edm', show_default=True)
+@click.option('--sampler',                 help='Sampling method', metavar='edm|rk4|pndm|pndm-no-rk|pndm-linear|spndm|ab', type=click.Choice(['edm', 'rk4', 'pndm', 'pndm-no-rk', 'pndm-linear', 'spndm', 's-pndm', 'ab', 'adams-bashforth']), default='edm', show_default=True)
 @click.option('--solver',                  help='Ablate ODE solver', metavar='euler|heun',                          type=click.Choice(['euler', 'heun']))
 @click.option('--disc', 'discretization',  help='Ablate time step discretization {t_i}', metavar='vp|ve|iddpm|edm', type=click.Choice(['vp', 've', 'iddpm', 'edm']))
 @click.option('--schedule',                help='Ablate noise schedule sigma(t)', metavar='vp|ve|linear',           type=click.Choice(['vp', 've', 'linear']))
@@ -472,14 +676,24 @@ def main(network_pkl, outdir, subdirs, seeds, class_idx, max_batch_size, device=
     # 既定のEDM samplerへ倒す。
     sampler_kwargs = {key: value for key, value in sampler_kwargs.items() if value is not None}
     sampler = sampler_kwargs.pop('sampler', 'edm')
+    if sampler == 's-pndm':
+        sampler = 'spndm'
+    if sampler == 'adams-bashforth':
+        sampler = 'ab'
+    if sampler == 'pndm-no-rk':
+        sampler = 'pndm'
+        sampler_kwargs['rk_warmup'] = False
+    if sampler == 'pndm-linear':
+        sampler = 'pndm'
+        sampler_kwargs['linear_schedule'] = True
 
     # ablation samplerは独自のsolver/discretization/schedule空間を持つ。
-    # PNDMはEDM座標系のsamplerとして分けておき、実験ではsolver変更だけを
+    # RK4/PNDM系はEDM座標系のsamplerとして分けておき、実験ではsolver変更だけを
     # 1つずつ比較できるようにする。
     have_ablation_kwargs = any(x in sampler_kwargs for x in ['solver', 'discretization', 'schedule', 'scaling'])
-    if sampler == 'pndm' and have_ablation_kwargs:
-        raise click.ClickException('--sampler=pndm cannot be combined with ablation options --solver/--disc/--schedule/--scaling')
-    sampler_fn = pndm_sampler if sampler == 'pndm' else ablation_sampler if have_ablation_kwargs else edm_sampler
+    if sampler in ['rk4', 'pndm', 'spndm', 'ab'] and have_ablation_kwargs:
+        raise click.ClickException('--sampler=rk4/pndm/spndm/ab cannot be combined with ablation options --solver/--disc/--schedule/--scaling')
+    sampler_fn = {'rk4': rk4_sampler, 'pndm': pndm_sampler, 'spndm': spndm_sampler, 'ab': ab_sampler}.get(sampler, ablation_sampler if have_ablation_kwargs else edm_sampler)
 
     # 各rankが担当するbatchだけを生成する。progress barはrank 0だけに出す。
     dist.print0(f'Generating {len(seeds)} images to "{outdir}"...')

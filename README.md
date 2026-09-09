@@ -101,6 +101,28 @@ python generate.py --outdir=out --steps=256 --S_churn=40 --S_min=0.05 --S_max=50
     --network=https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-imagenet-64x64-cond-adm.pkl
 ```
 
+This repository also includes experimental higher-order samplers adapted to the EDM probability flow ODE. `--sampler=rk4` uses the classical 4th-order Runge-Kutta method over the EDM derivative `d=(x-D(x,sigma))/sigma`. `--sampler=pndm` uses RK4 startup steps followed by a fixed-coefficient 4th-order linear multistep update, `--sampler=pndm-no-rk` starts the same multistep method with Euler, AB2, and AB3 steps, `--sampler=pndm-linear` keeps the fixed coefficients but uses a linearly spaced sigma schedule from `sigma_max` to 0, `--sampler=spndm` uses a Heun startup step followed by a 2nd-order linear multistep update, and `--sampler=ab` uses a pure Adams-Bashforth multiple-step update with variable-step coefficients:
+
+```.bash
+python generate.py --outdir=out-rk4 --sampler=rk4 --steps=18 \
+    --network=https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl
+
+python generate.py --outdir=out-pndm --sampler=pndm --steps=18 \
+    --network=https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl
+
+python generate.py --outdir=out-pndm-no-rk --sampler=pndm-no-rk --steps=18 \
+    --network=https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl
+
+python generate.py --outdir=out-pndm-linear --sampler=pndm-linear --steps=18 \
+    --network=https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl
+
+python generate.py --outdir=out-spndm --sampler=spndm --steps=18 \
+    --network=https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl
+
+python generate.py --outdir=out-ab --sampler=ab --steps=18 \
+    --network=https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl
+```
+
 Besides our proposed EDM sampler, `generate.py` can also be used to reproduce the sampler ablations from Section 3 of our paper. For example:
 
 ```.bash
