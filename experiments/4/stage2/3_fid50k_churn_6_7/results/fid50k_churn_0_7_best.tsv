@@ -1,0 +1,8 @@
+checkpoint	best_S_churn	best_fid_50k
+5.5k	6	9.49928
+10k	7	5.33909
+20k	3	2.82708
+40k	2	2.21522
+80k	3	2.00537
+120k	3	2.01365
+pretrained	3	1.84319
