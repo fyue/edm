@@ -1,0 +1,74 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1040" height="540" viewBox="0 0 1040 540">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#222}.note{fill:#555}</style>
+<text x="520.0" y="34.0" font-size="20" text-anchor="middle" font-weight="700">NFE vs mean FID</text>
+<text x="520.0" y="56.0" font-size="12" text-anchor="middle" font-weight="400">Lower-left is better. PNDM linear is out of range: FID=98.10 at NFE=27.</text>
+<line x1="147.3" y1="470.0" x2="147.3" y2="476.0" stroke="#333" stroke-width="1"/>
+<text x="147.3" y="495.0" font-size="12" text-anchor="middle" font-weight="400">20</text>
+<line x1="334.1" y1="470.0" x2="334.1" y2="476.0" stroke="#333" stroke-width="1"/>
+<text x="334.1" y="495.0" font-size="12" text-anchor="middle" font-weight="400">35</text>
+<line x1="521.0" y1="470.0" x2="521.0" y2="476.0" stroke="#333" stroke-width="1"/>
+<text x="521.0" y="495.0" font-size="12" text-anchor="middle" font-weight="400">50</text>
+<line x1="707.8" y1="470.0" x2="707.8" y2="476.0" stroke="#333" stroke-width="1"/>
+<text x="707.8" y="495.0" font-size="12" text-anchor="middle" font-weight="400">65</text>
+<line x1="85.0" y1="420.0" x2="795.0" y2="420.0" stroke="#dddddd" stroke-width="1"/>
+<text x="75.0" y="424.0" font-size="12" text-anchor="end" font-weight="400">2.0</text>
+<line x1="85.0" y1="320.0" x2="795.0" y2="320.0" stroke="#dddddd" stroke-width="1"/>
+<text x="75.0" y="324.0" font-size="12" text-anchor="end" font-weight="400">2.5</text>
+<line x1="85.0" y1="220.0" x2="795.0" y2="220.0" stroke="#dddddd" stroke-width="1"/>
+<text x="75.0" y="224.0" font-size="12" text-anchor="end" font-weight="400">3.0</text>
+<line x1="85.0" y1="120.0" x2="795.0" y2="120.0" stroke="#dddddd" stroke-width="1"/>
+<text x="75.0" y="124.0" font-size="12" text-anchor="end" font-weight="400">3.5</text>
+<line x1="85.0" y1="70.0" x2="85.0" y2="470.0" stroke="#333" stroke-width="1"/>
+<line x1="85.0" y1="470.0" x2="795.0" y2="470.0" stroke="#333" stroke-width="1"/>
+<text x="440.0" y="522.0" font-size="14" text-anchor="middle" font-weight="400">NFE</text>
+<text x="24.0" y="270.0" font-size="14" text-anchor="middle" font-weight="400" transform="rotate(-90 24.0 270.0)">FID-50k mean</text>
+<circle cx="334.1" cy="452.2" r="7.0" fill="#4c78a8" stroke="#222" stroke-width="0.9"/>
+<text x="344.1" y="470.2" font-size="11" text-anchor="start" font-weight="700">reference: 1.84</text>
+<circle cx="234.5" cy="421.7" r="7.0" fill="#59a14f" stroke="#222" stroke-width="0.9"/>
+<text x="244.5" y="411.7" font-size="11" text-anchor="start" font-weight="700">5-1: 1.99</text>
+<circle cx="134.8" cy="190.5" r="7.0" fill="#e15759" stroke="#222" stroke-width="0.9"/>
+<text x="144.8" y="194.5" font-size="11" text-anchor="start" font-weight="700">5-2: 3.15</text>
+<circle cx="757.6" cy="434.9" r="7.0" fill="#f28e2b" stroke="#222" stroke-width="0.9"/>
+<text x="747.6" y="438.9" font-size="11" text-anchor="end" font-weight="700">5-3: 1.93</text>
+<circle cx="122.4" cy="104.5" r="7.0" fill="#9c755f" stroke="#222" stroke-width="0.9"/>
+<text x="132.4" y="108.5" font-size="11" text-anchor="start" font-weight="700">5-4: 3.58</text>
+<circle cx="334.1" cy="437.9" r="7.0" fill="#76b7b2" stroke="#222" stroke-width="0.9"/>
+<text x="344.1" y="424.9" font-size="11" text-anchor="start" font-weight="700">5-5: 1.91</text>
+<circle cx="334.1" cy="395.1" r="7.0" fill="#edc948" stroke="#222" stroke-width="0.9"/>
+<text x="344.1" y="407.1" font-size="11" text-anchor="start" font-weight="700">5-7: 2.12</text>
+<circle cx="222.0" cy="438.0" r="7.0" fill="#ff9da7" stroke="#222" stroke-width="0.9"/>
+<text x="212.0" y="442.0" font-size="11" text-anchor="end" font-weight="700">5-8: 1.91</text>
+<circle cx="334.1" cy="440.1" r="7.0" fill="#2f6fdd" stroke="#222" stroke-width="0.9"/>
+<text x="344.1" y="444.1" font-size="11" text-anchor="start" font-weight="700">5-9: 1.90</text>
+<circle cx="334.1" cy="376.1" r="7.0" fill="#8c564b" stroke="#222" stroke-width="0.9"/>
+<text x="344.1" y="368.1" font-size="11" text-anchor="start" font-weight="700">5-10: 2.22</text>
+<circle cx="122.4" cy="421.8" r="7.0" fill="#1b7f5a" stroke="#222" stroke-width="0.9"/>
+<text x="132.4" y="425.8" font-size="11" text-anchor="start" font-weight="700">5-11: 1.99</text>
+<circle cx="222.0" cy="328.1" r="7.0" fill="#9467bd" stroke="#222" stroke-width="0.9"/>
+<text x="212.0" y="332.1" font-size="11" text-anchor="end" font-weight="700">5-12: 2.46</text>
+<circle cx="830.0" cy="78.0" r="5.0" fill="#4c78a8" stroke="#222" stroke-width="0.8"/>
+<text x="842.0" y="82.0" font-size="11" text-anchor="start" font-weight="400">reference EDM standard</text>
+<circle cx="830.0" cy="102.0" r="5.0" fill="#59a14f" stroke="#222" stroke-width="0.8"/>
+<text x="842.0" y="106.0" font-size="11" text-anchor="start" font-weight="400">5-1 PNDM 18 steps</text>
+<circle cx="830.0" cy="126.0" r="5.0" fill="#e15759" stroke="#222" stroke-width="0.8"/>
+<text x="842.0" y="130.0" font-size="11" text-anchor="start" font-weight="400">5-2 S-PNDM 18 steps</text>
+<circle cx="830.0" cy="150.0" r="5.0" fill="#f28e2b" stroke="#222" stroke-width="0.8"/>
+<text x="842.0" y="154.0" font-size="11" text-anchor="start" font-weight="400">5-3 RK4 18 steps</text>
+<circle cx="830.0" cy="174.0" r="5.0" fill="#9c755f" stroke="#222" stroke-width="0.8"/>
+<text x="842.0" y="178.0" font-size="11" text-anchor="start" font-weight="400">5-4 AB 18 steps</text>
+<circle cx="830.0" cy="198.0" r="5.0" fill="#76b7b2" stroke="#222" stroke-width="0.8"/>
+<text x="842.0" y="202.0" font-size="11" text-anchor="start" font-weight="400">5-5 PNDM 26 steps</text>
+<circle cx="830.0" cy="222.0" r="5.0" fill="#edc948" stroke="#222" stroke-width="0.8"/>
+<text x="842.0" y="226.0" font-size="11" text-anchor="start" font-weight="400">5-7 AB 35 steps</text>
+<circle cx="830.0" cy="246.0" r="5.0" fill="#ff9da7" stroke="#222" stroke-width="0.8"/>
+<text x="842.0" y="250.0" font-size="11" text-anchor="start" font-weight="400">5-8 PNDM no-RK</text>
+<circle cx="830.0" cy="270.0" r="5.0" fill="#2f6fdd" stroke="#222" stroke-width="0.8"/>
+<text x="842.0" y="274.0" font-size="11" text-anchor="start" font-weight="400">5-9 PNDM no-RK 35 steps</text>
+<circle cx="830.0" cy="294.0" r="5.0" fill="#8c564b" stroke="#222" stroke-width="0.8"/>
+<text x="842.0" y="298.0" font-size="11" text-anchor="start" font-weight="400">5-10 S-PNDM 34 steps</text>
+<circle cx="830.0" cy="318.0" r="5.0" fill="#1b7f5a" stroke="#222" stroke-width="0.8"/>
+<text x="842.0" y="322.0" font-size="11" text-anchor="start" font-weight="400">5-11 PNDM no-RK 18 steps</text>
+<circle cx="830.0" cy="342.0" r="5.0" fill="#9467bd" stroke="#222" stroke-width="0.8"/>
+<text x="842.0" y="346.0" font-size="11" text-anchor="start" font-weight="400">5-12 AB 26 steps</text>
+</svg>

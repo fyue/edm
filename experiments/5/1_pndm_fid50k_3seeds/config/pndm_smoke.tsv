@@ -1,0 +1,2 @@
+# checkpoint	label	network	sampler	S_churn	seeds
+pretrained-smoke	pretrained	https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl	pndm	0	0-1023

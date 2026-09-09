@@ -1,0 +1,4 @@
+# checkpoint	label	network	sampler	S_churn	seeds
+pretrained	pretrained	https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl	pndm-linear	0	0-49999
+pretrained	pretrained	https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl	pndm-linear	0	50000-99999
+pretrained	pretrained	https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl	pndm-linear	0	100000-149999

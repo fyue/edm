@@ -1,0 +1,2 @@
+checkpoint	label	sampler	S_churn	num_images	steps	nfe	n	fid_mean	fid_std	fid_min	seed_fids
+pretrained	pretrained	pndm-no-rk	0	50000	26	26	3	1.91	0.00871837	1.9007	0-49999:1.9113,100000-149999:1.91799,50000-99999:1.9007

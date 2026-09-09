@@ -1,0 +1,78 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="1080" height="560" viewBox="0 0 1080 560">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#222}.note{fill:#555}</style>
+<text x="540.0" y="34.0" font-size="20" text-anchor="middle" font-weight="700">Experiment 5 sampler comparison: mean FID</text>
+<text x="540.0" y="56.0" font-size="12" text-anchor="middle" font-weight="400">CIFAR-10 conditional pretrained, FID-50k over 3 seed ranges, S_churn=0</text>
+<line x1="92.0" y1="383.2" x2="1045.0" y2="383.2" stroke="#dddddd" stroke-width="1"/>
+<text x="82.0" y="387.2" font-size="12" text-anchor="end" font-weight="400">2.0</text>
+<line x1="92.0" y1="293.8" x2="1045.0" y2="293.8" stroke="#dddddd" stroke-width="1"/>
+<text x="82.0" y="297.8" font-size="12" text-anchor="end" font-weight="400">2.5</text>
+<line x1="92.0" y1="204.2" x2="1045.0" y2="204.2" stroke="#dddddd" stroke-width="1"/>
+<text x="82.0" y="208.2" font-size="12" text-anchor="end" font-weight="400">3.0</text>
+<line x1="92.0" y1="114.8" x2="1045.0" y2="114.8" stroke="#dddddd" stroke-width="1"/>
+<text x="82.0" y="118.8" font-size="12" text-anchor="end" font-weight="400">3.5</text>
+<line x1="92.0" y1="70.0" x2="92.0" y2="428.0" stroke="#333" stroke-width="1"/>
+<line x1="92.0" y1="428.0" x2="1045.0" y2="428.0" stroke="#333" stroke-width="1"/>
+<text x="24.0" y="249.0" font-size="14" text-anchor="middle" font-weight="400" transform="rotate(-90 24.0 249.0)">FID-50k mean</text>
+<rect x="110.1" y="412.1" width="59.1" height="15.9" fill="#4c78a8" stroke="#222" stroke-width="0.8"/>
+<line x1="139.7" y1="414.6" x2="139.7" y2="409.5" stroke="#222" stroke-width="1.1"/>
+<text x="139.7" y="403.1" font-size="11" text-anchor="middle" font-weight="700">1.839</text>
+<text x="139.7" y="456.0" font-size="12" text-anchor="middle" font-weight="700">reference</text>
+<text x="139.7" y="477.0" font-size="12" text-anchor="middle" font-weight="400" transform="rotate(-20 139.7 477.0)">EDM standard</text>
+<text x="139.7" y="516.0" font-size="11" text-anchor="middle" font-weight="400">NFE 35</text>
+<rect x="205.4" y="384.8" width="59.1" height="43.2" fill="#59a14f" stroke="#222" stroke-width="0.8"/>
+<line x1="234.9" y1="386.0" x2="234.9" y2="383.5" stroke="#222" stroke-width="1.1"/>
+<text x="234.9" y="375.8" font-size="11" text-anchor="middle" font-weight="700">1.992</text>
+<text x="234.9" y="456.0" font-size="12" text-anchor="middle" font-weight="700">5-1</text>
+<text x="234.9" y="477.0" font-size="12" text-anchor="middle" font-weight="400" transform="rotate(-20 234.9 477.0)">PNDM 18 steps</text>
+<text x="234.9" y="516.0" font-size="11" text-anchor="middle" font-weight="400">NFE 27</text>
+<rect x="300.7" y="177.8" width="59.1" height="250.2" fill="#e15759" stroke="#222" stroke-width="0.8"/>
+<line x1="330.2" y1="181.0" x2="330.2" y2="174.6" stroke="#222" stroke-width="1.1"/>
+<text x="330.2" y="168.8" font-size="11" text-anchor="middle" font-weight="700">3.148</text>
+<text x="330.2" y="456.0" font-size="12" text-anchor="middle" font-weight="700">5-2</text>
+<text x="330.2" y="477.0" font-size="12" text-anchor="middle" font-weight="400" transform="rotate(-20 330.2 477.0)">S-PNDM 18 steps</text>
+<text x="330.2" y="516.0" font-size="11" text-anchor="middle" font-weight="400">NFE 19</text>
+<rect x="396.0" y="396.5" width="59.1" height="31.5" fill="#f28e2b" stroke="#222" stroke-width="0.8"/>
+<line x1="425.6" y1="398.0" x2="425.6" y2="395.1" stroke="#222" stroke-width="1.1"/>
+<text x="425.6" y="387.5" font-size="11" text-anchor="middle" font-weight="700">1.926</text>
+<text x="425.6" y="456.0" font-size="12" text-anchor="middle" font-weight="700">5-3</text>
+<text x="425.6" y="477.0" font-size="12" text-anchor="middle" font-weight="400" transform="rotate(-20 425.6 477.0)">RK4 18 steps</text>
+<text x="425.6" y="516.0" font-size="11" text-anchor="middle" font-weight="400">NFE 69</text>
+<rect x="491.3" y="100.9" width="59.1" height="327.1" fill="#9c755f" stroke="#222" stroke-width="0.8"/>
+<line x1="520.8" y1="103.9" x2="520.8" y2="97.9" stroke="#222" stroke-width="1.1"/>
+<text x="520.8" y="91.9" font-size="11" text-anchor="middle" font-weight="700">3.577</text>
+<text x="520.8" y="456.0" font-size="12" text-anchor="middle" font-weight="700">5-4</text>
+<text x="520.8" y="477.0" font-size="12" text-anchor="middle" font-weight="400" transform="rotate(-20 520.8 477.0)">AB 18 steps</text>
+<text x="520.8" y="516.0" font-size="11" text-anchor="middle" font-weight="400">NFE 18</text>
+<rect x="586.6" y="399.3" width="59.1" height="28.7" fill="#76b7b2" stroke="#222" stroke-width="0.8"/>
+<line x1="616.1" y1="400.8" x2="616.1" y2="397.7" stroke="#222" stroke-width="1.1"/>
+<text x="616.1" y="390.3" font-size="11" text-anchor="middle" font-weight="700">1.910</text>
+<text x="616.1" y="456.0" font-size="12" text-anchor="middle" font-weight="700">5-5</text>
+<text x="616.1" y="477.0" font-size="12" text-anchor="middle" font-weight="400" transform="rotate(-20 616.1 477.0)">PNDM 26 steps</text>
+<text x="616.1" y="516.0" font-size="11" text-anchor="middle" font-weight="400">NFE 35</text>
+<rect x="681.9" y="361.0" width="59.1" height="67.0" fill="#edc948" stroke="#222" stroke-width="0.8"/>
+<line x1="711.4" y1="362.4" x2="711.4" y2="359.6" stroke="#222" stroke-width="1.1"/>
+<text x="711.4" y="352.0" font-size="11" text-anchor="middle" font-weight="700">2.124</text>
+<text x="711.4" y="456.0" font-size="12" text-anchor="middle" font-weight="700">5-7</text>
+<text x="711.4" y="477.0" font-size="12" text-anchor="middle" font-weight="400" transform="rotate(-20 711.4 477.0)">AB 35 steps</text>
+<text x="711.4" y="516.0" font-size="11" text-anchor="middle" font-weight="400">NFE 35</text>
+<rect x="777.2" y="399.4" width="59.1" height="28.6" fill="#ff9da7" stroke="#222" stroke-width="0.8"/>
+<line x1="806.8" y1="400.9" x2="806.8" y2="397.8" stroke="#222" stroke-width="1.1"/>
+<text x="806.8" y="390.4" font-size="11" text-anchor="middle" font-weight="700">1.910</text>
+<text x="806.8" y="456.0" font-size="12" text-anchor="middle" font-weight="700">5-8</text>
+<text x="806.8" y="477.0" font-size="12" text-anchor="middle" font-weight="400" transform="rotate(-20 806.8 477.0)">PNDM no-RK</text>
+<text x="806.8" y="516.0" font-size="11" text-anchor="middle" font-weight="400">NFE 26</text>
+<rect x="872.5" y="401.2" width="59.1" height="26.8" fill="#2f6fdd" stroke="#222" stroke-width="0.8"/>
+<line x1="902.0" y1="402.7" x2="902.0" y2="399.8" stroke="#222" stroke-width="1.1"/>
+<text x="902.0" y="392.2" font-size="11" text-anchor="middle" font-weight="700">1.899</text>
+<text x="902.0" y="456.0" font-size="12" text-anchor="middle" font-weight="700">5-9</text>
+<text x="902.0" y="477.0" font-size="12" text-anchor="middle" font-weight="400" transform="rotate(-20 902.0 477.0)">PNDM no-RK 35 steps</text>
+<text x="902.0" y="516.0" font-size="11" text-anchor="middle" font-weight="400">NFE 35</text>
+<rect x="967.8" y="343.9" width="59.1" height="84.1" fill="#8c564b" stroke="#222" stroke-width="0.8"/>
+<line x1="997.4" y1="345.2" x2="997.4" y2="342.7" stroke="#222" stroke-width="1.1"/>
+<text x="997.4" y="334.9" font-size="11" text-anchor="middle" font-weight="700">2.220</text>
+<text x="997.4" y="456.0" font-size="12" text-anchor="middle" font-weight="700">5-10</text>
+<text x="997.4" y="477.0" font-size="12" text-anchor="middle" font-weight="400" transform="rotate(-20 997.4 477.0)">S-PNDM 34 steps</text>
+<text x="997.4" y="516.0" font-size="11" text-anchor="middle" font-weight="400">NFE 35</text>
+<text x="92.0" y="542.0" font-size="12" text-anchor="start" font-weight="400">PNDM linear is omitted from this scale because its FID is 98.10.</text>
+</svg>
