@@ -671,3 +671,61 @@ class EDMPrecond(torch.nn.Module):
         return torch.as_tensor(sigma)
 
 #----------------------------------------------------------------------------
+# Network wrapper for linear-path flow matching (FM).
+#
+# 既存のSongUNet/DhariwalUNetをそのまま使い、状態 x_t と時刻 t から速度場
+#
+#     v(x_t, t) ~= d x_t / dt
+#
+# を直接出力する。EDMのような入出力のpreconditioning (c_skip, c_out, c_in) は
+# 行わず、時刻条件だけをDDPM++のembeddingスケールへ合わせて渡す。
+
+@persistence.persistent_class
+class FMPrecond(torch.nn.Module):
+    def __init__(self,
+        img_resolution,                 # Image resolution.
+        img_channels,                   # Number of color channels.
+        label_dim       = 0,            # Number of class labels, 0 = unconditional.
+        use_fp16        = False,        # Execute the underlying model at FP16 precision?
+        t_min           = 0,            # Minimum supported time.
+        t_max           = 1,            # Maximum supported time.
+        M               = 1000,         # Original number of timesteps in the DDPM formulation.
+        path            = 'linear',     # Probability path connecting noise and data.
+        model_type      = 'SongUNet',   # Class name of the underlying model.
+        **model_kwargs,                 # Keyword arguments for the underlying model.
+    ):
+        super().__init__()
+        if path != 'linear':
+            raise ValueError(f"FMPrecond only supports path='linear', got {path!r}")
+        self.img_resolution = img_resolution
+        self.img_channels = img_channels
+        self.label_dim = label_dim
+        self.use_fp16 = use_fp16
+        # samplerがcheckpointの種類を判別するための情報。denoiser checkpointと
+        # velocity checkpointを取り違えないよう、pickleへ明示的に保存する。
+        self.prediction_type = 'velocity'
+        self.path = path
+        self.t_min = t_min
+        self.t_max = t_max
+        self.M = M
+        self.model = globals()[model_type](img_resolution=img_resolution, in_channels=img_channels, out_channels=img_channels, label_dim=label_dim, **model_kwargs)
+
+    def forward(self, x, t, class_labels=None, force_fp32=False, **model_kwargs):
+        x = x.to(torch.float32)
+        t = t.to(torch.float32).reshape(-1, 1, 1, 1)
+        class_labels = None if self.label_dim == 0 else torch.zeros([1, self.label_dim], device=x.device) if class_labels is None else class_labels.to(torch.float32).reshape(-1, self.label_dim)
+        dtype = torch.float16 if (self.use_fp16 and not force_fp32 and x.device.type == 'cuda') else torch.float32
+
+        # t in [0,1] をDDPM++のtimestep embeddingが想定する [0, M-1] へ写す。
+        # 追加の入出力preconditioningは行わないので、networkの出力がそのまま
+        # 速度場の予測になる。
+        c_noise = (self.M - 1) * t
+
+        F_x = self.model(x.to(dtype), c_noise.flatten(), class_labels=class_labels, **model_kwargs)
+        assert F_x.dtype == dtype
+        return F_x.to(torch.float32)
+
+    def round_t(self, t):
+        return torch.as_tensor(t)
+
+#----------------------------------------------------------------------------

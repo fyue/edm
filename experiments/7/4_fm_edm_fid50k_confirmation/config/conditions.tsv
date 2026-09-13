@@ -1,0 +1,4 @@
+# condition	model	sampler	steps	solver	nfe	fid_5k	network	source_images
+fm-euler-nfe18	fm	fm-euler	18	-	18	11.7926	experiments/7/2_cifar10_cond_linear_fm_pilot/training-runs/cifar10-cond-ddpmpp-fm-linear-pilot/network-snapshot-020000.pkl	-
+fm-euler-nfe35	fm	fm-euler	35	-	35	9.86406	experiments/7/2_cifar10_cond_linear_fm_pilot/training-runs/cifar10-cond-ddpmpp-fm-linear-pilot/network-snapshot-020000.pkl	-
+edm-heun-nfe35	edm	edm	18	-	35	7.6149	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-020000.pkl	experiments/4/stage2/1_fid50k_selected_churn/images/20k/S_churn-0/n50000-seeds-0-49999

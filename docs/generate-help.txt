@@ -13,6 +13,10 @@ Usage: generate.py [OPTIONS]
   torchrun --standalone --nproc_per_node=2 generate.py --outdir=out --seeds=0-999 --batch=64 \
       --network=https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl
 
+  # flow matching checkpoint (--precond=fm) からFM Eulerで生成する
+  python generate.py --outdir=out --seeds=0-63 --batch=64 --sampler=fm-euler --steps=18 \
+      --network=training-runs/fm-linear/network-snapshot-000050.pkl
+
 Options:
   --network PATH|URL              Network pickle filename  [required]
   --outdir DIR                    Where to save the output images  [required]
@@ -31,7 +35,7 @@ Options:
   --S_min FLOAT                   Stoch. min noise level  [default: 0; x>=0]
   --S_max FLOAT                   Stoch. max noise level  [default: inf; x>=0]
   --S_noise FLOAT                 Stoch. noise inflation  [default: 1]
-  --sampler edm|rk4|pndm|pndm-no-rk|pndm-linear|spndm|ab
+  --sampler edm|rk4|pndm|pndm-no-rk|pndm-linear|spndm|ab|fm-euler|fm-heun
                                   Sampling method  [default: edm]
   --solver euler|heun             Ablate ODE solver
   --disc vp|ve|iddpm|edm          Ablate time step discretization {t_i}

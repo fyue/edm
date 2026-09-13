@@ -1,0 +1,24 @@
+# Experiment 7-3: 20k checkpointでのFM solver/NFE sweepとEDM比較。
+#
+# condition          結果・画像directoryに使う一意な名前。
+# model              fm または edm。
+# sampler            generate.pyへ渡すsampler。
+# steps              積分区間数。
+# solver             EDM ablation solver。'-'なら指定しない。
+# nfe                想定network評価回数。runnerがstepsとの整合性を検証する。
+# comparison_group   論文表で対応づける比較群。
+# network            評価checkpoint。
+# source_images      既存の同条件・同seed画像を再利用する場合のdirectory。'-'なら生成。
+#
+#condition	model	sampler	steps	solver	nfe	comparison_group	network	source_images
+fm-euler-nfe5	fm	fm-euler	5	-	5	fm-solver-nfe5	experiments/7/2_cifar10_cond_linear_fm_pilot/training-runs/cifar10-cond-ddpmpp-fm-linear-pilot/network-snapshot-020000.pkl	-
+fm-heun-nfe5	fm	fm-heun	3	-	5	fm-solver-nfe5	experiments/7/2_cifar10_cond_linear_fm_pilot/training-runs/cifar10-cond-ddpmpp-fm-linear-pilot/network-snapshot-020000.pkl	-
+fm-euler-nfe9	fm	fm-euler	9	-	9	fm-solver-nfe9	experiments/7/2_cifar10_cond_linear_fm_pilot/training-runs/cifar10-cond-ddpmpp-fm-linear-pilot/network-snapshot-020000.pkl	-
+fm-heun-nfe9	fm	fm-heun	5	-	9	fm-solver-nfe9	experiments/7/2_cifar10_cond_linear_fm_pilot/training-runs/cifar10-cond-ddpmpp-fm-linear-pilot/network-snapshot-020000.pkl	-
+fm-euler-nfe18	fm	fm-euler	18	-	18	fm-vs-edm-nfe18	experiments/7/2_cifar10_cond_linear_fm_pilot/training-runs/cifar10-cond-ddpmpp-fm-linear-pilot/network-snapshot-020000.pkl	experiments/7/2_cifar10_cond_linear_fm_pilot/images/fid-20000-fm-euler-steps18-n5000-seeds-0-4999
+edm-euler-nfe18	edm	edm	18	euler	18	fm-vs-edm-nfe18	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-020000.pkl	-
+fm-euler-nfe19	fm	fm-euler	19	-	19	fm-solver-nfe19	experiments/7/2_cifar10_cond_linear_fm_pilot/training-runs/cifar10-cond-ddpmpp-fm-linear-pilot/network-snapshot-020000.pkl	-
+fm-heun-nfe19	fm	fm-heun	10	-	19	fm-solver-nfe19	experiments/7/2_cifar10_cond_linear_fm_pilot/training-runs/cifar10-cond-ddpmpp-fm-linear-pilot/network-snapshot-020000.pkl	-
+fm-euler-nfe35	fm	fm-euler	35	-	35	fm-solver-nfe35	experiments/7/2_cifar10_cond_linear_fm_pilot/training-runs/cifar10-cond-ddpmpp-fm-linear-pilot/network-snapshot-020000.pkl	-
+fm-heun-nfe35	fm	fm-heun	18	-	35	fm-solver-nfe35+fm-vs-edm-nfe35	experiments/7/2_cifar10_cond_linear_fm_pilot/training-runs/cifar10-cond-ddpmpp-fm-linear-pilot/network-snapshot-020000.pkl	-
+edm-heun-nfe35	edm	edm	18	-	35	fm-vs-edm-nfe35	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-020000.pkl	experiments/4/stage1/1_fid5k_selected_churn/images/20k/S_churn-0/n5000-seeds-0-4999

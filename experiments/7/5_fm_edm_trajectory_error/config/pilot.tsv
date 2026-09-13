@@ -1,0 +1,2 @@
+# label	fm_network	edm_network	seeds	batch	ref_coarse_steps	ref_fine_steps
+pilot	experiments/7/2_cifar10_cond_linear_fm_pilot/training-runs/cifar10-cond-ddpmpp-fm-linear-pilot/network-snapshot-020000.pkl	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-020000.pkl	0-63	16	64	128

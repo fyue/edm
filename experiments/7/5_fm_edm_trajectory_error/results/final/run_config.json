@@ -1,0 +1,60 @@
+{
+  "fm_network": "experiments/7/2_cifar10_cond_linear_fm_pilot/training-runs/cifar10-cond-ddpmpp-fm-linear-pilot/network-snapshot-020000.pkl",
+  "edm_network": "experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-020000.pkl",
+  "seeds": "0-255",
+  "batch": 16,
+  "reference_coarse_steps": 128,
+  "reference_fine_steps": 256,
+  "sigma_min": 0.002,
+  "sigma_max": 80.0,
+  "rho": 7.0,
+  "epsilon": 1e-12,
+  "coarse_specs": [
+    [
+      "euler",
+      5,
+      5
+    ],
+    [
+      "heun",
+      3,
+      5
+    ],
+    [
+      "euler",
+      9,
+      9
+    ],
+    [
+      "heun",
+      5,
+      9
+    ],
+    [
+      "euler",
+      18,
+      18
+    ],
+    [
+      "euler",
+      19,
+      19
+    ],
+    [
+      "heun",
+      10,
+      19
+    ],
+    [
+      "euler",
+      35,
+      35
+    ],
+    [
+      "heun",
+      18,
+      35
+    ]
+  ],
+  "estimated_total_nfe_per_seed": 3382
+}

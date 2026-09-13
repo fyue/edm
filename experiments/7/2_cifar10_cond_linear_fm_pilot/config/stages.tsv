@@ -1,0 +1,16 @@
+# Experiment 7-2: linear-path FM baseline の pilot stage 定義。
+# run_fm_linear_pilot.sh が上から順に処理する。
+#
+# kimg          そのstageまで学習を進める累積kimg。
+# fid_num       stage終了時に測るFIDの枚数。0ならFIDを行わない。
+# fid_seeds     FID用のseed範囲。
+# sample_seeds  目視確認用sampleのseed範囲。'-' なら生成しない。
+#
+# FIDは5k枚。EDM baselineの公開値 (FID-50k) とは直接比較できない点に注意
+# (READMEの "Comparison Protocol" を参照)。
+#
+#kimg	fid_num	fid_seeds	sample_seeds
+1000	5000	0-4999	0-63
+3000	5000	0-4999	0-63
+10000	5000	0-4999	0-63
+20000	5000	0-4999	0-63

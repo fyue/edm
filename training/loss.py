@@ -80,3 +80,49 @@ class EDMLoss:
         return loss
 
 #----------------------------------------------------------------------------
+# Loss function for linear-path flow matching (FM).
+#
+# 独立に標本化したGaussian noise z と画像 y を線形経路
+#
+#     x_t = (1 - t) z + t y,   t ~ U[0,1)
+#
+# で結び、その経路に沿った速度場
+#
+#     v_target = d x_t / dt = y - z
+#
+# をnetworkに回帰させる。EDMのようなノイズレベル依存のpreconditioningや
+# loss weightingは使わず、重み1の velocity MSE をそのまま最適化する。
+
+@persistence.persistent_class
+class FMLoss:
+    def __init__(self, path='linear'):
+        # 現状は独立couplingのlinear pathのみ。将来Minibatch OTなどの
+        # couplingを追加するときは、この属性で経路を切り替える。
+        if path != 'linear':
+            raise ValueError(f"FMLoss only supports path='linear', got {path!r}")
+        self.path = path
+
+    def sample_noise(self, y):
+        # 独立coupling。Minibatch OTを入れる場合はここでyとzの対応を組み替える。
+        return torch.randn_like(y)
+
+    def sample_path(self, y, z, t):
+        # x_t = (1 - t) z + t y。t=0でnoise、t=1でdataになる。
+        return (1 - t) * z + t * y
+
+    def velocity_target(self, y, z, t):
+        # linear pathではd x_t/dt = y - z で、tには依存しない。
+        return y - z
+
+    def __call__(self, net, images, labels=None, augment_pipe=None):
+        y, augment_labels = augment_pipe(images) if augment_pipe is not None else (images, None)
+        t = torch.rand([y.shape[0], 1, 1, 1], device=y.device)
+        z = self.sample_noise(y)
+        x_t = self.sample_path(y, z, t)
+        v_target = self.velocity_target(y, z, t)
+        v_pred = net(x_t, t, labels, augment_labels=augment_labels)
+        # 既存の学習ループはloss.sum()を取るので、ピクセル単位のtensorを返す。
+        loss = (v_pred - v_target) ** 2
+        return loss
+
+#----------------------------------------------------------------------------

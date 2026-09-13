@@ -1,0 +1,2 @@
+profile	kimg	latest_loss	loss_status	sec_per_kimg	gpumem_gb	reserved_gb	state	snapshot
+smoke	50	1.13847499	ok	6.54	16.50	18.09	training-runs/cifar10-cond-ddpmpp-fm-linear/training-state-000050.pt	training-runs/cifar10-cond-ddpmpp-fm-linear/network-snapshot-000050.pkl

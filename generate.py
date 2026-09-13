@@ -395,6 +395,142 @@ def ab_sampler(
     return x_next
 
 #----------------------------------------------------------------------------
+# Linear-path flow matching (FM) 用のsampler。
+#
+# 学習側 (training.loss.FMLoss / training.networks.FMPrecond) と同じ規約で、
+# t=0がGaussian noise、t=1がデータになる向きの線形経路
+#
+#     x_t = (1 - t) z + t y
+#
+# を仮定する。networkはこの経路の速度場 v(x_t, t) を直接出力するので、
+# 解くべきODEは
+#
+#     dx/dt = v(x, t),   x(0) = z ~ N(0,I)
+#
+# となり、EDMのようなsigma scheduleやchurn操作は使わない。時間刻みは
+# t=0から1までのuniformなN区間で、`--steps=N` がその区間数を指す。
+
+def fm_velocity(net, x, t, class_labels):
+    # networkはbatchごとの時刻を受け取るので、スカラーtをbatch分に広げる。
+    t_batch = t.to(torch.float64).repeat(x.shape[0])
+    return net(x, t_batch, class_labels).to(torch.float64)
+
+def fm_time_steps(num_steps, device):
+    # t=0 (noise) から t=1 (data) までをnum_steps区間で等分する。
+    return torch.linspace(0, 1, num_steps + 1, dtype=torch.float64, device=device)
+
+def fm_euler_sampler(
+    net, latents, class_labels=None, randn_like=torch.randn_like,
+    num_steps=18,
+):
+    """FM velocity場をEuler法で t=0 -> 1 へ積分する。
+
+    各区間で始点の速度場を1回だけ評価するので、network評価回数 (NFE) は
+    `num_steps` と一致する。`randn_like` は決定的ODEでは使わないが、
+    generate.py側の共通呼び出しに合わせて受け取る。
+    """
+    t_steps = fm_time_steps(num_steps, latents.device)
+
+    # FMではlatentがそのまま t=0 の状態になる。EDM samplerのような
+    # sigma_maxによるスケーリングは行わない。
+    x_next = latents.to(torch.float64)
+    for i in range(num_steps): # 0, ..., N-1
+        t_cur, t_next = t_steps[i], t_steps[i + 1]
+        x_cur = x_next
+
+        # Euler step: x_{n+1} = x_n + (t_{n+1} - t_n) * v(x_n, t_n)
+        d_cur = fm_velocity(net, x_cur, t_cur, class_labels)
+        x_next = x_cur + (t_next - t_cur) * d_cur
+
+    return x_next
+
+def fm_heun_sampler(
+    net, latents, class_labels=None, randn_like=torch.randn_like,
+    num_steps=18,
+):
+    """FM velocity場をHeun法で t=0 -> 1 へ積分する。
+
+    EDM samplerと同じく最後の区間だけEuler stepで閉じるので、network評価
+    回数 (NFE) は `2 * num_steps - 1` になる。
+    """
+    t_steps = fm_time_steps(num_steps, latents.device)
+
+    x_next = latents.to(torch.float64)
+    for i in range(num_steps): # 0, ..., N-1
+        t_cur, t_next = t_steps[i], t_steps[i + 1]
+        x_cur = x_next
+        h = t_next - t_cur
+
+        # まずEulerで予測点へ進める。
+        #   d_cur  = v(x_n, t_n)
+        #   x_pred = x_n + h * d_cur
+        d_cur = fm_velocity(net, x_cur, t_cur, class_labels)
+        x_next = x_cur + h * d_cur
+
+        # 最後以外の区間では予測点でも速度場を評価し、両端の平均で補正する。
+        #   d_prime = v(x_pred, t_{n+1})
+        #   x_{n+1} = x_n + h * (d_cur + d_prime) / 2
+        if i < num_steps - 1:
+            d_prime = fm_velocity(net, x_next, t_next, class_labels)
+            x_next = x_cur + h * (0.5 * d_cur + 0.5 * d_prime)
+
+    return x_next
+
+#----------------------------------------------------------------------------
+# samplerとcheckpointの組合せ検証。
+#
+# FM samplerはvelocity checkpoint (training.networks.FMPrecond) 専用で、
+# EDM系samplerはdenoiser checkpoint専用。取り違えると無言で壊れた画像が
+# 出るだけなので、生成前に明示的なエラーにする。
+
+FM_SAMPLERS = ['fm-euler', 'fm-heun']
+
+# FM samplerが受け付けないEDM固有option。値が既定から変わっていれば、
+# 効かないoptionを黙って無視せずエラーにする。
+FM_UNSUPPORTED_OPTIONS = [
+    ('sigma_min', None),
+    ('sigma_max', None),
+    ('rho', 7),
+    ('S_churn', 0),
+    ('S_min', 0),
+    ('S_max', float('inf')),
+    ('S_noise', 1),
+]
+
+ABLATION_OPTIONS = ['solver', 'discretization', 'schedule', 'scaling']
+
+def is_velocity_network(net):
+    # FMPrecondはprediction_type='velocity'をpickleへ保存する。EDM系の
+    # checkpointにはこの属性が無いのでdenoiser扱いになる。
+    return getattr(net, 'prediction_type', 'denoiser') == 'velocity'
+
+def check_sampler_compatibility(sampler, net, sampler_kwargs):
+    velocity_net = is_velocity_network(net)
+    used_ablation = [f'--{key}' for key in ABLATION_OPTIONS if key in sampler_kwargs]
+
+    if sampler not in FM_SAMPLERS:
+        if velocity_net:
+            raise click.ClickException(
+                f'--sampler={sampler} requires an EDM denoiser checkpoint, but the given network '
+                f'predicts velocity; use --sampler=fm-euler or --sampler=fm-heun')
+        return
+
+    if not velocity_net:
+        raise click.ClickException(
+            f'--sampler={sampler} requires a flow matching checkpoint trained with --precond=fm, '
+            f'but the given network is an EDM denoiser')
+    if used_ablation:
+        raise click.ClickException(
+            f'--sampler={sampler} cannot be combined with ablation options ' + '/'.join(used_ablation))
+
+    unsupported = [f'--{key}={sampler_kwargs[key]}' for key, default in FM_UNSUPPORTED_OPTIONS
+                   if key in sampler_kwargs and sampler_kwargs[key] != default]
+    if unsupported:
+        raise click.ClickException(
+            f'--sampler={sampler} integrates t from 0 to 1 and does not use EDM noise levels; '
+            f'remove ' + ' '.join(unsupported))
+
+#----------------------------------------------------------------------------
 # 論文Section 3のablation実験を再現するための汎用sampler。
 # solver・離散化・sigma(t)・scaling s(t)を個別に切り替えられる。
 
@@ -624,7 +760,7 @@ def parse_int_list(s):
 @click.option('--S_max', 'S_max',          help='Stoch. max noise level', metavar='FLOAT',                          type=click.FloatRange(min=0), default='inf', show_default=True)
 @click.option('--S_noise', 'S_noise',      help='Stoch. noise inflation', metavar='FLOAT',                          type=float, default=1, show_default=True)
 
-@click.option('--sampler',                 help='Sampling method', metavar='edm|rk4|pndm|pndm-no-rk|pndm-linear|spndm|ab', type=click.Choice(['edm', 'rk4', 'pndm', 'pndm-no-rk', 'pndm-linear', 'spndm', 's-pndm', 'ab', 'adams-bashforth']), default='edm', show_default=True)
+@click.option('--sampler',                 help='Sampling method', metavar='edm|rk4|pndm|pndm-no-rk|pndm-linear|spndm|ab|fm-euler|fm-heun', type=click.Choice(['edm', 'rk4', 'pndm', 'pndm-no-rk', 'pndm-linear', 'spndm', 's-pndm', 'ab', 'adams-bashforth', 'fm-euler', 'fm-heun']), default='edm', show_default=True)
 @click.option('--solver',                  help='Ablate ODE solver', metavar='euler|heun',                          type=click.Choice(['euler', 'heun']))
 @click.option('--disc', 'discretization',  help='Ablate time step discretization {t_i}', metavar='vp|ve|iddpm|edm', type=click.Choice(['vp', 've', 'iddpm', 'edm']))
 @click.option('--schedule',                help='Ablate noise schedule sigma(t)', metavar='vp|ve|linear',           type=click.Choice(['vp', 've', 'linear']))
@@ -645,6 +781,11 @@ def main(network_pkl, outdir, subdirs, seeds, class_idx, max_batch_size, device=
     # 2 GPUで1024枚の画像を生成する
     torchrun --standalone --nproc_per_node=2 generate.py --outdir=out --seeds=0-999 --batch=64 \\
         --network=https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl
+
+    \b
+    # flow matching checkpoint (--precond=fm) からFM Eulerで生成する
+    python generate.py --outdir=out --seeds=0-63 --batch=64 --sampler=fm-euler --steps=18 \\
+        --network=training-runs/fm-linear/network-snapshot-000050.pkl
     """
     # torchrun実行時のrank/world sizeを初期化する。単一GPU実行でも
     # world size=1として同じコードパスで動く。
@@ -687,13 +828,22 @@ def main(network_pkl, outdir, subdirs, seeds, class_idx, max_batch_size, device=
         sampler = 'pndm'
         sampler_kwargs['linear_schedule'] = True
 
-    # ablation samplerは独自のsolver/discretization/schedule空間を持つ。
-    # RK4/PNDM系はEDM座標系のsamplerとして分けておき、実験ではsolver変更だけを
-    # 1つずつ比較できるようにする。
-    have_ablation_kwargs = any(x in sampler_kwargs for x in ['solver', 'discretization', 'schedule', 'scaling'])
-    if sampler in ['rk4', 'pndm', 'spndm', 'ab'] and have_ablation_kwargs:
-        raise click.ClickException('--sampler=rk4/pndm/spndm/ab cannot be combined with ablation options --solver/--disc/--schedule/--scaling')
-    sampler_fn = {'rk4': rk4_sampler, 'pndm': pndm_sampler, 'spndm': spndm_sampler, 'ab': ab_sampler}.get(sampler, ablation_sampler if have_ablation_kwargs else edm_sampler)
+    # FM samplerはvelocity checkpoint専用、EDM系samplerはdenoiser checkpoint専用。
+    # 取り違えやEDM固有optionの指定はここで明示的なエラーにする。
+    check_sampler_compatibility(sampler, net, sampler_kwargs)
+    if sampler in FM_SAMPLERS:
+        # FM samplerはt=0->1のuniformな区間数だけを受け取る。
+        sampler_kwargs = {key: value for key, value in sampler_kwargs.items() if key == 'num_steps'}
+        sampler_fn = {'fm-euler': fm_euler_sampler, 'fm-heun': fm_heun_sampler}[sampler]
+        dist.print0(f'Using {sampler} sampler with {sampler_kwargs.get("num_steps", 18)} uniform steps from t=0 to t=1')
+    else:
+        # ablation samplerは独自のsolver/discretization/schedule空間を持つ。
+        # RK4/PNDM系はEDM座標系のsamplerとして分けておき、実験ではsolver変更だけを
+        # 1つずつ比較できるようにする。
+        have_ablation_kwargs = any(x in sampler_kwargs for x in ABLATION_OPTIONS)
+        if sampler in ['rk4', 'pndm', 'spndm', 'ab'] and have_ablation_kwargs:
+            raise click.ClickException('--sampler=rk4/pndm/spndm/ab cannot be combined with ablation options --solver/--disc/--schedule/--scaling')
+        sampler_fn = {'rk4': rk4_sampler, 'pndm': pndm_sampler, 'spndm': spndm_sampler, 'ab': ab_sampler}.get(sampler, ablation_sampler if have_ablation_kwargs else edm_sampler)
 
     # 各rankが担当するbatchだけを生成する。progress barはrank 0だけに出す。
     dist.print0(f'Generating {len(seeds)} images to "{outdir}"...')

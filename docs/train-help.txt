@@ -14,7 +14,7 @@ Options:
   --data ZIP|DIR            Path to the dataset  [required]
   --cond BOOL               Train class-conditional model  [default: False]
   --arch ddpmpp|ncsnpp|adm  Network architecture  [default: ddpmpp]
-  --precond vp|ve|edm       Preconditioning & loss function  [default: edm]
+  --precond vp|ve|edm|fm    Preconditioning & loss function  [default: edm]
   --duration MIMG           Training duration  [default: 200; x>0]
   --batch INT               Total batch size  [default: 512; x>=1]
   --batch-gpu INT           Limit batch size per GPU  [x>=1]
