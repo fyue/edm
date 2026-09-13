@@ -1,0 +1,2 @@
+# label	network	seeds	batch	steps	sigma_min	sigma_max	rho	rk_subdivisions
+pilot	https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl	0-255	64	18	0.002	80	7	4,8

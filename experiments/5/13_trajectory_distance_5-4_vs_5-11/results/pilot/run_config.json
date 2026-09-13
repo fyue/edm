@@ -1,0 +1,15 @@
+{
+  "network": "https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl",
+  "seeds": "0-255",
+  "batch": 64,
+  "steps": 18,
+  "sigma_min": 0.002,
+  "sigma_max": 80.0,
+  "rho": 7.0,
+  "rk_subdivisions": [
+    4,
+    8
+  ],
+  "epsilon": 1e-12,
+  "nfe_per_image": 854
+}
