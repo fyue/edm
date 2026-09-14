@@ -1,0 +1,14 @@
+# Experiment 8-3: fixed K=5 Restart with same-main and equal-NFE ODE controls.
+#condition	checkpoint	main_steps	restart_steps	restart_k	t_min	t_max	nfe	comparison_group	network
+5p5k-ode-main18	5.5k	18	0	0	0	0	35	same-main18	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-005509.pkl
+5p5k-restart-k5	5.5k	18	3	5	0.06	0.30	55	same-main18+fixed-nfe55	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-005509.pkl
+5p5k-ode-nfe55	5.5k	28	0	0	0	0	55	fixed-nfe55	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-005509.pkl
+20k-ode-main18	20k	18	0	0	0	0	35	same-main18	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-020000.pkl
+20k-restart-k5	20k	18	3	5	0.06	0.30	55	same-main18+fixed-nfe55	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-020000.pkl
+20k-ode-nfe55	20k	28	0	0	0	0	55	fixed-nfe55	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-020000.pkl
+120k-ode-main18	120k	18	0	0	0	0	35	same-main18	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-120000.pkl
+120k-restart-k5	120k	18	3	5	0.06	0.30	55	same-main18+fixed-nfe55	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-120000.pkl
+120k-ode-nfe55	120k	28	0	0	0	0	55	fixed-nfe55	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-120000.pkl
+200k-ode-main18	200k	18	0	0	0	0	35	same-main18	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-200000.pkl
+200k-restart-k5	200k	18	3	5	0.06	0.30	55	same-main18+fixed-nfe55	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-200000.pkl
+200k-ode-nfe55	200k	28	0	0	0	0	55	fixed-nfe55	experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18/training-runs/cifar10-cond-ddpmpp-edm-managed/network-snapshot-200000.pkl

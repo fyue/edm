@@ -1,0 +1,1 @@
+condition	checkpoint	method	main_steps	restart_steps	restart_k	t_min	t_max	nfe	comparison_group	num_images	seeds	fid	generate_sec	fid_sec	network	images	log	fid_ref
