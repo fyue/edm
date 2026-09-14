@@ -80,6 +80,16 @@ experiments/7/4_fm_edm_fid50k_confirmation/
   results/fid50k_confirmation.tsv
 ```
 
+完了後、論文用のPNG/PDFグラフを生成する。
+
+```bash
+/home/kyoukinkin/data/conda-envs/edm/bin/python \
+  experiments/7/4_fm_edm_fid50k_confirmation/scripts/plot_results.py
+```
+
+主図は、左パネルにFM EulerのNFE 18→35の変化、右パネルにNFE 35での
+FM Euler対EDM Heunを表示する。FID-5kとFID-50kは同じ軸に混在させない。
+
 7-3の実測を50,000枚へ換算すると、FM 18 NFEの生成は約37分、FM 35 NFEは約72分。
 FID計算と起動時間を含む全体は、GPU待機時間を除いて約2〜2.5時間を見込む。
 新規画像は100,000枚で、追加ディスク使用量は約400〜500 MBの見込みである。
