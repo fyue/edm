@@ -1,0 +1,346 @@
+#!/usr/bin/env bash
+set -Eeuo pipefail
+
+# Experiment 8-1: checkpoint-wise Restart vs ordinary EDM Heun comparison.
+
+cd "$(dirname "$0")/../../../.."
+
+export CUDA_DEVICE_ORDER="${CUDA_DEVICE_ORDER:-PCI_BUS_ID}"
+export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
+
+TORCHRUN="${TORCHRUN:-/home/kyoukinkin/data/conda-envs/edm/bin/torchrun}"
+EXP_ROOT="${EXP_ROOT:-experiments/8/1_restart_sampling_checkpoint_sweep}"
+CONFIG="${CONFIG:-$EXP_ROOT/config/pilot.tsv}"
+IMAGE_ROOT="${IMAGE_ROOT:-$EXP_ROOT/images}"
+RESULTS_DIR="${RESULTS_DIR:-$EXP_ROOT/results}"
+LOG_DIR="${LOG_DIR:-$EXP_ROOT/logs}"
+
+FID_REF="${FID_REF:-fid-refs/cifar10-32x32.npz}"
+NUM_IMAGES="${NUM_IMAGES:-1024}"
+FID_SEEDS="${FID_SEEDS:-0-1023}"
+SAMPLE_SEEDS="${SAMPLE_SEEDS:-0-63}"
+SAMPLES_ONLY="${SAMPLES_ONLY:-0}"
+GEN_BATCH="${GEN_BATCH:-64}"
+FID_BATCH="${FID_BATCH:-64}"
+RHO="${RHO:-7}"
+RESTART_NOISE="${RESTART_NOISE:-1}"
+CONDITION_FILTER="${CONDITION_FILTER:-}"
+CHECKPOINT_FILTER="${CHECKPOINT_FILTER:-}"
+PLAN_ONLY="${PLAN_ONLY:-0}"
+EXPERIMENT_LABEL="${EXPERIMENT_LABEL:-Experiment 8-1: Restart checkpoint sweep}"
+
+MASTER_LOG="${MASTER_LOG:-$LOG_DIR/restart-checkpoint-sweep.log}"
+SUMMARY="$RESULTS_DIR/restart_fid_summary.tsv"
+STOP_FILE="$EXP_ROOT/STOP_AFTER_CURRENT_CONDITION"
+
+mkdir -p "$IMAGE_ROOT" "$RESULTS_DIR" "$LOG_DIR"
+
+log() {
+    printf '[%(%Y-%m-%d %H:%M:%S)T] %s\n' -1 "$*" | tee -a "$MASTER_LOG"
+}
+
+tokenize() {
+    printf '%s' "$1" | sed -E 's/[^A-Za-z0-9._-]+/-/g; s/\./p/g'
+}
+
+count_pngs() {
+    local dir="$1"
+    if [[ ! -d "$dir" ]]; then
+        printf '0'
+        return
+    fi
+    find "$dir" -type f -name '*.png' | wc -l | tr -d ' '
+}
+
+matches_filter() {
+    local value="$1"
+    local filter="$2"
+    local wanted
+    if [[ -z "$filter" ]]; then
+        return 0
+    fi
+    for wanted in $filter; do
+        if [[ "$wanted" == "$value" ]]; then
+            return 0
+        fi
+    done
+    return 1
+}
+
+ensure_summary() {
+    if [[ ! -f "$SUMMARY" ]]; then
+        printf 'condition\tcheckpoint\tmethod\tmain_steps\trestart_steps\trestart_k\tt_min\tt_max\tnfe\tcomparison_group\tnum_images\tseeds\tfid\tgenerate_sec\tfid_sec\tnetwork\timages\tlog\tfid_ref\n' > "$SUMMARY"
+    fi
+}
+
+condition_done() {
+    local condition="$1"
+    ensure_summary
+    awk -F '\t' -v condition="$condition" -v num="$NUM_IMAGES" \
+        -v seeds="$FID_SEEDS" -v ref="$FID_REF" \
+        'NR > 1 && $1 == condition && $11 == num && $12 == seeds && $19 == ref { found = 1 } END { exit(found ? 0 : 1) }' \
+        "$SUMMARY"
+}
+
+expected_nfe() {
+    local main_steps="$1"
+    local restart_steps="$2"
+    local restart_k="$3"
+    local extra=0
+    if (( restart_k > 0 )); then
+        extra="$((restart_k * 2 * (restart_steps - 1)))"
+    fi
+    printf '%s' "$((2 * main_steps - 1 + extra))"
+}
+
+validate_condition() {
+    local condition="$1"
+    local main_steps="$2"
+    local restart_steps="$3"
+    local restart_k="$4"
+    local t_min="$5"
+    local t_max="$6"
+    local nfe="$7"
+    local network="$8"
+    local calculated
+
+    if [[ ! "$main_steps" =~ ^[0-9]+$ || ! "$restart_steps" =~ ^[0-9]+$ || ! "$restart_k" =~ ^[0-9]+$ || ! "$nfe" =~ ^[1-9][0-9]*$ ]]; then
+        log "[$condition] invalid integer field"
+        return 1
+    fi
+    if (( main_steps < 2 )); then
+        log "[$condition] main_steps must be >= 2"
+        return 1
+    fi
+    if (( restart_k > 0 )); then
+        if (( restart_steps < 2 )); then
+            log "[$condition] restart_steps must be >= 2 when K > 0"
+            return 1
+        fi
+        if ! awk -v lo="$t_min" -v hi="$t_max" 'BEGIN { exit(!(lo > 0 && hi > lo)) }'; then
+            log "[$condition] require 0 < t_min < t_max"
+            return 1
+        fi
+    elif (( restart_steps != 0 )); then
+        log "[$condition] ordinary ODE rows must use restart_steps=0 and restart_k=0"
+        return 1
+    fi
+    calculated="$(expected_nfe "$main_steps" "$restart_steps" "$restart_k")"
+    if [[ "$calculated" != "$nfe" ]]; then
+        log "[$condition] configured NFE=$nfe but expected $calculated"
+        return 1
+    fi
+    if [[ ! -f "$network" ]]; then
+        log "[$condition] missing checkpoint: $network"
+        return 1
+    fi
+}
+
+check_inputs() {
+    local failed=0
+    if [[ ! -f "$CONFIG" ]]; then
+        log "Missing config: $CONFIG"
+        failed=1
+    fi
+    if [[ ! -f "$FID_REF" ]]; then
+        log "Missing FID reference: $FID_REF"
+        failed=1
+    fi
+    if [[ ! "$NUM_IMAGES" =~ ^[0-9]+$ ]] || (( NUM_IMAGES < 2 )); then
+        log "NUM_IMAGES must be an integer >= 2: $NUM_IMAGES"
+        failed=1
+    fi
+    if [[ "$PLAN_ONLY" != "1" ]] && ! command -v "$TORCHRUN" >/dev/null 2>&1; then
+        log "Missing torchrun: $TORCHRUN"
+        failed=1
+    fi
+    if (( failed != 0 )); then
+        exit 1
+    fi
+}
+
+restart_json() {
+    local restart_steps="$1"
+    local restart_k="$2"
+    local t_min="$3"
+    local t_max="$4"
+    if (( restart_k == 0 )); then
+        printf '{}'
+    else
+        printf '{"0":[%s,%s,%s,%s]}' "$restart_steps" "$restart_k" "$t_min" "$t_max"
+    fi
+}
+
+generate_images() {
+    local network="$1"
+    local outdir="$2"
+    local seeds="$3"
+    local main_steps="$4"
+    local info="$5"
+    local run_log="$6"
+    local subdirs="$7"
+    local extra_args=()
+    if [[ "$subdirs" == "1" ]]; then
+        extra_args+=(--subdirs)
+    fi
+
+    "$TORCHRUN" --standalone --nproc_per_node=1 generate.py \
+        --network="$network" \
+        --outdir="$outdir" \
+        --seeds="$seeds" \
+        --batch="$GEN_BATCH" \
+        --sampler=restart \
+        --steps="$main_steps" \
+        --rho="$RHO" \
+        --S_churn=0 \
+        --restart_info="$info" \
+        --restart_noise="$RESTART_NOISE" \
+        "${extra_args[@]}" 2>&1 | tee -a "$run_log"
+}
+
+generate_samples() {
+    local condition="$1"
+    local network="$2"
+    local main_steps="$3"
+    local info="$4"
+    local sample_dir="$IMAGE_ROOT/$condition/samples-seeds-$(tokenize "$SAMPLE_SEEDS")"
+    local marker="$sample_dir/.complete"
+    local run_log="$LOG_DIR/$condition-samples.log"
+
+    if [[ "$SAMPLE_SEEDS" == "-" ]]; then
+        return 0
+    fi
+    if [[ "$PLAN_ONLY" == "1" ]]; then
+        log "PLAN [$condition] fixed-seed samples $SAMPLE_SEEDS -> $sample_dir"
+        return 0
+    fi
+    if [[ -f "$marker" ]]; then
+        log "[$condition] fixed-seed samples already complete; skipping"
+        return 0
+    fi
+    mkdir -p "$sample_dir"
+    generate_images "$network" "$sample_dir" "$SAMPLE_SEEDS" "$main_steps" "$info" "$run_log" 0
+    touch "$marker"
+}
+
+run_condition() {
+    local condition="$1"
+    local checkpoint="$2"
+    local main_steps="$3"
+    local restart_steps="$4"
+    local restart_k="$5"
+    local t_min="$6"
+    local t_max="$7"
+    local nfe="$8"
+    local comparison_group="$9"
+    local network="${10}"
+    local method="ode-heun"
+    local info
+    local images
+    local run_log
+    local png_count
+    local generate_start
+    local generate_sec="NA"
+    local fid_start
+    local fid_sec
+    local fid
+
+    validate_condition "$condition" "$main_steps" "$restart_steps" "$restart_k" "$t_min" "$t_max" "$nfe" "$network"
+    if (( restart_k > 0 )); then
+        method="restart"
+    fi
+    info="$(restart_json "$restart_steps" "$restart_k" "$t_min" "$t_max")"
+    generate_samples "$condition" "$network" "$main_steps" "$info"
+    if [[ "$SAMPLES_ONLY" == "1" ]]; then
+        log "[$condition] SAMPLES_ONLY=1; skipping FID generation and evaluation"
+        return 0
+    fi
+
+    if condition_done "$condition"; then
+        log "[$condition] FID already recorded; skipping"
+        return 0
+    fi
+
+    images="$IMAGE_ROOT/$condition/fid-n${NUM_IMAGES}-seeds-$(tokenize "$FID_SEEDS")"
+    run_log="$LOG_DIR/$condition-fid${NUM_IMAGES}-seeds-$(tokenize "$FID_SEEDS").log"
+    if [[ "$PLAN_ONLY" == "1" ]]; then
+        log "PLAN [$condition checkpoint=$checkpoint method=$method main_steps=$main_steps K=$restart_k NFE=$nfe group=$comparison_group]"
+        log "PLAN [$condition] restart_info=$info"
+        log "PLAN [$condition] generate $NUM_IMAGES images, then calculate FID against $FID_REF"
+        return 0
+    fi
+
+    mkdir -p "$images"
+    png_count="$(count_pngs "$images")"
+    if (( png_count >= NUM_IMAGES )); then
+        log "[$condition] found ${png_count} PNGs; skipping generation"
+    else
+        log "[$condition] generating $NUM_IMAGES images (method=$method, NFE=$nfe)"
+        generate_start="$SECONDS"
+        generate_images "$network" "$images" "$FID_SEEDS" "$main_steps" "$info" "$run_log" 1
+        generate_sec="$((SECONDS - generate_start))"
+    fi
+
+    png_count="$(count_pngs "$images")"
+    if (( png_count < NUM_IMAGES )); then
+        log "[$condition] only ${png_count}/${NUM_IMAGES} images are available"
+        return 1
+    fi
+
+    log "[$condition] calculating FID-$NUM_IMAGES"
+    fid_start="$SECONDS"
+    "$TORCHRUN" --standalone --nproc_per_node=1 fid.py calc \
+        --images="$images" \
+        --ref="$FID_REF" \
+        --num="$NUM_IMAGES" \
+        --batch="$FID_BATCH" 2>&1 | tee -a "$run_log"
+    fid_sec="$((SECONDS - fid_start))"
+    fid="$(awk '/^[0-9]+(\.[0-9]+)?([eE][-+]?[0-9]+)?$/ { value = $1 } END { print value }' "$run_log")"
+    if [[ -z "$fid" ]]; then
+        log "[$condition] could not parse FID from $run_log"
+        return 1
+    fi
+
+    ensure_summary
+    printf '%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\t%s\n' \
+        "$condition" "$checkpoint" "$method" "$main_steps" "$restart_steps" "$restart_k" \
+        "$t_min" "$t_max" "$nfe" "$comparison_group" "$NUM_IMAGES" "$FID_SEEDS" "$fid" \
+        "$generate_sec" "$fid_sec" "$network" "$images" "$run_log" "$FID_REF" >> "$SUMMARY"
+    log "[$condition] recorded FID-$NUM_IMAGES=$fid"
+}
+
+main() {
+    check_inputs
+    log "$EXPERIMENT_LABEL"
+    log "Config: $CONFIG"
+    log "FID: num=$NUM_IMAGES seeds=$FID_SEEDS ref=$FID_REF"
+    log "Fixed samples: $SAMPLE_SEEDS"
+    log "Samples only: $SAMPLES_ONLY"
+    log "Filters: conditions=${CONDITION_FILTER:-(all)} checkpoints=${CHECKPOINT_FILTER:-(all)}"
+    if [[ "$PLAN_ONLY" == "1" ]]; then
+        log "PLAN_ONLY=1; no GPU work will be started"
+    fi
+
+    local condition checkpoint main_steps restart_steps restart_k t_min t_max nfe comparison_group network
+    local selected=0
+    while IFS=$'\t' read -r condition checkpoint main_steps restart_steps restart_k t_min t_max nfe comparison_group network; do
+        [[ -z "${condition:-}" || "$condition" =~ ^# ]] && continue
+        matches_filter "$condition" "$CONDITION_FILTER" || continue
+        matches_filter "$checkpoint" "$CHECKPOINT_FILTER" || continue
+        selected=$((selected + 1))
+        run_condition "$condition" "$checkpoint" "$main_steps" "$restart_steps" "$restart_k" \
+            "$t_min" "$t_max" "$nfe" "$comparison_group" "$network"
+        if [[ -f "$STOP_FILE" ]]; then
+            log "Found stop file; exiting after $condition"
+            exit 0
+        fi
+    done < "$CONFIG"
+
+    if (( selected == 0 )); then
+        log "No conditions matched the filters"
+        exit 1
+    fi
+    log "$EXPERIMENT_LABEL complete"
+}
+
+main "$@"
