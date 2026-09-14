@@ -35,7 +35,10 @@ Options:
   --S_min FLOAT                   Stoch. min noise level  [default: 0; x>=0]
   --S_max FLOAT                   Stoch. max noise level  [default: inf; x>=0]
   --S_noise FLOAT                 Stoch. noise inflation  [default: 1]
-  --sampler edm|rk4|pndm|pndm-no-rk|pndm-linear|spndm|ab|fm-euler|fm-heun
+  --restart_info JSON             Restart JSON:
+                                  {"0":[N_restart,K,t_min,t_max]}
+  --restart_noise FLOAT           Restart forward-noise multiplier  [x>=0]
+  --sampler edm|restart|rk4|pndm|pndm-no-rk|pndm-linear|spndm|ab|fm-euler|fm-heun
                                   Sampling method  [default: edm]
   --solver euler|heun             Ablate ODE solver
   --disc vp|ve|iddpm|edm          Ablate time step discretization {t_i}

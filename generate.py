@@ -10,6 +10,7 @@
 
 import os
 import re
+import json
 import click
 import tqdm
 import pickle
@@ -77,6 +78,149 @@ def edm_sampler(
             denoised = net(x_next, t_next, class_labels).to(torch.float64)
             d_prime = (x_next - denoised) / t_next
             x_next = x_hat + (t_next - t_hat) * (0.5 * d_cur + 0.5 * d_prime)
+
+    return x_next
+
+#----------------------------------------------------------------------------
+# Restart Sampling for Improving Generative Processes (Algorithm 2).
+
+def parse_restart_info(restart_info):
+    """Parse the public ``[N_restart, K, t_min, t_max]`` JSON format."""
+    if restart_info in [None, '']:
+        return []
+    if isinstance(restart_info, str):
+        try:
+            restart_info = json.loads(restart_info)
+        except json.JSONDecodeError as err:
+            raise ValueError(f'invalid JSON: {err.msg}') from err
+    if not isinstance(restart_info, dict):
+        raise ValueError('restart_info must be a JSON object')
+
+    levels = []
+    for name, values in restart_info.items():
+        if not isinstance(values, (list, tuple)) or len(values) != 4:
+            raise ValueError(f'Restart level {name!r} must be [N_restart, K, t_min, t_max]')
+        restart_steps, iterations, t_min, t_max = values
+        try:
+            parsed_restart_steps = int(restart_steps)
+            parsed_iterations = int(iterations)
+        except (TypeError, ValueError) as err:
+            raise ValueError(f'Restart level {name!r} requires integer N_restart and K') from err
+        if isinstance(restart_steps, bool) or parsed_restart_steps != restart_steps or parsed_restart_steps < 2:
+            raise ValueError(f'Restart level {name!r} requires integer N_restart >= 2')
+        if isinstance(iterations, bool) or parsed_iterations != iterations or parsed_iterations < 1:
+            raise ValueError(f'Restart level {name!r} requires integer K >= 1')
+        try:
+            t_min = float(t_min)
+            t_max = float(t_max)
+        except (TypeError, ValueError) as err:
+            raise ValueError(f'Restart level {name!r} requires numeric t_min and t_max') from err
+        if not np.isfinite(t_min) or not np.isfinite(t_max) or not 0 < t_min < t_max:
+            raise ValueError(f'Restart level {name!r} requires 0 < t_min < t_max')
+        levels.append(dict(
+            name=str(name),
+            restart_steps=parsed_restart_steps,
+            iterations=parsed_iterations,
+            t_min=t_min,
+            t_max=t_max,
+        ))
+    return levels
+
+def restart_nfe(num_steps, restart_info):
+    """Return the exact network-evaluation count for EDM Heun + Restart."""
+    levels = parse_restart_info(restart_info) if not isinstance(restart_info, list) else restart_info
+    return 2 * num_steps - 1 + sum(
+        level['iterations'] * 2 * (level['restart_steps'] - 1)
+        for level in levels
+    )
+
+def restart_sampler(
+    net, latents, class_labels=None, randn_like=torch.randn_like,
+    num_steps=18, sigma_min=0.002, sigma_max=80, rho=7,
+    S_churn=0, S_min=0, S_max=float('inf'), S_noise=1,
+    restart_info=None, restart_noise=1,
+):
+    """Sample with EDM Heun and one or more finite-width Restart cycles.
+
+    ``restart_info`` follows the authors' public format::
+
+        {"0": [N_restart, K, t_min, t_max], ...}
+
+    Each ``t_min`` is mapped to the nearest point in the main EDM schedule.
+    The forward jump uses variance ``t_max**2 - t_min**2`` and the backward
+    path is a fresh, deterministic Heun ODE solve.
+    """
+    if num_steps < 2:
+        raise ValueError('Restart sampler requires num_steps >= 2')
+    if restart_noise < 0 or not np.isfinite(restart_noise):
+        raise ValueError('restart_noise must be a finite non-negative number')
+
+    levels = parse_restart_info(restart_info) if not isinstance(restart_info, list) else restart_info
+    sigma_min = max(sigma_min, net.sigma_min)
+    sigma_max = min(sigma_max, net.sigma_max)
+
+    step_indices = torch.arange(num_steps, dtype=torch.float64, device=latents.device)
+    t_steps = (sigma_max ** (1 / rho) + step_indices / (num_steps - 1) * (sigma_min ** (1 / rho) - sigma_max ** (1 / rho))) ** rho
+    t_steps = torch.cat([net.round_sigma(t_steps), torch.zeros_like(t_steps[:1])])
+
+    levels_by_index = {}
+    for level in levels:
+        if level['t_max'] > sigma_max:
+            raise ValueError(
+                f"Restart level {level['name']!r} has t_max={level['t_max']} above supported sigma_max={sigma_max}")
+        restart_idx = int(torch.argmin((t_steps - level['t_min']).abs()).item())
+        if restart_idx == 0 or restart_idx >= len(t_steps) - 1:
+            raise ValueError(
+                f"Restart level {level['name']!r} maps t_min={level['t_min']} to an invalid main schedule endpoint")
+        if restart_idx in levels_by_index:
+            other = levels_by_index[restart_idx]['name']
+            raise ValueError(
+                f"Restart levels {other!r} and {level['name']!r} map to the same main schedule index {restart_idx}")
+
+        actual_t_min = t_steps[restart_idx]
+        if level['t_max'] <= float(actual_t_min):
+            raise ValueError(
+                f"Restart level {level['name']!r} requires t_max above its rounded t_min={float(actual_t_min):.8g}")
+        restart_indices = torch.arange(level['restart_steps'], dtype=torch.float64, device=latents.device)
+        restart_steps = (
+            level['t_max'] ** (1 / rho)
+            + restart_indices / (level['restart_steps'] - 1)
+            * (actual_t_min ** (1 / rho) - level['t_max'] ** (1 / rho))
+        ) ** rho
+        restart_steps = net.round_sigma(restart_steps)
+        if not bool(torch.all(restart_steps[:-1] > restart_steps[1:])):
+            raise ValueError(f"Restart level {level['name']!r} does not produce a strictly descending schedule")
+        levels_by_index[restart_idx] = dict(level, t_steps=restart_steps)
+
+    def heun_step(x_cur, t_cur, t_next, apply_churn=False):
+        gamma = 0
+        if apply_churn and S_min <= t_cur <= S_max:
+            gamma = min(S_churn / num_steps, np.sqrt(2) - 1)
+        t_hat = net.round_sigma(t_cur + gamma * t_cur)
+        x_hat = x_cur + (t_hat ** 2 - t_cur ** 2).sqrt() * S_noise * randn_like(x_cur)
+        denoised = net(x_hat, t_hat, class_labels).to(torch.float64)
+        d_cur = (x_hat - denoised) / t_hat
+        x_next = x_hat + (t_next - t_hat) * d_cur
+        if t_next != 0:
+            denoised = net(x_next, t_next, class_labels).to(torch.float64)
+            d_prime = (x_next - denoised) / t_next
+            x_next = x_hat + (t_next - t_hat) * (0.5 * d_cur + 0.5 * d_prime)
+        return x_next
+
+    x_next = latents.to(torch.float64) * t_steps[0]
+    for i, (t_cur, t_next) in enumerate(zip(t_steps[:-1], t_steps[1:])):
+        x_next = heun_step(x_next, t_cur, t_next, apply_churn=True)
+
+        restart_idx = i + 1
+        if restart_idx not in levels_by_index:
+            continue
+        level = levels_by_index[restart_idx]
+        restart_steps = level['t_steps']
+        noise_std = (restart_steps[0] ** 2 - restart_steps[-1] ** 2).sqrt() * restart_noise
+        for _ in range(level['iterations']):
+            x_next = x_next + noise_std * randn_like(x_next)
+            for restart_cur, restart_next in zip(restart_steps[:-1], restart_steps[1:]):
+                x_next = heun_step(x_next, restart_cur, restart_next)
 
     return x_next
 
@@ -484,6 +628,7 @@ def fm_heun_sampler(
 # 出るだけなので、生成前に明示的なエラーにする。
 
 FM_SAMPLERS = ['fm-euler', 'fm-heun']
+RESTART_OPTIONS = ['restart_info', 'restart_noise']
 
 # FM samplerが受け付けないEDM固有option。値が既定から変わっていれば、
 # 効かないoptionを黙って無視せずエラーにする。
@@ -507,18 +652,28 @@ def is_velocity_network(net):
 def check_sampler_compatibility(sampler, net, sampler_kwargs):
     velocity_net = is_velocity_network(net)
     used_ablation = [f'--{key}' for key in ABLATION_OPTIONS if key in sampler_kwargs]
+    used_restart = [f'--{key}' for key in RESTART_OPTIONS if key in sampler_kwargs]
 
     if sampler not in FM_SAMPLERS:
         if velocity_net:
             raise click.ClickException(
                 f'--sampler={sampler} requires an EDM denoiser checkpoint, but the given network '
                 f'predicts velocity; use --sampler=fm-euler or --sampler=fm-heun')
+        if sampler == 'restart' and used_ablation:
+            raise click.ClickException(
+                '--sampler=restart cannot be combined with ablation options ' + '/'.join(used_ablation))
+        if sampler != 'restart' and used_restart:
+            raise click.ClickException(
+                f'--sampler={sampler} does not use Restart options; remove ' + ' '.join(used_restart))
         return
 
     if not velocity_net:
         raise click.ClickException(
             f'--sampler={sampler} requires a flow matching checkpoint trained with --precond=fm, '
             f'but the given network is an EDM denoiser')
+    if used_restart:
+        raise click.ClickException(
+            f'--sampler={sampler} does not use Restart options; remove ' + ' '.join(used_restart))
     if used_ablation:
         raise click.ClickException(
             f'--sampler={sampler} cannot be combined with ablation options ' + '/'.join(used_ablation))
@@ -760,7 +915,10 @@ def parse_int_list(s):
 @click.option('--S_max', 'S_max',          help='Stoch. max noise level', metavar='FLOAT',                          type=click.FloatRange(min=0), default='inf', show_default=True)
 @click.option('--S_noise', 'S_noise',      help='Stoch. noise inflation', metavar='FLOAT',                          type=float, default=1, show_default=True)
 
-@click.option('--sampler',                 help='Sampling method', metavar='edm|rk4|pndm|pndm-no-rk|pndm-linear|spndm|ab|fm-euler|fm-heun', type=click.Choice(['edm', 'rk4', 'pndm', 'pndm-no-rk', 'pndm-linear', 'spndm', 's-pndm', 'ab', 'adams-bashforth', 'fm-euler', 'fm-heun']), default='edm', show_default=True)
+@click.option('--restart_info',            help='Restart JSON: {"0":[N_restart,K,t_min,t_max]}', metavar='JSON')
+@click.option('--restart_noise',           help='Restart forward-noise multiplier', metavar='FLOAT',                type=click.FloatRange(min=0))
+
+@click.option('--sampler',                 help='Sampling method', metavar='edm|restart|rk4|pndm|pndm-no-rk|pndm-linear|spndm|ab|fm-euler|fm-heun', type=click.Choice(['edm', 'restart', 'rk4', 'pndm', 'pndm-no-rk', 'pndm-linear', 'spndm', 's-pndm', 'ab', 'adams-bashforth', 'fm-euler', 'fm-heun']), default='edm', show_default=True)
 @click.option('--solver',                  help='Ablate ODE solver', metavar='euler|heun',                          type=click.Choice(['euler', 'heun']))
 @click.option('--disc', 'discretization',  help='Ablate time step discretization {t_i}', metavar='vp|ve|iddpm|edm', type=click.Choice(['vp', 've', 'iddpm', 'edm']))
 @click.option('--schedule',                help='Ablate noise schedule sigma(t)', metavar='vp|ve|linear',           type=click.Choice(['vp', 've', 'linear']))
@@ -837,13 +995,22 @@ def main(network_pkl, outdir, subdirs, seeds, class_idx, max_batch_size, device=
         sampler_fn = {'fm-euler': fm_euler_sampler, 'fm-heun': fm_heun_sampler}[sampler]
         dist.print0(f'Using {sampler} sampler with {sampler_kwargs.get("num_steps", 18)} uniform steps from t=0 to t=1')
     else:
+        if sampler == 'restart':
+            try:
+                sampler_kwargs['restart_info'] = parse_restart_info(sampler_kwargs.get('restart_info'))
+            except ValueError as err:
+                raise click.ClickException(f'Invalid --restart_info: {err}') from err
+            dist.print0(
+                f'Using Restart sampler with '
+                f'{restart_nfe(sampler_kwargs.get("num_steps", 18), sampler_kwargs["restart_info"])} NFE '
+                f'and {len(sampler_kwargs["restart_info"])} level(s)')
         # ablation samplerは独自のsolver/discretization/schedule空間を持つ。
         # RK4/PNDM系はEDM座標系のsamplerとして分けておき、実験ではsolver変更だけを
         # 1つずつ比較できるようにする。
         have_ablation_kwargs = any(x in sampler_kwargs for x in ABLATION_OPTIONS)
         if sampler in ['rk4', 'pndm', 'spndm', 'ab'] and have_ablation_kwargs:
             raise click.ClickException('--sampler=rk4/pndm/spndm/ab cannot be combined with ablation options --solver/--disc/--schedule/--scaling')
-        sampler_fn = {'rk4': rk4_sampler, 'pndm': pndm_sampler, 'spndm': spndm_sampler, 'ab': ab_sampler}.get(sampler, ablation_sampler if have_ablation_kwargs else edm_sampler)
+        sampler_fn = {'restart': restart_sampler, 'rk4': rk4_sampler, 'pndm': pndm_sampler, 'spndm': spndm_sampler, 'ab': ab_sampler}.get(sampler, ablation_sampler if have_ablation_kwargs else edm_sampler)
 
     # 各rankが担当するbatchだけを生成する。progress barはrank 0だけに出す。
     dist.print0(f'Generating {len(seeds)} images to "{outdir}"...')
