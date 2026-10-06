@@ -58,6 +58,8 @@ def parse_int_list(s):
 @click.option('--dropout',       help='Dropout probability', metavar='FLOAT',                       type=click.FloatRange(min=0, max=1), default=0.13, show_default=True)
 @click.option('--augment',       help='Augment probability', metavar='FLOAT',                       type=click.FloatRange(min=0, max=1), default=0.12, show_default=True)
 @click.option('--xflip',         help='Enable dataset x-flips', metavar='BOOL',                     type=bool, default=False, show_default=True)
+@click.option('--dataset-max-size', help='Limit dataset to a deterministic subset', metavar='INT', type=click.IntRange(min=1))
+@click.option('--dataset-random-seed', help='Random seed for dataset subset selection', metavar='INT', type=click.IntRange(min=0), default=0, show_default=True)
 
 # Performance-related.
 @click.option('--fp16',          help='Enable mixed-precision training', metavar='BOOL',            type=bool, default=False, show_default=True)
@@ -70,8 +72,9 @@ def parse_int_list(s):
 @click.option('--desc',          help='String to include in result dir name', metavar='STR',        type=str)
 @click.option('--nosubdir',      help='Do not create a subdirectory for results',                   is_flag=True)
 @click.option('--tick',          help='How often to print progress', metavar='KIMG',                type=click.IntRange(min=1), default=50, show_default=True)
-@click.option('--snap',          help='How often to save snapshots', metavar='TICKS',               type=click.IntRange(min=1), default=50, show_default=True)
-@click.option('--dump',          help='How often to dump state', metavar='TICKS',                   type=click.IntRange(min=1), default=500, show_default=True)
+@click.option('--snap',          help='How often to save snapshots (0 = disable)', metavar='TICKS', type=click.IntRange(min=0), default=50, show_default=True)
+@click.option('--dump',          help='How often to dump state (0 = disable)', metavar='TICKS',     type=click.IntRange(min=0), default=500, show_default=True)
+@click.option('--checkpoint-kimgs', help='Exact kimg targets for snapshot and state', metavar='LIST', type=parse_int_list)
 @click.option('--seed',          help='Random seed  [default: random]', metavar='INT',              type=int)
 @click.option('--transfer',      help='Transfer learning from network pickle', metavar='PKL|URL',   type=str)
 @click.option('--resume',        help='Resume from previous training state', metavar='PT',          type=str)
@@ -102,10 +105,17 @@ def main(**kwargs):
 
     # Validate dataset options.
     try:
-        dataset_obj = dnnlib.util.construct_class_by_name(**c.dataset_kwargs)
+        validation_kwargs = dict(c.dataset_kwargs)
+        validation_kwargs['xflip'] = False
+        dataset_obj = dnnlib.util.construct_class_by_name(**validation_kwargs)
         dataset_name = dataset_obj.name
+        dataset_size = len(dataset_obj)
+        if opts.dataset_max_size is not None and opts.dataset_max_size > dataset_size:
+            raise click.ClickException(
+                f'--dataset-max-size={opts.dataset_max_size} exceeds dataset size {dataset_size}')
         c.dataset_kwargs.resolution = dataset_obj.resolution # be explicit about dataset resolution
-        c.dataset_kwargs.max_size = len(dataset_obj) # be explicit about dataset size
+        c.dataset_kwargs.max_size = opts.dataset_max_size or dataset_size # be explicit about dataset size
+        c.dataset_kwargs.random_seed = opts.dataset_random_seed
         if opts.cond and not dataset_obj.has_labels:
             raise click.ClickException('--cond=True requires labels specified in dataset.json')
         del dataset_obj # conserve memory
@@ -156,7 +166,13 @@ def main(**kwargs):
     c.ema_halflife_kimg = int(opts.ema * 1000)
     c.update(batch_size=opts.batch, batch_gpu=opts.batch_gpu)
     c.update(loss_scaling=opts.ls, cudnn_benchmark=opts.bench)
-    c.update(kimg_per_tick=opts.tick, snapshot_ticks=opts.snap, state_dump_ticks=opts.dump)
+    c.update(kimg_per_tick=opts.tick, snapshot_ticks=opts.snap or None, state_dump_ticks=opts.dump or None)
+    if opts.checkpoint_kimgs is not None:
+        if opts.checkpoint_kimgs != sorted(set(opts.checkpoint_kimgs)):
+            raise click.ClickException('--checkpoint-kimgs must be strictly increasing without duplicates')
+        if any(kimg <= 0 or kimg > c.total_kimg for kimg in opts.checkpoint_kimgs):
+            raise click.ClickException(f'--checkpoint-kimgs must be between 1 and {c.total_kimg}')
+        c.checkpoint_kimgs = opts.checkpoint_kimgs
 
     # Random seed.
     if opts.seed is not None:

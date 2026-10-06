@@ -41,6 +41,7 @@ def training_loop(
     kimg_per_tick       = 50,       # Interval of progress prints.
     snapshot_ticks      = 50,       # How often to save network snapshots, None = disable.
     state_dump_ticks    = 500,      # How often to dump training state, None = disable.
+    checkpoint_kimgs    = None,     # Exact kimg targets where both snapshot and state are saved.
     resume_pkl          = None,     # Start from the given network snapshot, None = random initialization.
     resume_state_dump   = None,     # Start from the given training state, None = reset training state.
     resume_kimg         = 0,        # Start from the given training progress.
@@ -117,6 +118,8 @@ def training_loop(
     tick_start_time = time.time()
     maintenance_time = tick_start_time - start_time
     dist.update_progress(cur_nimg // 1000, total_kimg)
+    checkpoint_kimgs = [int(kimg) for kimg in (checkpoint_kimgs or []) if int(kimg) > resume_kimg]
+    checkpoint_idx = 0
     stats_jsonl = None
     while True:
 
@@ -150,7 +153,11 @@ def training_loop(
         # Perform maintenance tasks once per tick.
         cur_nimg += batch_size
         done = (cur_nimg >= total_kimg * 1000)
-        if (not done) and (cur_tick != 0) and (cur_nimg < tick_start_nimg + kimg_per_tick * 1000):
+        checkpoint_kimg = None
+        if checkpoint_idx < len(checkpoint_kimgs) and cur_nimg >= checkpoint_kimgs[checkpoint_idx] * 1000:
+            checkpoint_kimg = checkpoint_kimgs[checkpoint_idx]
+            checkpoint_idx += 1
+        if (not done) and (checkpoint_kimg is None) and (cur_tick != 0) and (cur_nimg < tick_start_nimg + kimg_per_tick * 1000):
             continue
 
         # Print status line, accumulating the same information in training_stats.
@@ -175,7 +182,8 @@ def training_loop(
             dist.print0('Aborting...')
 
         # Save network snapshot.
-        if (snapshot_ticks is not None) and (done or cur_tick % snapshot_ticks == 0):
+        save_snapshot = checkpoint_kimg is not None or ((snapshot_ticks is not None) and (done or cur_tick % snapshot_ticks == 0))
+        if save_snapshot:
             data = dict(ema=ema, loss_fn=loss_fn, augment_pipe=augment_pipe, dataset_kwargs=dict(dataset_kwargs))
             for key, value in data.items():
                 if isinstance(value, torch.nn.Module):
@@ -184,13 +192,16 @@ def training_loop(
                     data[key] = value.cpu()
                 del value # conserve memory
             if dist.get_rank() == 0:
-                with open(os.path.join(run_dir, f'network-snapshot-{cur_nimg//1000:06d}.pkl'), 'wb') as f:
+                snapshot_kimg = checkpoint_kimg if checkpoint_kimg is not None else cur_nimg // 1000
+                with open(os.path.join(run_dir, f'network-snapshot-{snapshot_kimg:06d}.pkl'), 'wb') as f:
                     pickle.dump(data, f)
             del data # conserve memory
 
         # Save full dump of the training state.
-        if (state_dump_ticks is not None) and (done or cur_tick % state_dump_ticks == 0) and cur_tick != 0 and dist.get_rank() == 0:
-            torch.save(dict(net=net, optimizer_state=optimizer.state_dict()), os.path.join(run_dir, f'training-state-{cur_nimg//1000:06d}.pt'))
+        save_state = checkpoint_kimg is not None or ((state_dump_ticks is not None) and (done or cur_tick % state_dump_ticks == 0) and cur_tick != 0)
+        if save_state and dist.get_rank() == 0:
+            state_kimg = checkpoint_kimg if checkpoint_kimg is not None else cur_nimg // 1000
+            torch.save(dict(net=net, optimizer_state=optimizer.state_dict()), os.path.join(run_dir, f'training-state-{state_kimg:06d}.pt'))
 
         # Update logs.
         training_stats.default_collector.update()
