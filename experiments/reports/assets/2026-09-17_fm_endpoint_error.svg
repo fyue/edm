@@ -1,0 +1,31 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="900" height="460" viewBox="0 0 900 460">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#222;letter-spacing:0}</style>
+<text x="450.0" y="32.0" font-size="21" text-anchor="middle" font-weight="700">Integration error at 35 NFE</text>
+<text x="450.0" y="54.0" font-size="12" text-anchor="middle" font-weight="400">Endpoint relative L2 to each model&#x27;s RK4 reference; lower is better</text>
+<line x1="90.0" y1="92.0" x2="90.0" y2="377.0" stroke="#333333" stroke-width="1"/>
+<line x1="90.0" y1="377.0" x2="830.0" y2="377.0" stroke="#333333" stroke-width="1"/>
+<line x1="90.0" y1="377.0" x2="830.0" y2="377.0" stroke="#dddddd" stroke-width="1"/>
+<text x="80.0" y="381.0" font-size="11" text-anchor="end" font-weight="400">0.00</text>
+<line x1="90.0" y1="295.6" x2="830.0" y2="295.6" stroke="#dddddd" stroke-width="1"/>
+<text x="80.0" y="299.6" font-size="11" text-anchor="end" font-weight="400">0.04</text>
+<line x1="90.0" y1="214.1" x2="830.0" y2="214.1" stroke="#dddddd" stroke-width="1"/>
+<text x="80.0" y="218.1" font-size="11" text-anchor="end" font-weight="400">0.08</text>
+<line x1="90.0" y1="132.7" x2="830.0" y2="132.7" stroke="#dddddd" stroke-width="1"/>
+<text x="80.0" y="136.7" font-size="11" text-anchor="end" font-weight="400">0.12</text>
+<rect x="192.8" y="127.3" width="88" height="249.7" fill="#4c78a8" stroke="#222" stroke-width="0.8"/>
+<text x="236.8" y="118.3" font-size="12" text-anchor="middle" font-weight="700">0.123</text>
+<text x="236.8" y="400.0" font-size="12" text-anchor="middle" font-weight="400">Euler</text>
+<rect x="298.8" y="267.5" width="88" height="109.5" fill="#f28e2b" stroke="#222" stroke-width="0.8"/>
+<text x="342.8" y="258.5" font-size="12" text-anchor="middle" font-weight="700">0.054</text>
+<text x="342.8" y="400.0" font-size="12" text-anchor="middle" font-weight="400">Heun</text>
+<text x="289.8" y="426.0" font-size="14" text-anchor="middle" font-weight="700">FM</text>
+<rect x="533.2" y="162.5" width="88" height="214.5" fill="#4c78a8" stroke="#222" stroke-width="0.8"/>
+<text x="577.2" y="153.5" font-size="12" text-anchor="middle" font-weight="700">0.105</text>
+<text x="577.2" y="400.0" font-size="12" text-anchor="middle" font-weight="400">Euler</text>
+<rect x="639.2" y="309.1" width="88" height="67.9" fill="#f28e2b" stroke="#222" stroke-width="0.8"/>
+<text x="683.2" y="300.1" font-size="12" text-anchor="middle" font-weight="700">0.033</text>
+<text x="683.2" y="400.0" font-size="12" text-anchor="middle" font-weight="400">Heun</text>
+<text x="630.2" y="426.0" font-size="14" text-anchor="middle" font-weight="700">EDM</text>
+<text x="28.0" y="234.5" font-size="12" text-anchor="middle" font-weight="400" transform="rotate(-90 28.0 234.5)">Relative L2</text>
+</svg>

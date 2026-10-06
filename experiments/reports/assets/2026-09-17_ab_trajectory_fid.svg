@@ -1,0 +1,47 @@
+<svg xmlns="http://www.w3.org/2000/svg" width="980" height="460" viewBox="0 0 980 460">
+<rect width="100%" height="100%" fill="white"/>
+<style>text{font-family:Arial,Helvetica,sans-serif;fill:#222;letter-spacing:0}</style>
+<text x="490.0" y="32.0" font-size="21" text-anchor="middle" font-weight="700">Fixed vs variable Adams-Bashforth</text>
+<text x="490.0" y="54.0" font-size="12" text-anchor="middle" font-weight="400">18 steps / 18 NFE; lower is better</text>
+<text x="257.0" y="80.0" font-size="16" text-anchor="middle" font-weight="700">Endpoint error to RK4 reference</text>
+<line x1="82.0" y1="102.0" x2="82.0" y2="372.0" stroke="#333333" stroke-width="1"/>
+<line x1="82.0" y1="372.0" x2="432.0" y2="372.0" stroke="#333333" stroke-width="1"/>
+<line x1="82.0" y1="372.0" x2="432.0" y2="372.0" stroke="#dddddd" stroke-width="1"/>
+<text x="73.0" y="376.0" font-size="11" text-anchor="end" font-weight="400">0.00</text>
+<line x1="82.0" y1="304.5" x2="432.0" y2="304.5" stroke="#dddddd" stroke-width="1"/>
+<text x="73.0" y="308.5" font-size="11" text-anchor="end" font-weight="400">0.02</text>
+<line x1="82.0" y1="237.0" x2="432.0" y2="237.0" stroke="#dddddd" stroke-width="1"/>
+<text x="73.0" y="241.0" font-size="11" text-anchor="end" font-weight="400">0.04</text>
+<line x1="82.0" y1="169.5" x2="432.0" y2="169.5" stroke="#dddddd" stroke-width="1"/>
+<text x="73.0" y="173.5" font-size="11" text-anchor="end" font-weight="400">0.06</text>
+<line x1="82.0" y1="102.0" x2="432.0" y2="102.0" stroke="#dddddd" stroke-width="1"/>
+<text x="73.0" y="106.0" font-size="11" text-anchor="end" font-weight="400">0.08</text>
+<rect x="124.0" y="129.2" width="91.0" height="242.8" fill="#e15759" stroke="#222" stroke-width="0.8"/>
+<text x="169.5" y="120.2" font-size="12" text-anchor="middle" font-weight="700">0.072</text>
+<text x="169.5" y="396.0" font-size="12" text-anchor="middle" font-weight="700">Variable AB</text>
+<rect x="299.0" y="294.9" width="91.0" height="77.1" fill="#2f6fdd" stroke="#222" stroke-width="0.8"/>
+<text x="344.5" y="285.9" font-size="12" text-anchor="middle" font-weight="700">0.023</text>
+<text x="344.5" y="396.0" font-size="12" text-anchor="middle" font-weight="700">Fixed AB</text>
+<text x="24.0" y="237.0" font-size="12" text-anchor="middle" font-weight="400" transform="rotate(-90 24.0 237.0)">Relative L2</text>
+<text x="735.0" y="80.0" font-size="16" text-anchor="middle" font-weight="700">FID-50k mean</text>
+<line x1="570.0" y1="102.0" x2="570.0" y2="372.0" stroke="#333333" stroke-width="1"/>
+<line x1="570.0" y1="372.0" x2="900.0" y2="372.0" stroke="#333333" stroke-width="1"/>
+<line x1="570.0" y1="372.0" x2="900.0" y2="372.0" stroke="#dddddd" stroke-width="1"/>
+<text x="561.0" y="376.0" font-size="11" text-anchor="end" font-weight="400">0.0</text>
+<line x1="570.0" y1="304.5" x2="900.0" y2="304.5" stroke="#dddddd" stroke-width="1"/>
+<text x="561.0" y="308.5" font-size="11" text-anchor="end" font-weight="400">1.0</text>
+<line x1="570.0" y1="237.0" x2="900.0" y2="237.0" stroke="#dddddd" stroke-width="1"/>
+<text x="561.0" y="241.0" font-size="11" text-anchor="end" font-weight="400">2.0</text>
+<line x1="570.0" y1="169.5" x2="900.0" y2="169.5" stroke="#dddddd" stroke-width="1"/>
+<text x="561.0" y="173.5" font-size="11" text-anchor="end" font-weight="400">3.0</text>
+<line x1="570.0" y1="102.0" x2="900.0" y2="102.0" stroke="#dddddd" stroke-width="1"/>
+<text x="561.0" y="106.0" font-size="11" text-anchor="end" font-weight="400">4.0</text>
+<rect x="609.6" y="130.5" width="85.8" height="241.5" fill="#e15759" stroke="#222" stroke-width="0.8"/>
+<text x="652.5" y="121.5" font-size="12" text-anchor="middle" font-weight="700">3.58</text>
+<text x="652.5" y="396.0" font-size="12" text-anchor="middle" font-weight="700">Variable AB</text>
+<rect x="774.6" y="237.6" width="85.8" height="134.4" fill="#2f6fdd" stroke="#222" stroke-width="0.8"/>
+<text x="817.5" y="228.6" font-size="12" text-anchor="middle" font-weight="700">1.99</text>
+<text x="817.5" y="396.0" font-size="12" text-anchor="middle" font-weight="700">Fixed AB</text>
+<text x="512.0" y="237.0" font-size="12" text-anchor="middle" font-weight="400" transform="rotate(-90 512.0 237.0)">FID</text>
+<text x="490.0" y="438.0" font-size="13" text-anchor="middle" font-weight="400">The fixed coefficients are better on both trajectory error and FID.</text>
+</svg>
