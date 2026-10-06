@@ -18,6 +18,9 @@ LOG_DIR="${LOG_DIR:-$EXP_ROOT/logs}"
 FID_REF="${FID_REF:-fid-refs/cifar10-32x32.npz}"
 NUM_IMAGES="${NUM_IMAGES:-1024}"
 FID_SEEDS="${FID_SEEDS:-0-1023}"
+FID_GENERATION_SEEDS="${FID_GENERATION_SEEDS:-$FID_SEEDS}"
+REQUIRE_EXACT_IMAGE_COUNT="${REQUIRE_EXACT_IMAGE_COUNT:-0}"
+REQUIRE_EXACT_SEED_COVERAGE="${REQUIRE_EXACT_SEED_COVERAGE:-0}"
 SAMPLE_SEEDS="${SAMPLE_SEEDS:-0-63}"
 SAMPLES_ONLY="${SAMPLES_ONLY:-0}"
 GEN_BATCH="${GEN_BATCH:-64}"
@@ -52,6 +55,57 @@ count_pngs() {
     find "$dir" -type f -name '*.png' | wc -l | tr -d ' '
 }
 
+validate_seed_coverage() {
+    local images="$1"
+    local seeds="$2"
+    local seed_start
+    local seed_end
+
+    if [[ ! "$seeds" =~ ^([0-9]+)-([0-9]+)$ ]]; then
+        log "Exact seed coverage requires one inclusive range, got: $seeds"
+        return 1
+    fi
+    seed_start="${BASH_REMATCH[1]}"
+    seed_end="${BASH_REMATCH[2]}"
+    if (( seed_end < seed_start )); then
+        log "Invalid exact seed range: $seeds"
+        return 1
+    fi
+
+    if ! find "$images" -type f -name '*.png' -printf '%P\n' | awk \
+        -v seed_start="$seed_start" -v seed_end="$seed_end" '
+            {
+                actual[$0]++
+            }
+            END {
+                failures = 0
+                for (seed = seed_start; seed <= seed_end; seed++) {
+                    subdir = seed - (seed % 1000)
+                    expected = sprintf("%06d/%06d.png", subdir, seed)
+                    wanted[expected] = 1
+                    if (actual[expected] != 1) {
+                        if (failures < 10) {
+                            printf "Missing or duplicate expected image: %s (count=%d)\n", expected, actual[expected] > "/dev/stderr"
+                        }
+                        failures++
+                    }
+                }
+                for (path in actual) {
+                    if (!(path in wanted)) {
+                        if (failures < 10) {
+                            printf "Unexpected image path: %s\n", path > "/dev/stderr"
+                        }
+                        failures++
+                    }
+                }
+                exit(failures == 0 ? 0 : 1)
+            }
+        '; then
+        log "Image seed coverage does not exactly match $seeds in $images"
+        return 1
+    fi
+}
+
 matches_filter() {
     local value="$1"
     local filter="$2"
@@ -75,7 +129,9 @@ ensure_summary() {
 
 condition_done() {
     local condition="$1"
-    ensure_summary
+    if [[ ! -f "$SUMMARY" ]]; then
+        return 1
+    fi
     awk -F '\t' -v condition="$condition" -v num="$NUM_IMAGES" \
         -v seeds="$FID_SEEDS" -v ref="$FID_REF" \
         'NR > 1 && $1 == condition && $11 == num && $12 == seeds && $19 == ref { found = 1 } END { exit(found ? 0 : 1) }' \
@@ -148,6 +204,18 @@ check_inputs() {
     fi
     if [[ ! "$NUM_IMAGES" =~ ^[0-9]+$ ]] || (( NUM_IMAGES < 2 )); then
         log "NUM_IMAGES must be an integer >= 2: $NUM_IMAGES"
+        failed=1
+    fi
+    if [[ -z "$FID_GENERATION_SEEDS" ]]; then
+        log "FID_GENERATION_SEEDS must not be empty"
+        failed=1
+    fi
+    if [[ "$REQUIRE_EXACT_IMAGE_COUNT" != "0" && "$REQUIRE_EXACT_IMAGE_COUNT" != "1" ]]; then
+        log "REQUIRE_EXACT_IMAGE_COUNT must be 0 or 1: $REQUIRE_EXACT_IMAGE_COUNT"
+        failed=1
+    fi
+    if [[ "$REQUIRE_EXACT_SEED_COVERAGE" != "0" && "$REQUIRE_EXACT_SEED_COVERAGE" != "1" ]]; then
+        log "REQUIRE_EXACT_SEED_COVERAGE must be 0 or 1: $REQUIRE_EXACT_SEED_COVERAGE"
         failed=1
     fi
     if [[ "$PLAN_ONLY" != "1" ]] && ! command -v "$TORCHRUN" >/dev/null 2>&1; then
@@ -266,7 +334,8 @@ run_condition() {
     if [[ "$PLAN_ONLY" == "1" ]]; then
         log "PLAN [$condition checkpoint=$checkpoint method=$method main_steps=$main_steps K=$restart_k NFE=$nfe group=$comparison_group]"
         log "PLAN [$condition] restart_info=$info"
-        log "PLAN [$condition] generate $NUM_IMAGES images, then calculate FID against $FID_REF"
+        log "PLAN [$condition] generate seeds $FID_GENERATION_SEEDS into the $NUM_IMAGES-image set"
+        log "PLAN [$condition] calculate FID against $FID_REF using seeds $FID_SEEDS"
         return 0
     fi
 
@@ -275,16 +344,24 @@ run_condition() {
     if (( png_count >= NUM_IMAGES )); then
         log "[$condition] found ${png_count} PNGs; skipping generation"
     else
-        log "[$condition] generating $NUM_IMAGES images (method=$method, NFE=$nfe)"
+        log "[$condition] generating seeds $FID_GENERATION_SEEDS (method=$method, NFE=$nfe)"
         generate_start="$SECONDS"
-        generate_images "$network" "$images" "$FID_SEEDS" "$main_steps" "$info" "$run_log" 1
+        generate_images "$network" "$images" "$FID_GENERATION_SEEDS" "$main_steps" "$info" "$run_log" 1
         generate_sec="$((SECONDS - generate_start))"
     fi
 
     png_count="$(count_pngs "$images")"
+    if [[ "$REQUIRE_EXACT_IMAGE_COUNT" == "1" ]] && (( png_count != NUM_IMAGES )); then
+        log "[$condition] found ${png_count} PNGs, but exact count ${NUM_IMAGES} is required"
+        return 1
+    fi
     if (( png_count < NUM_IMAGES )); then
         log "[$condition] only ${png_count}/${NUM_IMAGES} images are available"
         return 1
+    fi
+    if [[ "$REQUIRE_EXACT_SEED_COVERAGE" == "1" ]]; then
+        log "[$condition] validating exact seed coverage: $FID_SEEDS"
+        validate_seed_coverage "$images" "$FID_SEEDS"
     fi
 
     log "[$condition] calculating FID-$NUM_IMAGES"
@@ -314,6 +391,9 @@ main() {
     log "$EXPERIMENT_LABEL"
     log "Config: $CONFIG"
     log "FID: num=$NUM_IMAGES seeds=$FID_SEEDS ref=$FID_REF"
+    log "FID generation seeds: $FID_GENERATION_SEEDS"
+    log "Require exact image count: $REQUIRE_EXACT_IMAGE_COUNT"
+    log "Require exact seed coverage: $REQUIRE_EXACT_SEED_COVERAGE"
     log "Fixed samples: $SAMPLE_SEEDS"
     log "Samples only: $SAMPLES_ONLY"
     log "Filters: conditions=${CONDITION_FILTER:-(all)} checkpoints=${CHECKPOINT_FILTER:-(all)}"

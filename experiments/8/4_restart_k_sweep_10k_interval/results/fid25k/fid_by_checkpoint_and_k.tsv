@@ -1,0 +1,3 @@
+checkpoint	training_kimg	fid_k0	fid_k1	fid_k2	fid_k3	fid_k4	fid_k5	fid_k6	fid_k7	fid_k8	optimal_k	optimal_fid	second_best_k	second_best_fid	gap_to_second	improvement_vs_k0
+80k	80000	2.48044	2.42064	2.43418	2.41438	2.42379	2.45124	2.46926	2.46158	2.47622	3	2.41438	1	2.42064	0.00626	0.06606
+90k	90000	2.49582	2.41795	2.44369	2.4359	2.42265	2.45334	2.47344	2.48622	2.49207	1	2.41795	4	2.42265	0.0047	0.07787
