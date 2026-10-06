@@ -1,0 +1,2 @@
+kimg	seeds	num_images	fid	snapshot	images
+10000	0-49999	50000	5.42342	experiments/0/2_cifar10_cond_edm_30k_subset/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k/network-snapshot-010000.pkl	experiments/0/2_cifar10_cond_edm_30k_subset/fid-evals/cifar10-cond-ddpmpp-edm-seed0-subset30k/images-10000-0-49999
