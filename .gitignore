@@ -248,4 +248,4 @@ experiments/**/STOP_AFTER_CURRENT*
 
 # Generated report binaries; keep their source Markdown/scripts instead.
 experiments/**/*.pdf
-experiments/reports/*.pptx
+experiments/**/*.pptx

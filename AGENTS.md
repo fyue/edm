@@ -16,7 +16,9 @@
 
 GPUを使う学習、生成、FID評価などの実験スクリプトやプログラムは、原則としてGPUが空くまで待機してから開始する処理を備えてください。待機処理を実験ごとに複製せず、共通の `scripts/wait_for_gpu_and_run.sh` を使用します。各実験には、`RUN_SCRIPT`、`EXP_ROOT`、必要なら `SCHEDULE_LABEL` を設定して共通スクリプトを呼ぶ薄いラッパーを置いてください。
 
-対象GPUはphysical indexの `GPU_INDEX`（既定値 `0`）で指定し、共通スクリプトが同じ値を `CUDA_VISIBLE_DEVICES` に設定します。必要に応じて `EXPECTED_GPU_NAME` でGPU名を検証し、`CHECK_INTERVAL_SEC` で確認間隔を調整します。`--help`、dry-run、計画表示、GPUを使わない前処理・集計は待機対象外です。既にジョブスケジューラからGPUを排他的に割り当てられている場合も、二重スケジューリングを避けるため対象外にできます。
+**このリポジトリではphysical GPU 0だけを使用してください。** 全セッションで、学習・生成・FID評価・スモークテストを含むGPU処理に `GPU_INDEX=0`、`CUDA_DEVICE_ORDER=PCI_BUS_ID`、`CUDA_VISIBLE_DEVICES=0` を設定します。GPU 1以降は、空いていても使用禁止です。GPU 0が使用中なら待機し、別GPUへの切り替えは行いません。この制約はユーザーが明示的に変更するまで維持します。
+
+共通スクリプトがphysical indexの `GPU_INDEX=0` を `CUDA_VISIBLE_DEVICES=0` に設定します。必要に応じて `EXPECTED_GPU_NAME` でGPU名を検証し、`CHECK_INTERVAL_SEC` で確認間隔を調整します。`--help`、dry-run、計画表示、GPUを使わない前処理・集計は待機対象外です。既にジョブスケジューラからGPU 0を排他的に割り当てられている場合も、二重スケジューリングを避けるため待機対象外にできますが、GPU 0限定の制約は変わりません。
 
 例:
 

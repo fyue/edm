@@ -42,7 +42,7 @@ verify_gpu_identity() {
     fi
     if [[ -n "$EXPECTED_GPU_NAME" && "$actual_name" != "$EXPECTED_GPU_NAME" ]]; then
         log "GPU index ${GPU_INDEX} is '${actual_name}', expected '${EXPECTED_GPU_NAME}'"
-        log "Set EXPECTED_GPU_NAME='' to skip this guard, or set GPU_INDEX to the intended device."
+        log "Check the physical GPU 0 identity; repository policy prohibits switching to another GPU."
         return 1
     fi
     log "Target GPU: index ${GPU_INDEX} (${actual_name})"
@@ -59,11 +59,11 @@ main() {
         printf 'PLAN: skip GPU wait and validate %s\n' "$RUN_SCRIPT"
         exec env PLAN_ONLY=1 "$RUN_SCRIPT" "$@"
     fi
-    mkdir -p "$LOG_DIR"
-    if [[ ! "$GPU_INDEX" =~ ^[0-9]+$ ]]; then
-        log "GPU_INDEX must be a non-negative integer: $GPU_INDEX"
+    if [[ "$GPU_INDEX" != 0 ]]; then
+        printf 'GPU policy: only physical GPU 0 is allowed (GPU_INDEX=%s).\n' "$GPU_INDEX" >&2
         return 1
     fi
+    mkdir -p "$LOG_DIR"
     if [[ ! "$CHECK_INTERVAL_SEC" =~ ^[1-9][0-9]*$ ]]; then
         log "CHECK_INTERVAL_SEC must be a positive integer: $CHECK_INTERVAL_SEC"
         return 1
@@ -89,7 +89,8 @@ main() {
     done
 
     log "GPU ${GPU_INDEX} is free; launching ${SCHEDULE_LABEL}"
-    export CUDA_DEVICE_ORDER="${CUDA_DEVICE_ORDER:-PCI_BUS_ID}"
+    export GPU_INDEX=0
+    export CUDA_DEVICE_ORDER=PCI_BUS_ID
     export CUDA_VISIBLE_DEVICES="$GPU_INDEX"
     exec "$RUN_SCRIPT" "$@"
 }
