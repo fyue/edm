@@ -1,0 +1,14 @@
+{
+  "description": "SHA256 of the eight pre-extension completed result JSONs; preserve these records verbatim",
+  "expected_new_images": 175000,
+  "result_sha256": {
+    "20k-tmin006-fid25000.json": "2fdf4610c44c70d2bbcf0482ec0ae035199bd597c92c16e461544aa339a736d3",
+    "20k-tmin006-fid5000.json": "87719e2cea2943ac99664ea6b234f37bf38d6832aae346a65ad48d225901567c",
+    "20k-tmin014-fid25000.json": "f2296a80603cf142c1eb55de1af230d3996a9941d6231ac2c5968df717379c88",
+    "20k-tmin014-fid5000.json": "246fe1b791d3f0721ac95047c6d9d4a5d6fb418e1f0398a8ffdd5456fe847371",
+    "40k-tmin006-fid25000.json": "6c045e6e7b14fe01b39c424569f04addee44907691012cd5e05f169395b14f9d",
+    "40k-tmin006-fid5000.json": "157305b12a469f60ba5be6c8bc9225bdef243cc23b0383fd5c26ed52d92b4cb0",
+    "40k-tmin014-fid25000.json": "2261d05c9b1a60109b79f23e7a58363468f8456cc237d66d12501fd8189c5bda",
+    "40k-tmin014-fid5000.json": "abba3b6000f2d5f8c2483aefc56c5d332d8e4009437d0d1e75e45b1673849a91"
+  }
+}

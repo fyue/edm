@@ -1,0 +1,13 @@
+{
+  "completed_evaluations": 18,
+  "expected_evaluations": 18,
+  "line_plot_stages": [
+    5000,
+    25000,
+    50000
+  ],
+  "preserved_baseline_results": 8,
+  "status": "complete",
+  "total_pool_images": 300000,
+  "updated_at_jst": "2026-10-06T18:13:23.191926+09:00"
+}
