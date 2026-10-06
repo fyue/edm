@@ -1,0 +1,3 @@
+checkpoint	num_images	seeds	nfe	fid_ref	restart_fid	same_nfe_ode_fid	improvement_vs_same_nfe	complete
+exp3-best	50000	0-49999	39	fid-refs/cifar10-32x32.npz	1.8761	1.86214	-0.01396	1
+pretrained	50000	0-49999	39	fid-refs/cifar10-32x32.npz	1.84124	1.84751	0.00627	1

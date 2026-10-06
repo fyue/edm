@@ -1,0 +1,5 @@
+condition	checkpoint	main_steps	restart_steps	restart_k	t_min	t_max	nfe	comparison_group	network
+exp3-best-restart-k1	exp3-best	18	3	1	0.06	0.30	39	fixed-nfe39	experiments/3/10_160k-fid2.05-to-170k-lr2e-4-ema0.5/training-runs/lr2e-4-ema0.5-160k-170k/network-snapshot-170000.pkl
+exp3-best-ode-nfe39	exp3-best	20	0	0	0	0	39	fixed-nfe39	experiments/3/10_160k-fid2.05-to-170k-lr2e-4-ema0.5/training-runs/lr2e-4-ema0.5-160k-170k/network-snapshot-170000.pkl
+pretrained-restart-k1	pretrained	18	3	1	0.06	0.30	39	fixed-nfe39	https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl
+pretrained-ode-nfe39	pretrained	20	0	0	0	0	39	fixed-nfe39	https://nvlabs-fi-cdn.nvidia.com/edm/pretrained/edm-cifar10-32x32-cond-vp.pkl
