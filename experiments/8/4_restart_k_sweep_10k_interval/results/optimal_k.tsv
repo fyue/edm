@@ -17,3 +17,4 @@ checkpoint	training_kimg	optimal_k	optimal_nfe	optimal_fid	k0_fid	improvement_vs
 160k	160000	1	39	6.55321	6.58732	0.03411	5000	0-4999	fid-refs/cifar10-32x32.npz
 170k	170000	5	55	6.58524	6.62263	0.03739	5000	0-4999	fid-refs/cifar10-32x32.npz
 180k	180000	5	55	6.49064	6.55733	0.06669	5000	0-4999	fid-refs/cifar10-32x32.npz
+200k	200000	5	55	6.48105	6.5544	0.07335	5000	0-4999	fid-refs/cifar10-32x32.npz
