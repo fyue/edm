@@ -1,0 +1,3 @@
+# Local, resumable runtime state.
+progress/
+runs/**/progress/

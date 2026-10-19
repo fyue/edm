@@ -1,0 +1,74 @@
+{
+  "actual_t_min": 0.10903976726944489,
+  "checkpoint": "120k",
+  "condition": "120k-k2",
+  "elapsed_sec": 3482.0565849766135,
+  "fid": 1.86509,
+  "fid_batch": 64,
+  "fid_ref": "/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+  "fid_sec": 146.32221734896302,
+  "gen_batch": 64,
+  "generate_sec": 3325.9869085140526,
+  "generated_images": 25000,
+  "gpu_name": "Quadro RTX 8000",
+  "images": "/data00/users/kyoukinkin/projects/edm/experiments/8/12_restart_fixed_nfe55_tmin014_k_sweep/runs/20k-120k/images/120k-k2/fid-n50000-seeds-0-49999",
+  "log": "/data00/users/kyoukinkin/projects/edm/experiments/8/12_restart_fixed_nfe55_tmin014_k_sweep/runs/20k-120k/logs/120k-k2-fid50000.log",
+  "main_steps": 24,
+  "network": "/data00/users/kyoukinkin/projects/edm/experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-120000.pkl",
+  "nfe": 55,
+  "num_images": 50000,
+  "protocol": {
+    "S_churn": 0,
+    "condition": {
+      "actual_t_min": 0.10903976726944489,
+      "checkpoint": "120k",
+      "condition": "120k-k2",
+      "main_steps": 24,
+      "nfe": 55,
+      "restart_index": 18,
+      "restart_k": 2,
+      "restart_steps": 3,
+      "t_max": 0.3,
+      "t_min": 0.14
+    },
+    "experiment": "8-12",
+    "fid": {
+      "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+      "size": 7329
+    },
+    "fid_batch": 64,
+    "fid_ref": {
+      "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+      "size": 33571316
+    },
+    "gen_batch": 64,
+    "generate": {
+      "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+      "size": 55435
+    },
+    "network": {
+      "sha256": "b1b62d6c9f9c2c237683cf46d9fd8893a82d5638941d30b749a687a93d770670",
+      "size": 223191845
+    },
+    "restart_noise": 1,
+    "rho": 7,
+    "runner": {
+      "sha256": "c30abaf36861a24b4cfbc4fe74af1e28a1adae27e3db4bf664c9bb2762e71671",
+      "size": 45340
+    },
+    "seeds": "0-49999",
+    "sigma_max": 80,
+    "sigma_min": 0.002
+  },
+  "protocol_id": "8edd85597634df6602dd4a987cc34f9b272eaf317a85b8740974971f22b44845",
+  "restart_index": 18,
+  "restart_k": 2,
+  "restart_noise": 1,
+  "restart_steps": 3,
+  "reuse_source": "",
+  "reused_images": 0,
+  "rho": 7,
+  "seeds": "0-49999",
+  "t_max": 0.3,
+  "t_min": 0.14
+}

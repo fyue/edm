@@ -1,0 +1,74 @@
+{
+  "actual_t_min": 0.08508720268939021,
+  "checkpoint": "100k",
+  "condition": "100k-k6",
+  "elapsed_sec": 734.5269345156848,
+  "fid": 6.54422,
+  "fid_batch": 64,
+  "fid_ref": "/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+  "fid_sec": 61.382166888564825,
+  "gen_batch": 64,
+  "generate_sec": 672.2544149756432,
+  "generated_images": 5000,
+  "gpu_name": "Quadro RTX 8000",
+  "images": "/data00/users/kyoukinkin/projects/edm/experiments/8/12_restart_fixed_nfe55_tmin014_k_sweep/runs/20k-120k/images/100k-k6/fid-n5000-seeds-0-4999",
+  "log": "/data00/users/kyoukinkin/projects/edm/experiments/8/12_restart_fixed_nfe55_tmin014_k_sweep/runs/20k-120k/logs/100k-k6-fid5000.log",
+  "main_steps": 16,
+  "network": "/data00/users/kyoukinkin/projects/edm/experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-100000.pkl",
+  "nfe": 55,
+  "num_images": 5000,
+  "protocol": {
+    "S_churn": 0,
+    "condition": {
+      "actual_t_min": 0.08508720268939021,
+      "checkpoint": "100k",
+      "condition": "100k-k6",
+      "main_steps": 16,
+      "nfe": 55,
+      "restart_index": 12,
+      "restart_k": 6,
+      "restart_steps": 3,
+      "t_max": 0.3,
+      "t_min": 0.14
+    },
+    "experiment": "8-12",
+    "fid": {
+      "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+      "size": 7329
+    },
+    "fid_batch": 64,
+    "fid_ref": {
+      "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+      "size": 33571316
+    },
+    "gen_batch": 64,
+    "generate": {
+      "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+      "size": 55435
+    },
+    "network": {
+      "sha256": "a622ea92d908595f2b6addff5e97de09d82a13d3da30188da578235db8d1682f",
+      "size": 223191845
+    },
+    "restart_noise": 1,
+    "rho": 7,
+    "runner": {
+      "sha256": "c30abaf36861a24b4cfbc4fe74af1e28a1adae27e3db4bf664c9bb2762e71671",
+      "size": 45340
+    },
+    "seeds": "0-49999",
+    "sigma_max": 80,
+    "sigma_min": 0.002
+  },
+  "protocol_id": "2c161fd2aca3c200b0fae084a2a96910d8f429ca3ab8170badda83904c4a64e5",
+  "restart_index": 12,
+  "restart_k": 6,
+  "restart_noise": 1,
+  "restart_steps": 3,
+  "reuse_source": "",
+  "reused_images": 0,
+  "rho": 7,
+  "seeds": "0-4999",
+  "t_max": 0.3,
+  "t_min": 0.14
+}

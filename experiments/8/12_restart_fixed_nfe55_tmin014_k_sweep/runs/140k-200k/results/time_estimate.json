@@ -1,0 +1,54 @@
+{
+  "basis": "FID-5k pilot; generation scales with images*NFE; FID and overhead scale with images; excludes waits/interrupted work",
+  "gpu_names": [
+    "NVIDIA TITAN X (Pascal)"
+  ],
+  "pilot_checkpoint": "160k",
+  "remaining_sec": 54836.922253692755,
+  "selected_conditions": [
+    "160k-k0",
+    "160k-k1",
+    "160k-k2",
+    "160k-k3",
+    "160k-k4",
+    "160k-k5",
+    "160k-k6",
+    "160k-k7",
+    "160k-k8",
+    "180k-k0",
+    "180k-k1",
+    "180k-k2",
+    "180k-k3",
+    "180k-k4",
+    "180k-k5",
+    "180k-k6",
+    "180k-k7",
+    "180k-k8",
+    "200k-k0",
+    "200k-k1",
+    "200k-k2",
+    "200k-k3",
+    "200k-k4",
+    "200k-k5",
+    "200k-k6",
+    "200k-k7",
+    "200k-k8"
+  ],
+  "stages": [
+    {
+      "num_images": 5000,
+      "pending_evaluations": 0,
+      "remaining_sec": 0.0
+    },
+    {
+      "num_images": 25000,
+      "pending_evaluations": 0,
+      "remaining_sec": 0.0
+    },
+    {
+      "num_images": 50000,
+      "pending_evaluations": 9,
+      "remaining_sec": 54836.922253692755
+    }
+  ]
+}
