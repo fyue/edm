@@ -2,7 +2,7 @@
 //
 // Usage (from the EDM repository root):
 //   NODE_PATH=<dir with pptxgenjs and jszip> PPTX_SKILL_DIR=<pptx skill dir> \
-//     node experiments/8/report/scripts/build_next_experiments_slide.js
+//     node experiments/8/report/1003/scripts/build_next_experiments_slide.js
 //
 // The saved-checkpoint count is read from the retraining run directory at build time.
 
@@ -12,7 +12,7 @@ const pptxgen = require("pptxgenjs");
 const JSZip = require(require.resolve("jszip", { paths: [require.resolve("pptxgenjs")] }));
 const { applyTheme } = require(path.join(process.env.PPTX_SKILL_DIR, "scripts", "apply_theme.js"));
 
-const REPORT_DIR = path.join("experiments", "8", "report");
+const REPORT_DIR = path.join("experiments", "8", "report", "1003");
 const OUT = path.join(REPORT_DIR, "restart_sampling_next_experiments.pptx");
 const RUN_DIR = path.join("experiments", "0", "1_cifar10_cond_edm_10k_retraining", "training-runs", "cifar10-cond-ddpmpp-edm-seed0-10k");
 const TOTAL_CHECKPOINTS = 20;

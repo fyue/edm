@@ -2,7 +2,7 @@
 //
 // Usage (from the EDM repository root, after scripts/crop_figures.py):
 //   NODE_PATH=<dir with pptxgenjs and jszip> PPTX_SKILL_DIR=<pptx skill dir> \
-//     node experiments/8/report/scripts/build_report.js
+//     node experiments/8/report/1003/scripts/build_report.js
 //
 // Values on the slides come from the result TSVs of the Restart experiments and the
 // retraining checkpoint directory; update the PROGRESS block when those change.
@@ -12,7 +12,7 @@ const pptxgen = require("pptxgenjs");
 const JSZip = require(require.resolve("jszip", { paths: [require.resolve("pptxgenjs")] }));
 const { applyTheme } = require(path.join(process.env.PPTX_SKILL_DIR, "scripts", "apply_theme.js"));
 
-const REPORT_DIR = path.join("experiments", "8", "report");
+const REPORT_DIR = path.join("experiments", "8", "report", "1003");
 const ASSETS = path.join(REPORT_DIR, "assets");
 const OUT = path.join(REPORT_DIR, "restart_sampling_progress_report.pptx");
 

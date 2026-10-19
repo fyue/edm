@@ -10,7 +10,7 @@ import os
 from PIL import Image
 
 EXP_ROOT = 'experiments/8'
-OUT_DIR = os.path.join(EXP_ROOT, 'report', 'assets')
+OUT_DIR = os.path.join(EXP_ROOT, 'report', '1003', 'assets')
 
 # Crop boxes are in source pixels: (left, top, right, bottom).
 EXISTING_SRC = os.path.join(EXP_ROOT, '3_restart_k5_fid50k_3seeds/results/restart_k5_fid50k_3seed_overview.png')

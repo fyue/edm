@@ -16,11 +16,11 @@ import zipfile
 
 from PIL import Image, ImageFont
 
-ROOT = Path(__file__).resolve().parents[4]
+ROOT = Path(__file__).resolve().parents[5]
 sys.path.insert(0, str(ROOT / "scripts"))
 from create_pndm_analysis_pptx import SlideBuilder, build_pptx_from_slides, emu, xml_escape
 
-OUT = ROOT / "experiments/8/report/restart_sampling_progress_report_codex.pptx"
+OUT = ROOT / "experiments/8/report/1003/restart_sampling_progress_report_codex.pptx"
 EXP3 = ROOT / "experiments/8/3_restart_k5_fid50k_3seeds"
 EXP4 = ROOT / "experiments/8/4_restart_k_sweep_10k_interval"
 EXP6 = ROOT / "experiments/8/6_exact_10k_restart_k5_fid50k_1seed"
