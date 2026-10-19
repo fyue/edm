@@ -4,10 +4,7 @@ set -Eeuo pipefail
 # Experiment 0-2: train conditional CIFAR-10 EDM on a deterministic 30k
 # subset, evaluate FID every 10k kimg, and stop after an FID plateau.
 
-cd "$(dirname "$0")/../../../.."
-
-export CUDA_DEVICE_ORDER="${CUDA_DEVICE_ORDER:-PCI_BUS_ID}"
-export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
+cd "$(dirname "${BASH_SOURCE[0]}")/../../../.."
 
 TORCHRUN="${TORCHRUN:-/home/kyoukinkin/data/conda-envs/edm/bin/torchrun}"
 PYTHON="${PYTHON:-/home/kyoukinkin/data/conda-envs/edm/bin/python}"
@@ -22,7 +19,8 @@ DATASET="${DATASET:-datasets/cifar10-32x32.zip}"
 DATASET_MAX_SIZE="${DATASET_MAX_SIZE:-30000}"
 DATASET_RANDOM_SEED="${DATASET_RANDOM_SEED:-0}"
 MAX_KIMG="${MAX_KIMG:-60000}"
-CHECKPOINT_INTERVAL_KIMG=10000
+CHECKPOINT_INTERVAL_KIMG=2500
+FID_INTERVAL_KIMG=10000
 TICK_KIMG="${TICK_KIMG:-50}"
 BATCH_GPU="${BATCH_GPU:-128}"
 SEED="${SEED:-0}"
@@ -52,7 +50,7 @@ log() {
 
 fail() {
     printf '%s\n' "$*" >&2
-    return 1
+    exit 1
 }
 
 is_non_negative_decimal() {
@@ -96,7 +94,7 @@ fid_already_done() {
 
 validate_summary_config() {
     awk -F '\t' -v seeds="$FID_SEEDS" -v num_images="$FID_NUM_IMAGES" \
-        -v interval="$CHECKPOINT_INTERVAL_KIMG" -v maximum="$MAX_KIMG" '
+        -v interval="$FID_INTERVAL_KIMG" -v maximum="$MAX_KIMG" '
         NR > 1 && ($2 != seeds || $3 != num_images || $1 <= 0 || $1 % interval != 0 || $1 > maximum) {
             exit 1
         }
@@ -130,7 +128,8 @@ validate_existing_run() {
     current="$(state_kimg "$state")"
     (( current % CHECKPOINT_INTERVAL_KIMG == 0 )) || fail "Unexpected state checkpoint: $state"
     (( current <= MAX_KIMG )) || fail "Latest state ${current} exceeds MAX_KIMG=${MAX_KIMG}"
-    for ((target = CHECKPOINT_INTERVAL_KIMG; target <= current; target += CHECKPOINT_INTERVAL_KIMG)); do
+    # Older runs only saved 10k checkpoints; do not require retroactive 2.5k files.
+    for ((target = FID_INTERVAL_KIMG; target <= current; target += FID_INTERVAL_KIMG)); do
         snapshot="$(snapshot_path "$target")"
         [[ -s "$snapshot" ]] || fail "Missing snapshot paired with checkpoint ${target}: $snapshot"
         [[ -s "$(state_path "$target")" ]] || fail "Missing state checkpoint: $(state_path "$target")"
@@ -163,8 +162,8 @@ PY
 
 validate_config() {
     [[ "$MAX_KIMG" =~ ^[1-9][0-9]*$ ]] || fail "MAX_KIMG must be a positive integer: $MAX_KIMG"
-    (( MAX_KIMG % CHECKPOINT_INTERVAL_KIMG == 0 )) || \
-        fail "MAX_KIMG must be a multiple of ${CHECKPOINT_INTERVAL_KIMG}: $MAX_KIMG"
+    (( MAX_KIMG % FID_INTERVAL_KIMG == 0 )) || \
+        fail "MAX_KIMG must be a multiple of ${FID_INTERVAL_KIMG}: $MAX_KIMG"
     [[ "$DATASET_MAX_SIZE" =~ ^[1-9][0-9]*$ ]] || fail "DATASET_MAX_SIZE must be positive: $DATASET_MAX_SIZE"
     [[ "$DATASET_RANDOM_SEED" =~ ^[0-9]+$ ]] || fail "DATASET_RANDOM_SEED must be non-negative: $DATASET_RANDOM_SEED"
     [[ "$SEED" =~ ^[0-9]+$ ]] || fail "SEED must be non-negative: $SEED"
@@ -199,9 +198,15 @@ train_command() {
     local target="$1"
     local resume_state="${2:-}"
     local resume_args=()
+    local resume_kimg=0 checkpoint checkpoint_csv=""
     if [[ -n "$resume_state" ]]; then
         resume_args+=(--resume="$resume_state")
+        resume_kimg="$(state_kimg "$resume_state")"
     fi
+    for ((checkpoint = (resume_kimg / CHECKPOINT_INTERVAL_KIMG + 1) * CHECKPOINT_INTERVAL_KIMG;
+          checkpoint <= target; checkpoint += CHECKPOINT_INTERVAL_KIMG)); do
+        checkpoint_csv+="${checkpoint_csv:+,}${checkpoint}"
+    done
     TRAIN_COMMAND=(
         "$TORCHRUN" --standalone --nproc_per_node=1 train.py
         --outdir="$RUN_DIR" --nosubdir
@@ -213,7 +218,7 @@ train_command() {
         --lr=0.001 --ema=0.5 --dropout=0.13 --augment=0.12
         --fp16=0 --seed="$SEED"
         --tick="$TICK_KIMG" --snap=0 --dump=0
-        --checkpoint-kimgs="$target"
+        --checkpoint-kimgs="$checkpoint_csv"
         "${resume_args[@]}"
     )
 }
@@ -221,16 +226,21 @@ train_command() {
 run_train_to() {
     local target="$1"
     local resume_state=""
+    local checkpoint resume_kimg=0
     resume_state="$(latest_state || true)"
     train_command "$target" "$resume_state"
     if [[ -n "$resume_state" ]]; then
+        resume_kimg="$(state_kimg "$resume_state")"
         log "Resuming from $resume_state toward ${target} kimg"
     else
         log "Starting fresh toward ${target} kimg"
     fi
     "${TRAIN_COMMAND[@]}" 2>&1 | tee -a "$MASTER_LOG"
-    [[ -s "$(snapshot_path "$target")" ]] || fail "Missing snapshot after training: $(snapshot_path "$target")"
-    [[ -s "$(state_path "$target")" ]] || fail "Missing state after training: $(state_path "$target")"
+    for ((checkpoint = resume_kimg + CHECKPOINT_INTERVAL_KIMG; checkpoint <= target;
+          checkpoint += CHECKPOINT_INTERVAL_KIMG)); do
+        [[ -s "$(snapshot_path "$checkpoint")" ]] || fail "Missing snapshot after training: $(snapshot_path "$checkpoint")"
+        [[ -s "$(state_path "$checkpoint")" ]] || fail "Missing state after training: $(state_path "$checkpoint")"
+    done
 }
 
 run_fid_for() {
@@ -301,10 +311,10 @@ write_status() {
 show_plan() {
     local target resume=""
     log "Dataset subset: ${DATASET_MAX_SIZE} images selected with random seed ${DATASET_RANDOM_SEED}"
-    log "Checkpoint/FID schedule: ${CHECKPOINT_INTERVAL_KIMG}..${MAX_KIMG} kimg every ${CHECKPOINT_INTERVAL_KIMG} kimg"
+    log "Checkpoint interval: ${CHECKPOINT_INTERVAL_KIMG} kimg; FID interval: ${FID_INTERVAL_KIMG} kimg; maximum: ${MAX_KIMG} kimg"
     log "FID: ${FID_NUM_IMAGES} images, seeds ${FID_SEEDS}, EDM ${FID_STEPS} steps, full CIFAR-10 reference ${FID_REF}"
     log "Early stopping: enabled=${EARLY_STOP}, min_delta=${FID_MIN_DELTA}, patience=${FID_PATIENCE}"
-    for ((target = CHECKPOINT_INTERVAL_KIMG; target <= MAX_KIMG; target += CHECKPOINT_INTERVAL_KIMG)); do
+    for ((target = FID_INTERVAL_KIMG; target <= MAX_KIMG; target += FID_INTERVAL_KIMG)); do
         train_command "$target" "$resume"
         print_command "${TRAIN_COMMAND[@]}"
         print_command "$TORCHRUN" --standalone --nproc_per_node=1 generate.py \
@@ -323,6 +333,8 @@ main() {
         return
     fi
 
+    source scripts/load_gpu_config.sh
+
     mkdir -p "$RUN_DIR" "$FID_ROOT" "$LOG_DIR" "$RESULTS_DIR"
     ensure_summary
     validate_summary_config
@@ -335,7 +347,7 @@ main() {
     log "FID50k seeds: $FID_SEEDS; early stop: $EARLY_STOP; min delta: $FID_MIN_DELTA; patience: $FID_PATIENCE"
 
     local target decision best_kimg best_fid stale_count stop_kimg evaluations
-    for ((target = CHECKPOINT_INTERVAL_KIMG; target <= MAX_KIMG; target += CHECKPOINT_INTERVAL_KIMG)); do
+    for ((target = FID_INTERVAL_KIMG; target <= MAX_KIMG; target += FID_INTERVAL_KIMG)); do
         if (( current < target )); then
             run_train_to "$target"
             current="$target"
@@ -365,4 +377,6 @@ main() {
     log "Reached MAX_KIMG=${MAX_KIMG}; best FID ${best_fid} at ${best_kimg} kimg"
 }
 
-main "$@"
+if [[ "${BASH_SOURCE[0]}" == "$0" ]]; then
+    main "$@"
+fi
