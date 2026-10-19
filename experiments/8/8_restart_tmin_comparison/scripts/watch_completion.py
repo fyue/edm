@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Watch the CPU-visible experiment state and audit all 18 results after GPU work.
+"""Watch the CPU-visible experiment state and audit all configured results after GPU work.
 
 This process never starts GPU work or retries the experiment. It records its
 state in results/completion.json and reports an incomplete stopped/failed run.
@@ -40,8 +40,12 @@ def verify_completion(root, rows, results):
     for name, checksum in baseline["result_sha256"].items():
         if hashlib.sha256((root / "results" / name).read_bytes()).hexdigest() != checksum:
             raise ValueError(f"Existing result changed: {name}")
+    additional_baseline = json.loads((root / "results/170k_extension_baseline.json").read_text())
+    for name, checksum in additional_baseline["file_sha256"].items():
+        if hashlib.sha256((root / name).read_bytes()).hexdigest() != checksum:
+            raise ValueError(f"Existing result/protocol changed: {name}")
     for row in rows:
-        args = argparse.Namespace(gen_batch=64, fid_batch=64,
+        args = argparse.Namespace(exp_root=root, gen_batch=64, fid_batch=64,
                                   fid_ref=experiment.REPO_ROOT / "fid-refs/cifar10-32x32.npz")
         value = experiment.protocol(row, args)
         run_id = experiment.digest(value)
@@ -66,10 +70,13 @@ def verify_completion(root, rows, results):
                 if not path.is_file() or not path.stat().st_size:
                     raise ValueError(f"Missing result plot: {path}")
         svg = (root / "results" / f"restart_tmin_fid{count}_lines.svg").read_text()
-        if not all(label in svg for label in ("20k", "40k", "60k", "t_min=0.06", "t_min=0.14")):
+        labels = [experiment.checkpoint_label(checkpoint) for checkpoint in experiment.CHECKPOINTS]
+        labels += ["t_min=0.06", "t_min=0.14"]
+        if not all(label in svg for label in labels):
             raise ValueError(f"Line plot missing checkpoint/condition labels: FID-{count}")
     return {"completed_evaluations": len(results), "total_pool_images": len(rows) * 50000,
             "preserved_baseline_results": len(baseline["result_sha256"]),
+            "preserved_170k_baseline_results": len(additional_baseline["result_protocol_ids"]),
             "line_plot_stages": list(experiment.STAGES)}
 
 
@@ -78,6 +85,8 @@ def main():
     parser.add_argument("--exp-root", type=Path, default=experiment.DEFAULT_ROOT)
     parser.add_argument("--interval", type=int, default=30)
     parser.add_argument("--verify-now", action="store_true")
+    parser.add_argument("--wait-for-run", action="store_true", help="wait for the main run lock before auditing completion")
+    parser.add_argument("--runner-pid", type=int, help="fail if the launching runner exits before acquiring its lock")
     args = parser.parse_args()
     if not 1 <= args.interval <= 60:
         parser.error("interval must be 1..60 seconds")
@@ -85,6 +94,22 @@ def main():
     root = args.exp_root.resolve()
     rows = experiment.load_conditions(experiment.DEFAULT_ROOT / "config/restart_tmin.tsv")
     report = root / "results/completion.json"
+    if args.wait_for_run and not args.verify_now:
+        while not running(root):
+            if args.runner_pid is not None:
+                try:
+                    os.kill(args.runner_pid, 0)
+                except ProcessLookupError:
+                    experiment.write_json(report, {"status": "failed", "error": "Runner exited before acquiring the run lock",
+                                                  "expected_evaluations": len(rows) * len(experiment.STAGES)})
+                    return 1
+            if (root / "STOP_AFTER_CURRENT_CONDITION").exists():
+                experiment.write_json(report, {"status": "stopped", "expected_evaluations": len(rows) * len(experiment.STAGES)})
+                return 1
+            experiment.write_json(report, {"status": "waiting", "completed_evaluations": len(experiment.load_results(root)),
+                                          "expected_evaluations": len(rows) * len(experiment.STAGES),
+                                          "updated_at_jst": datetime.now(timezone(timedelta(hours=9))).isoformat()})
+            time.sleep(args.interval)
     previous = None
     while True:
         results = experiment.load_results(root)

@@ -1,13 +1,14 @@
 {
-  "completed_evaluations": 18,
-  "expected_evaluations": 18,
+  "completed_evaluations": 24,
+  "expected_evaluations": 24,
   "line_plot_stages": [
     5000,
     25000,
     50000
   ],
+  "preserved_170k_baseline_results": 18,
   "preserved_baseline_results": 8,
   "status": "complete",
-  "total_pool_images": 300000,
-  "updated_at_jst": "2026-10-06T18:13:23.191926+09:00"
+  "total_pool_images": 400000,
+  "updated_at_jst": "2026-10-07T20:26:39.693993+09:00"
 }

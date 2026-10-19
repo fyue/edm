@@ -12,14 +12,10 @@ done
 if [[ "$READ_ONLY" == 1 || "${PLAN_ONLY:-0}" == 1 || "${VERIFY_ONLY:-0}" == 1 || "${AGGREGATE_ONLY:-0}" == 1 ]]; then
     exec "$PYTHON" "$SCRIPT_DIR/run_experiment.py" "$@"
 fi
-if [[ "${GPU_INDEX:-0}" != 0 ]]; then
-    printf 'GPU policy: only physical GPU 0 is allowed (GPU_INDEX=%s).\n' "$GPU_INDEX" >&2
-    exit 1
-fi
-export GPU_INDEX=0
+source scripts/load_gpu_config.sh
 if [[ "${EDM_GPU_WAIT_DONE:-0}" == 1 ]]; then
-    if [[ "${CUDA_VISIBLE_DEVICES:-}" != 0 || "${CUDA_DEVICE_ORDER:-}" != PCI_BUS_ID ]]; then
-        printf 'GPU policy: waited runs require CUDA_VISIBLE_DEVICES=0 and CUDA_DEVICE_ORDER=PCI_BUS_ID.\n' >&2
+    if [[ "${CUDA_VISIBLE_DEVICES:-}" != "$GPU_INDEX" || "${CUDA_DEVICE_ORDER:-}" != PCI_BUS_ID ]]; then
+        printf 'GPU policy: CUDA settings must match the local GPU configuration.\n' >&2
         exit 1
     fi
     exec "$PYTHON" "$SCRIPT_DIR/run_experiment.py" "$@"

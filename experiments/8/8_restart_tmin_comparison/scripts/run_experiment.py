@@ -31,7 +31,11 @@ SOURCE_ROOT = REPO_ROOT / "experiments/8/4_restart_k_sweep_10k_interval"
 PROGRESSIVE_SOURCE_ROOT = REPO_ROOT / "experiments/8/6_exact_10k_restart_k5_fid50k_1seed"
 MAX_IMAGES = 50000
 STAGES = (5000, 25000, 50000)
-CHECKPOINTS = ("20k", "40k", "60k")
+CHECKPOINTS = ("20k", "40k", "60k", "170k")
+
+
+def checkpoint_label(checkpoint):
+    return "170k best (Exp.3-10)" if checkpoint == "170k" else checkpoint
 FIELDS = [
     "condition", "checkpoint", "main_steps", "restart_steps", "restart_k",
     "t_min", "t_max", "nfe", "num_images", "seeds", "fid", "generate_sec",
@@ -92,7 +96,7 @@ def load_conditions(path):
             raise ValueError("Unsafe condition name")
         pair = row["checkpoint"], row["t_min"]
         if pair not in expected or pair in seen or row["condition"] in names:
-            raise ValueError("Require exactly the six 20k/40k/60k x 0.06/0.14 conditions")
+            raise ValueError("Require exactly the eight 20k/40k/60k/170k x 0.06/0.14 conditions")
         seen.add(pair)
         names.add(row["condition"])
         if (row["main_steps"], row["restart_steps"], row["restart_k"], row["t_max"], row["nfe"]) != (18, 3, 5, 0.30, 55):
@@ -100,7 +104,7 @@ def load_conditions(path):
         row["network"] = str((REPO_ROOT / row["network"]).resolve())
         identity(row["network"])
     if seen != expected:
-        raise ValueError("Incomplete six-condition config")
+        raise ValueError("Incomplete eight-condition config")
     for checkpoint in CHECKPOINTS:
         if len({row["network"] for row in rows if row["checkpoint"] == checkpoint}) != 1:
             raise ValueError(f"{checkpoint}: both t_min conditions must use the same checkpoint")
@@ -235,12 +239,30 @@ def link_image(source, target):
 
 
 def protocol(row, args, seeds=None):
-    return {"condition": row, "network": identity(row["network"]),
+    value = {"condition": row, "network": identity(row["network"]),
             "fid_ref": identity(args.fid_ref), "rho": 7, "restart_noise": 1,
             "sigma_min": 0.002, "sigma_max": 80, "S_churn": 0,
             "gen_batch": args.gen_batch, "fid_batch": args.fid_batch,
             "seeds": seeds or "0-24999", "generate": identity(REPO_ROOT / "generate.py"),
             "fid": identity(REPO_ROOT / "fid.py")}
+    directory = "pool" if seeds is None else f"samples-seeds-{seeds}"
+    path = args.exp_root / "images" / row["condition"] / directory / ".protocol.json"
+    if path.exists():
+        recorded = json.loads(path.read_text())
+        relocated = json.loads(json.dumps(recorded))
+        # Preserve legacy IDs while comparing repo-relative paths across synced PCs.
+        old_root = Path(recorded["generate"]["path"]).parent
+        try:
+            for key in ("network", "fid_ref", "generate", "fid"):
+                relative = Path(recorded[key]["path"]).relative_to(old_root)
+                relocated[key]["path"] = str(REPO_ROOT / relative)
+            relative = Path(recorded["condition"]["network"]).relative_to(old_root)
+            relocated["condition"]["network"] = str(REPO_ROOT / relative)
+        except ValueError:
+            return value
+        if relocated == value:
+            return recorded
+    return value
 
 
 def digest(value):
@@ -341,7 +363,7 @@ def comparison_rows(results):
             raise ValueError(f"Duplicate result: {key}, t_min={t_min}")
         pair[t_min] = float(item["fid"])
     output = []
-    for (checkpoint, count, seeds), pair in sorted(groups.items()):
+    for (checkpoint, count, seeds), pair in sorted(groups.items(), key=lambda item: (int(item[0][0].rstrip("k")), item[0][1], item[0][2])):
         low, high = pair.get(0.06, "NA"), pair.get(0.14, "NA")
         output.append(dict(zip(COMPARISON_FIELDS, [checkpoint, count, seeds, low, high,
                                                   low - high if low != "NA" and high != "NA" else "NA"])))
@@ -376,17 +398,19 @@ def aggregate(root, results):
         difference.set_title("Positive favors t_min=0.14")
         for axis in (bars, difference):
             axis.set_xticks(x)
-            axis.set_xticklabels([row["checkpoint"] for row in rows])
+            axis.set_xticklabels([checkpoint_label(row["checkpoint"]) for row in rows])
             axis.set_xlabel("Training checkpoint")
         figure.suptitle(f"Experiment 8-8: Restart K=5, NFE=55, FID-{count:,}, seeds 0-{count - 1}")
-        figure.tight_layout()
+        if any(row["checkpoint"] == "170k" for row in rows):
+            figure.text(0.5, 0.01, "170k: different training branch (Exp.3-10)", ha="center", fontsize=8)
+        figure.tight_layout(rect=(0, 0.05, 1, 1))
         for extension in ("png", "svg"):
             figure.savefig(destination / f"restart_tmin_fid{count}.{extension}", dpi=180)
         plt.close(figure)
 
         ordered = sorted(rows, key=lambda row: int(row["checkpoint"].rstrip("k")))
         checkpoints = [int(row["checkpoint"].rstrip("k")) for row in ordered]
-        figure, axis = plt.subplots(figsize=(6.4, 4.4))
+        figure, axis = plt.subplots(figsize=(8, 4.8))
         for field, other, label, color, marker in (
             ("fid_006", "fid_014", "t_min=0.06", "tab:blue", "o"),
             ("fid_014", "fid_006", "t_min=0.14", "tab:orange", "s"),
@@ -399,14 +423,16 @@ def aggregate(root, results):
                 axis.annotate(f"{fid:.5f}", (checkpoint, fid), xytext=(0, offset),
                               textcoords="offset points", ha="center", color=color, fontsize=9)
         axis.set_xticks(checkpoints)
-        axis.set_xticklabels([row["checkpoint"] for row in ordered])
+        axis.set_xticklabels([checkpoint_label(row["checkpoint"]) for row in ordered])
         axis.set_xlabel("Training checkpoint")
         axis.set_ylabel("FID (lower is better)")
         axis.set_title(f"Restart K=5, NFE=55, FID-{count:,}\nSeeds 0-{count - 1}")
         axis.margins(x=0.15, y=0.2)
         axis.grid(axis="y", alpha=0.3)
         axis.legend()
-        figure.tight_layout()
+        if any(row["checkpoint"] == "170k" for row in ordered):
+            figure.text(0.5, 0.01, "170k: different training branch; connecting lines are comparison guides, not a training trajectory.", ha="center", fontsize=8)
+        figure.tight_layout(rect=(0, 0.05, 1, 1))
         for extension in ("png", "svg"):
             figure.savefig(destination / f"restart_tmin_fid{count}_lines.{extension}", dpi=180)
         plt.close(figure)

@@ -27,7 +27,7 @@ class ExperimentTests(unittest.TestCase):
     def setUp(self):
         self.temporary = tempfile.TemporaryDirectory(prefix="edm-exp88-test-")
         self.addCleanup(self.temporary.cleanup)
-        self.root = Path(self.temporary.name)
+        self.root = Path(self.temporary.name).resolve()
         network, ref = self.root / "network.pkl", self.root / "ref.npz"
         network.write_bytes(b"test checkpoint")
         ref.write_bytes(b"test reference")
@@ -80,6 +80,31 @@ class ExperimentTests(unittest.TestCase):
         path.write_bytes(b"broken PNG")
         with self.assertRaises(OSError):
             experiment.inventory(directory, range(1), complete=True)
+
+    def test_synced_protocol_preserves_id_and_rejects_file_changes(self):
+        for name in ("generate.py", "fid.py"):
+            (self.root / name).write_text("# fixture\n")
+        with mock.patch.object(experiment, "REPO_ROOT", self.root):
+            value = experiment.protocol(self.row, self.args)
+            recorded = json.loads(json.dumps(value))
+            old_root = Path("/other-pc/projects/edm")
+            for key in ("network", "fid_ref", "generate", "fid"):
+                recorded[key]["path"] = str(old_root / Path(value[key]["path"]).relative_to(self.root))
+            recorded["condition"]["network"] = str(old_root / "network.pkl")
+            pool = self.args.exp_root / "images" / self.row["condition"] / "pool"
+            experiment.ensure_protocol(pool, recorded)
+            original = (pool / ".protocol.json").read_bytes()
+            resumed = experiment.protocol(self.row, self.args)
+            self.assertEqual(resumed, recorded)
+            experiment.ensure_protocol(pool, resumed)
+            self.assertEqual((pool / ".protocol.json").read_bytes(), original)
+            self.args.gen_batch = 32
+            with self.assertRaisesRegex(ValueError, "Protocol mismatch"):
+                experiment.ensure_protocol(pool, experiment.protocol(self.row, self.args))
+            self.args.gen_batch = 64
+            (self.root / "network.pkl").write_bytes(b"changed checkpoint")
+            with self.assertRaisesRegex(ValueError, "Protocol mismatch"):
+                experiment.ensure_protocol(pool, experiment.protocol(self.row, self.args))
 
     def test_nested_5k_25k_50k_and_resume_generate_only_new_seeds(self):
         pool = self.args.exp_root / "images" / self.row["condition"] / "pool"
@@ -141,7 +166,8 @@ class ExperimentTests(unittest.TestCase):
                     results.append(dict(condition=f"{checkpoint}-test-{t_min}", checkpoint=checkpoint, num_images=count,
                                         seeds=f"0-{count - 1}", t_min=t_min, fid=fid))
         comparisons = experiment.comparison_rows(results)
-        self.assertEqual([row["delta"] for row in comparisons], [0.5] * 9)
+        self.assertEqual([row["delta"] for row in comparisons], [0.5] * 12)
+        self.assertEqual([row["checkpoint"] for row in comparisons[::3]], list(experiment.CHECKPOINTS))
         self.assertEqual(experiment.comparison_rows(results[:1])[0]["delta"], "NA")
         # Aggregation integration test uses the actual output schema, only synthetic FIDs.
         full = []
@@ -155,11 +181,14 @@ class ExperimentTests(unittest.TestCase):
             for extension in ("png", "svg"):
                 self.assertTrue((self.root / f"output/results/restart_tmin_fid{count}.{extension}").is_file())
                 self.assertTrue((self.root / f"output/results/restart_tmin_fid{count}_lines.{extension}").is_file())
+            svg = (self.root / f"output/results/restart_tmin_fid{count}_lines.svg").read_text()
+            self.assertIn("170k best (Exp.3-10)", svg)
+            self.assertIn("not a training trajectory", svg)
         self.assertEqual(json.loads((self.root / "output/results/tmin_comparison.json").read_text())[0]["delta"], 0.5)
 
     def test_plan_only_is_read_only_and_fixed_config(self):
         rows = experiment.load_conditions(experiment.DEFAULT_ROOT / "config/restart_tmin.tsv")
-        self.assertEqual(len(rows), 6)
+        self.assertEqual(len(rows), 8)
         self.assertEqual({row["restart_k"] for row in rows}, {5})
         self.assertEqual({row["nfe"] for row in rows}, {55})
         outdir = self.root / "no-output"
@@ -167,7 +196,7 @@ class ExperimentTests(unittest.TestCase):
                                     "--plan-only", "--fid-stage", "all", "--exp-root", str(outdir)],
                                    capture_output=True, text=True, check=True)
         self.assertFalse(outdir.exists())
-        self.assertEqual(completed.stdout.count("main=18 restart_steps=3 K=5 NFE=55"), 6)
+        self.assertEqual(completed.stdout.count("main=18 restart_steps=3 K=5 NFE=55"), 8)
         self.assertIn("--seeds=5000-24999", completed.stdout)
         self.assertIn("--seeds=25000-49999", completed.stdout)
 
@@ -208,10 +237,11 @@ class ExperimentTests(unittest.TestCase):
         self.assertEqual(experiment.reused_provenance(pool, 5000)[0], 1)
 
     def test_existing_result_protocol_ids_remain_compatible(self):
-        args = argparse.Namespace(gen_batch=64, fid_batch=64, fid_ref=experiment.REPO_ROOT / "fid-refs/cifar10-32x32.npz")
+        args = argparse.Namespace(exp_root=experiment.DEFAULT_ROOT, gen_batch=64, fid_batch=64,
+                                  fid_ref=experiment.REPO_ROOT / "fid-refs/cifar10-32x32.npz")
         rows = {row["condition"]: row for row in experiment.load_conditions(experiment.DEFAULT_ROOT / "config/restart_tmin.tsv")}
         for item in experiment.load_results(experiment.DEFAULT_ROOT):
-            if item["checkpoint"] in ("20k", "40k") and int(item["num_images"]) <= 25000:
+            if item["checkpoint"] in ("20k", "40k", "60k"):
                 self.assertEqual(item["protocol_id"], experiment.digest(experiment.protocol(rows[item["condition"]], args)))
 
     def test_completion_watch_rejects_incomplete_and_detects_run_lock(self):
@@ -236,6 +266,30 @@ class ExperimentTests(unittest.TestCase):
         self.assertIsNone(source)
         source, _ = experiment.source_candidate(row, experiment.SOURCE_ROOT, 64)
         self.assertIsNone(source, "test network differs from the official experiment checkpoint")
+
+    def test_170k_best_rejects_other_training_branch(self):
+        rows = experiment.load_conditions(experiment.DEFAULT_ROOT / "config/restart_tmin.tsv")
+        row = next(row for row in rows if row["condition"] == "170k-best-tmin006")
+        self.assertIn("experiments/3/10_", row["network"])
+        source, reason = experiment.source_candidate(row, experiment.SOURCE_ROOT, 64)
+        self.assertIsNone(source)
+        self.assertIn("checkpoint file mismatch", reason)
+
+    def test_170k_baseline_preserves_all_existing_results_and_protocols(self):
+        import hashlib
+        baseline = json.loads((experiment.DEFAULT_ROOT / "results/170k_extension_baseline.json").read_text())
+        self.assertEqual(len(baseline["result_protocol_ids"]), 18)
+        for name, checksum in baseline["file_sha256"].items():
+            self.assertEqual(hashlib.sha256((experiment.DEFAULT_ROOT / name).read_bytes()).hexdigest(), checksum)
+
+    def test_completion_wait_fails_when_runner_exits_before_lock(self):
+        import watch_completion
+        with mock.patch.object(sys, "argv", ["watch_completion.py", "--exp-root", str(self.root), "--wait-for-run", "--runner-pid", "12345"]), \
+             mock.patch.object(watch_completion.os, "kill", side_effect=ProcessLookupError):
+            self.assertEqual(watch_completion.main(), 1)
+        state = json.loads((self.root / "results/completion.json").read_text())
+        self.assertEqual(state["status"], "failed")
+        self.assertEqual(state["expected_evaluations"], 24)
 
     def test_stop_file_prevents_gpu_commands(self):
         outdir = self.root / "stopped"
