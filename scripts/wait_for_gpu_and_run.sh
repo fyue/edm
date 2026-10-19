@@ -11,8 +11,6 @@ RUN_SCRIPT="${RUN_SCRIPT:?Set RUN_SCRIPT to the experiment run script}"
 EXP_ROOT="${EXP_ROOT:-$(dirname "$(dirname "$RUN_SCRIPT")")}"
 LOG_DIR="${LOG_DIR:-$EXP_ROOT/logs}"
 WAIT_LOG="${WAIT_LOG:-$LOG_DIR/schedule-after-gpu-free.log}"
-GPU_INDEX="${GPU_INDEX:-0}"
-EXPECTED_GPU_NAME="${EXPECTED_GPU_NAME:-Quadro RTX 8000}"
 CHECK_INTERVAL_SEC="${CHECK_INTERVAL_SEC:-300}"
 SCHEDULE_LABEL="${SCHEDULE_LABEL:-$(basename "$EXP_ROOT")}"
 PLAN_ONLY="${PLAN_ONLY:-0}"
@@ -42,7 +40,7 @@ verify_gpu_identity() {
     fi
     if [[ -n "$EXPECTED_GPU_NAME" && "$actual_name" != "$EXPECTED_GPU_NAME" ]]; then
         log "GPU index ${GPU_INDEX} is '${actual_name}', expected '${EXPECTED_GPU_NAME}'"
-        log "Check the physical GPU 0 identity; repository policy prohibits switching to another GPU."
+        log "Check the local GPU configuration; automatic GPU switching is prohibited."
         return 1
     fi
     log "Target GPU: index ${GPU_INDEX} (${actual_name})"
@@ -59,10 +57,7 @@ main() {
         printf 'PLAN: skip GPU wait and validate %s\n' "$RUN_SCRIPT"
         exec env PLAN_ONLY=1 "$RUN_SCRIPT" "$@"
     fi
-    if [[ "$GPU_INDEX" != 0 ]]; then
-        printf 'GPU policy: only physical GPU 0 is allowed (GPU_INDEX=%s).\n' "$GPU_INDEX" >&2
-        return 1
-    fi
+    source "$REPO_ROOT/scripts/load_gpu_config.sh"
     mkdir -p "$LOG_DIR"
     if [[ ! "$CHECK_INTERVAL_SEC" =~ ^[1-9][0-9]*$ ]]; then
         log "CHECK_INTERVAL_SEC must be a positive integer: $CHECK_INTERVAL_SEC"
@@ -89,7 +84,7 @@ main() {
     done
 
     log "GPU ${GPU_INDEX} is free; launching ${SCHEDULE_LABEL}"
-    export GPU_INDEX=0
+    export GPU_INDEX
     export CUDA_DEVICE_ORDER=PCI_BUS_ID
     export CUDA_VISIBLE_DEVICES="$GPU_INDEX"
     exec "$RUN_SCRIPT" "$@"

@@ -16,16 +16,15 @@
 
 GPUを使う学習、生成、FID評価などの実験スクリプトやプログラムは、原則としてGPUが空くまで待機してから開始する処理を備えてください。待機処理を実験ごとに複製せず、共通の `scripts/wait_for_gpu_and_run.sh` を使用します。各実験には、`RUN_SCRIPT`、`EXP_ROOT`、必要なら `SCHEDULE_LABEL` を設定して共通スクリプトを呼ぶ薄いラッパーを置いてください。
 
-**このリポジトリではphysical GPU 0だけを使用してください。** 全セッションで、学習・生成・FID評価・スモークテストを含むGPU処理に `GPU_INDEX=0`、`CUDA_DEVICE_ORDER=PCI_BUS_ID`、`CUDA_VISIBLE_DEVICES=0` を設定します。GPU 1以降は、空いていても使用禁止です。GPU 0が使用中なら待機し、別GPUへの切り替えは行いません。この制約はユーザーが明示的に変更するまで維持します。
+使用可能なphysical GPUはPCごとの同期対象外ファイル `~/.config/edm/gpu.env` に設定します。共有コードにGPU番号・GPU名を固定しないでください。GPU処理前に `scripts/load_gpu_config.sh` をsourceし、設定がない場合はGPU処理を開始しません。設定には `GPU_INDEX` と `EXPECTED_GPU_NAME` の両方が必要です。別パスを使う場合は `EDM_GPU_CONFIG` で指定します。
 
-共通スクリプトがphysical indexの `GPU_INDEX=0` を `CUDA_VISIBLE_DEVICES=0` に設定します。必要に応じて `EXPECTED_GPU_NAME` でGPU名を検証し、`CHECK_INTERVAL_SEC` で確認間隔を調整します。`--help`、dry-run、計画表示、GPUを使わない前処理・集計は待機対象外です。既にジョブスケジューラからGPU 0を排他的に割り当てられている場合も、二重スケジューリングを避けるため待機対象外にできますが、GPU 0限定の制約は変わりません。
+ローカル設定を優先し、コマンドラインの環境変数で許可GPUを上書きしません。読み込み処理は `CUDA_DEVICE_ORDER=PCI_BUS_ID`、`CUDA_VISIBLE_DEVICES="$GPU_INDEX"` を設定します。共通待機スクリプトはGPU名を検証し、指定GPUが使用中なら待機します。別GPUへ自動的に切り替えません。`CHECK_INTERVAL_SEC` で確認間隔を調整できます。`--help`、dry-run、計画表示、GPUを使わない前処理・集計は設定読み込み・待機対象外です。ジョブスケジューラによる排他割当がある場合も、ローカル設定のGPU制約は維持します。
 
 例:
 
 ```bash
 RUN_SCRIPT=experiments/<group>/<name>/scripts/run.sh \
 EXP_ROOT=experiments/<group>/<name> \
-GPU_INDEX=0 \
 scripts/wait_for_gpu_and_run.sh
 ```
 
