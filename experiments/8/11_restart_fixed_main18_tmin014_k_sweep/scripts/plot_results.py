@@ -1,5 +1,5 @@
 #!/usr/bin/env python3
-"""Redraw the merged experiment 8-11 figures with a white, centered zero."""
+"""Draw experiment 8-11 overview and baseline-FID versus improvement figures."""
 
 import argparse
 import json
@@ -69,24 +69,69 @@ def make_figure(groups, count):
     return figure
 
 
+def improvement_limits(groups):
+    improvements = [group[0]["fid"] - row["fid"]
+                    for group in groups.values() for k, row in group.items() if k]
+    lower = min(0.0, min(improvements))
+    upper = max(0.0, max(improvements))
+    padding = 0.05 * (upper - lower or 1.0)
+    return lower - padding, upper + padding
+
+
+def make_improvement_figure(groups, count, limits):
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    figure, axis = plt.subplots(figsize=(8, 5.5))
+    colors = plt.get_cmap("tab10").colors
+    baselines = [groups[checkpoint, count][0]["fid"] for checkpoint in experiment.CHECKPOINTS]
+    for k in experiment.KS:
+        if k == 0:
+            continue
+        improvements = [baseline - groups[checkpoint, count][k]["fid"]
+                        for checkpoint, baseline in zip(experiment.CHECKPOINTS, baselines)]
+        axis.scatter(baselines, improvements, label=f"K={k}", color=colors[k - 1],
+                     s=45, alpha=0.85, edgecolors="white", linewidths=0.4, zorder=3)
+    axis.axhline(0, color="0.3", linestyle="--", linewidth=1, zorder=2)
+    axis.set(xlabel="FID(K=0)", ylabel="Improvement: FID(K=0) - FID(K)",
+             title=f"FID-{count:,}, main=18, t_min=0.14", ylim=limits)
+    axis.margins(x=0.05)
+    axis.set_axisbelow(True)
+    axis.grid(alpha=0.2)
+    axis.legend(ncol=2, title="Restart K")
+    figure.tight_layout()
+    return figure
+
+
 def main():
     parser = argparse.ArgumentParser(description=__doc__)
     parser.add_argument("--summary", type=Path, default=DEFAULT_RESULTS / "restart_fid_summary.json",
                         help="merged summary JSON containing all 270 results")
     parser.add_argument("--outdir", type=Path, default=DEFAULT_RESULTS,
                         help="destination for PNG/SVG figures; result tables are never rewritten")
+    parser.add_argument("--plot-kind", choices=("overview", "baseline-improvement", "all"), default="overview",
+                        help="overview (default), K-colored improvement scatter plots, or both")
     args = parser.parse_args()
     groups = load_groups(args.summary)
     args.outdir.mkdir(parents=True, exist_ok=True)
     os.environ.setdefault("MPLCONFIGDIR", str(DEFAULT_RESULTS.parent / "logs" / "matplotlib"))
+    limits = improvement_limits(groups)
     for count in experiment.STAGES:
-        figure = make_figure(groups, count)
-        for extension in ("png", "svg"):
-            path = args.outdir / f"fixed_main18_tmin014_fid{count}.{extension}"
-            figure.savefig(path, dpi=180)
-            print(path)
-        import matplotlib.pyplot as plt
-        plt.close(figure)
+        kinds = ("overview", "baseline-improvement") if args.plot_kind == "all" else (args.plot_kind,)
+        for kind in kinds:
+            if kind == "overview":
+                figure = make_figure(groups, count)
+                stem = f"fixed_main18_tmin014_fid{count}"
+            else:
+                figure = make_improvement_figure(groups, count, limits)
+                stem = f"fid_baseline_vs_improvement_fid{count}"
+            for extension in ("png", "svg"):
+                path = args.outdir / f"{stem}.{extension}"
+                figure.savefig(path, dpi=180)
+                print(path)
+            import matplotlib.pyplot as plt
+            plt.close(figure)
 
 
 if __name__ == "__main__":
