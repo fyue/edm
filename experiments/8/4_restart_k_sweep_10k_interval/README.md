@@ -181,13 +181,84 @@ tail -f experiments/8/4_restart_k_sweep_10k_interval/logs/fid25k/restart-k-sweep
 ```
 
 同一条件・画像数・seed範囲・FID referenceが結果TSVに記録済みなら再実行時にskipする。
-現在の条件終了後に安全停止するには次を作成する。
+
+## STOPによる条件完了後の待機と自動再開
+
+FID-5k・FID-25kと、8-4を`EXP_ROOT`に指定して共通runnerを使うFID-50kで有効。
+小実験は「checkpoint × K × FID件数」の1条件を指す。
+8-12と同じ`/data/kyou/STOP_RUNNING_PASCAL`を各PCで使用する。
+
+```bash
+# 現在の小実験を保存してから待機させる
+touch /data/kyou/STOP_RUNNING_PASCAL
+
+# 待機解除。親runnerが次の未完了条件から自動再開する
+unlink /data/kyou/STOP_RUNNING_PASCAL
+```
+
+- 実行中の画像生成・画像検証・FID計算・結果TSV保存は最後まで行う。子プロセスへ
+  SIGTERM/SIGKILLは送らず、次の未完了条件へ進む直前にSTOPの存在を確認する。
+- 起動時にSTOPがあればGPU処理を開始せず待機する。条件境界の確認前にSTOPを
+  削除した場合は待機しない。全対象が完了している場合も待機せず通常終了する。
+- 削除後はローカルGPU設定・GPU名・空きを共通GPU待機スクリプトで再確認する。
+  GPU待機中にSTOPが再作成された場合も、次のGPU処理を開始する前に再び待機する。
+- `PAUSE_FILE=/absolute/path/to/STOP`で監視先、`PAUSE_POLL_SEC=1`で待機時の確認間隔を
+  変更できる。`PAUSE_ENABLED=0`でこの待機機能を無効化できる。他実験では既定で無効。
+- 待機・再開と次の対象条件はmaster logと`LOG_DIR/pause.log`に残す。
+  `PLAN_ONLY=1`はSTOP待機とローカルGPU設定読み込みを行わない。
+- 待機中は親runnerを起動したままにする（tmuxなどを使用）。すでに起動済みのrunnerへの
+  変更反映は保証されないため、この機能は変更後に起動したrunnerで使用する。
+
+### STOPファイルに表示する待機開始見込み
+
+STOPがある間、監視helperが現在の条件・段階と「小実験完了までの残り時間」を
+STOPファイルへ追記する。生成・FIDを中断する処理は行わない。
+既定では検知時、処理段階が変わった時、その後30秒ごとに記録する。
+
+```bash
+tail -n 12 /data/kyou/STOP_RUNNING_PASCAL
+```
+
+表示例:
+
+```text
+[2026-10-19T15:24:00+09:00] experiment=8-4 host=PC-A pid=12345 run=12345-... checkpoint=60k K=6 FID=25000
+状態=画像生成中 待機開始まで=約18分 待機開始見込み=2026-10-19T15:42:00+09:00 根拠=生成進捗＋直近FID中央値
+```
+
+- 検知間隔は`PAUSE_POLL_SEC`、定期追記間隔は`PAUSE_ETA_UPDATE_SEC`（既定30秒）。
+  `PAUSE_ENABLED=0`と`PLAN_ONLY=1`では監視helperも起動しない。
+- 生成時間は今回の生成ログのtqdm進捗から推定する。既存画像数や前回起動の進捗を
+  今回の生成済み枚数として扱わない。FID時間は同じ画像数・参照統計の直近5件の
+  `fid_sec`中央値を使う。FID中は経過時間と現在の進捗も参照する。
+- 検証・保存時間は今後の同PC・同評価件数・同参照統計での実測中央値を加える。
+  初回などの未計測部分は表示へ明記する。進捗・履歴が不足すれば「推定中」、
+  見積もりを超えても終了していなければ「見積もり超過・処理継続中」と表示する。
+  GPU速度・I/Oにより変動する概算であり、待機開始時刻を保証するものではない。
+- 実際の待機開始は「待機中・残り0秒」、全対象完了は「実験終了・待機不要」を記録する。
+  親runnerが異常終了した場合や終了用STOPで終了した場合も状態を記録する。
+- 他runnerの記録を上書きしない。ホスト名・PID・起動IDで識別し、追記を排他制御する。
+  STOP削除後は追記を止め、削除・置換との競合でもSTOPを再作成しない。
+  symlinkや通常ファイル以外への追記は拒否する。
+- 追記できない場合はmaster logへ警告する。実験および条件完了後の待機は維持する。
+  ローカル状態・付帯時間の履歴は`LOG_DIR/pause-runtime.<PID>.json`と
+  `LOG_DIR/pause-timings.jsonl`に保存する。8-12の停止方法は変更しない。
+
+従来どおり、現在の小実験完了後に親runnerを**終了**するには次を作成する。
 
 ```bash
 touch experiments/8/4_restart_k_sweep_10k_interval/STOP_AFTER_CURRENT_CONDITION
 ```
 
-再開前に停止fileを削除する。
+両方のSTOPが存在する場合は終了を優先する。終了用STOPで止めた場合は、そのファイルを
+削除して同じ実行コマンドを再実行する。
+
+CPUだけの停止・再開テスト:
+
+```bash
+python experiments/8/4_restart_k_sweep_10k_interval/scripts/test_condition_pause.py -v
+python experiments/8/4_restart_k_sweep_10k_interval/scripts/test_pause_eta.py -v
+```
 
 ## 集計とグラフ
 

@@ -6,6 +6,7 @@ set -Eeuo pipefail
 cd "$(dirname "$0")/../../../.."
 
 export EXP_ROOT="${EXP_ROOT:-experiments/8/4_restart_k_sweep_10k_interval}"
+export PAUSE_ENABLED="${PAUSE_ENABLED:-1}"
 export IMAGE_ROOT="${IMAGE_ROOT:-$EXP_ROOT/images}"
 export RESULTS_DIR="${RESULTS_DIR:-$EXP_ROOT/results/fid25k}"
 export LOG_DIR="${LOG_DIR:-$EXP_ROOT/logs/fid25k}"
