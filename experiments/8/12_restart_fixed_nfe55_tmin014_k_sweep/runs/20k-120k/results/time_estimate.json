@@ -4,7 +4,7 @@
     "Quadro RTX 8000"
   ],
   "pilot_checkpoint": "20k",
-  "remaining_sec": 9823.204443231225,
+  "remaining_sec": 0.0,
   "selected_conditions": [
     "100k-k0",
     "100k-k1",
@@ -74,8 +74,8 @@
     },
     {
       "num_images": 50000,
-      "pending_evaluations": 2,
-      "remaining_sec": 9823.204443231225
+      "pending_evaluations": 0,
+      "remaining_sec": 0.0
     }
   ]
 }

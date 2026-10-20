@@ -4,7 +4,7 @@
     "NVIDIA TITAN X (Pascal)"
   ],
   "pilot_checkpoint": "160k",
-  "remaining_sec": 54836.922253692755,
+  "remaining_sec": 0.0,
   "selected_conditions": [
     "160k-k0",
     "160k-k1",
@@ -47,8 +47,8 @@
     },
     {
       "num_images": 50000,
-      "pending_evaluations": 9,
-      "remaining_sec": 54836.922253692755
+      "pending_evaluations": 0,
+      "remaining_sec": 0.0
     }
   ]
 }
