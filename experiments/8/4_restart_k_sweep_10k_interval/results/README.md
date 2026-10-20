@@ -1,5 +1,12 @@
 # Experiment 8-4 Results
 
+`scripts/plot_comparison.py`で8-11・8-12形式の比較図を再生成できる。
+
+- `fixed_main18_tmin006_fid{5000,25000,50000}.{png,svg}`：20k～200kの10 checkpointsを対象に、
+  K–FID曲線、K=0との差、最適Kを横並びにした図。±0.4の固定差分色を使用し、未完了は欠測表示。
+- `comparison_fid_summary.tsv`：8-4を優先し、8-6・8-8・8-11から不足を補った採用値と出典。
+  `--fid-stage`で指定したステージを保存する。元の生結果・集計表は書き換えない。
+
 実行後に次を生成する。
 
 - `restart_fid_summary.tsv`: runnerが記録する条件ごとの生FIDと再現条件

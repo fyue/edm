@@ -262,6 +262,49 @@ python experiments/8/4_restart_k_sweep_10k_interval/scripts/test_pause_eta.py -v
 
 ## 集計とグラフ
 
+### 8-11・8-12形式の比較図
+
+edm環境（Matplotlib・NumPyが必要）で次を実行する。GPU設定・GPU待機は不要。
+
+```bash
+python experiments/8/4_restart_k_sweep_10k_interval/scripts/plot_comparison.py
+
+# 1ステージだけ、または別の出力先へ作図
+python experiments/8/4_restart_k_sweep_10k_interval/scripts/plot_comparison.py \
+  --fid-stage 25000 --outdir /tmp/edm-8-4-figures
+```
+
+対象は20k～200kの20k刻み10 checkpoints、K=0～8。
+FID-5k・25k・50kごとに、K–FID曲線、K=0との差のヒートマップ、学習量と最適Kを
+横並び3パネルで表示する。checkpoint色・軸・サイズは8-11・8-12と共通。
+差分色は青–白–赤の±0.4固定（ゼロは純白）とし、範囲外は端色とカラーバーの矢印で示す。
+欠測は灰色、曲線は欠測で途切れる。最適Kは9条件が揃ったcheckpointだけを対象とし、
+同値なら小さいKを選ぶ。未完了checkpointを最適Kの線で跨がない。
+
+元データは8-4の生TSVを優先し、不足分を8-6→8-8→8-11の順で補う。
+8-11は統合済みの`results/restart_fid_summary.tsv`を使い、存在しない場合のみ
+`runs/*/results/restart_fid_summary.tsv`を使う。統合表とその元のrunを二重に取り込まない。
+同一優先元の重複条件はエラーとし、異なる優先元のFIDを平均しない。
+学習系列・snapshot、main steps、Restart設定、NFE、seed範囲と参照統計を照合し、
+異なるPCの絶対パスはリポジトリ相対の同一性で比較する。記録されている場合は
+rho・restart_noise・S_churn・batch設定も照合する。これらを持たない旧TSVには
+実験READMEの既定値を適用する。K=0はRestartなしなので8-11のODE結果も利用できる。
+モデル・参照統計の実ファイルやGPUは必要なく、旧結果について新たなSHA256検証は行わない。
+
+出力は`results/fixed_main18_tmin006_fid{5000,25000,50000}.{png,svg}`と
+`comparison_fid_summary.tsv`。後者には選択したステージの採用値、採用元実験・TSV・行・
+元conditionを記録する。現時点では5k=90件、25k=90件、50k=13件で、50kの最適Kは未表示。
+既存の生TSV・集計表・図は変更しない。runnerからの従来の自動作図も維持するため、
+新しい結果を反映するときはこの再描画コマンドを実行する。
+
+CPUテスト:
+
+```bash
+python experiments/8/4_restart_k_sweep_10k_interval/scripts/test_plot_comparison.py -v
+```
+
+### 従来の集計と作図
+
 完走時にrunnerが自動生成する。手動で再生成する場合:
 
 ```bash
@@ -289,6 +332,8 @@ experiments/8/4_restart_k_sweep_10k_interval/
   logs/
     fid25k/
   results/restart_fid_summary.tsv
+  results/comparison_fid_summary.tsv
+  results/fixed_main18_tmin006_fid{5000,25000,50000}.{png,svg}
   results/restart_k_sweep.tsv
   results/optimal_k.tsv
   results/restart_k_sweep_overview.{png,svg}
