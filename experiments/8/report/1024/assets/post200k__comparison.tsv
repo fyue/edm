@@ -1,0 +1,5 @@
+kimg	restart_k	n	complete	baseline_mean	candidate_mean	baseline_std	candidate_std	improvement_mean	improvement_std	positive_ranges	assessment
+210000	0	1	False	1.80678	1.8371			-0.030319999999999903		0	screen_only
+210000	1	1	False	1.79335	1.81901			-0.025660000000000016		0	screen_only
+220000	0	1	False	1.80678	2.00929			-0.20250999999999997		0	screen_only
+220000	1	1	False	1.79335	2.05315			-0.25980000000000003		0	screen_only
