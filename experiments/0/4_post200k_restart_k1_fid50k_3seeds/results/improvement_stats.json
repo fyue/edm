@@ -1,0 +1,18 @@
+[
+  {
+    "checkpoint": "200k",
+    "complete": false,
+    "mean": 0.013430000000000053,
+    "n": 1,
+    "positive_ranges": 1,
+    "std": null
+  },
+  {
+    "checkpoint": "210k",
+    "complete": false,
+    "mean": 0.01808999999999994,
+    "n": 1,
+    "positive_ranges": 1,
+    "std": null
+  }
+]
