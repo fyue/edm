@@ -1,0 +1,176 @@
+{
+  "base_kimg": 200000,
+  "experiment": "0-3",
+  "files": {
+    "datasets/cifar10-32x32.zip": {
+      "sha256": "15dced83957060f298ff3fe4419f032a8654af489c8e65a5f0ec3d1e2d902179",
+      "size": 166000134
+    },
+    "dnnlib/__init__.py": {
+      "sha256": "57a5dd0f58b26c72961c7a64e0a7806c722c6046e06e79ce64ea344b47ecd516",
+      "size": 377
+    },
+    "dnnlib/util.py": {
+      "sha256": "00a0e339dc8eca358c9053ae6d93ab87b8d3f4df1e5dd30d3185558721986e1c",
+      "size": 17098
+    },
+    "experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-200000.pkl": {
+      "sha256": "ef52ec8b43a085f4be6174b397c965b1ba67e4e7a652164eae2a009d7f6c41ab",
+      "size": 223191847
+    },
+    "experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/training-state-200000.pt": {
+      "sha256": "de6cb10557ce922c330b43c845565e230d38103bc622666f0461ca1bc47e6c9b",
+      "size": 669425733
+    },
+    "experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/training_options.json": {
+      "sha256": "c95b63f15534e2aa67d2d641b7e2e2d3a61ee3a293c871956267dc85c954885e",
+      "size": 1797
+    },
+    "experiments/0/3_cifar10_cond_edm_post200k_extension/scripts/gpu_worker.sh": {
+      "sha256": "9407ff1c30206b683145cf16b7e6be039719ec73b363ce0e30de69c84a7ece22",
+      "size": 214
+    },
+    "experiments/0/3_cifar10_cond_edm_post200k_extension/scripts/run_experiment.py": {
+      "sha256": "ebdb887fde39ab9fe67c71316b8340ddf166997bf6d10944cfde539d2a1aa988",
+      "size": 21378
+    },
+    "experiments/8/11_restart_fixed_main18_tmin014_k_sweep/scripts/run_experiment.py": {
+      "sha256": "be9bce9c222215bc6cc813226e93e2dacb62b1a235769e586a3f267ec3c87979",
+      "size": 36022
+    },
+    "fid-refs/cifar10-32x32.npz": {
+      "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+      "size": 33571316
+    },
+    "fid.py": {
+      "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+      "size": 7329
+    },
+    "generate.py": {
+      "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+      "size": 55435
+    },
+    "scripts/load_gpu_config.sh": {
+      "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+      "size": 655
+    },
+    "scripts/wait_for_gpu_and_run.sh": {
+      "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+      "size": 3106
+    },
+    "torch_utils/__init__.py": {
+      "sha256": "c206ac297b56e0acc8671f9f93170e3822abc87abcdf5886b65ea326ade8dac8",
+      "size": 337
+    },
+    "torch_utils/distributed.py": {
+      "sha256": "d16a13aaa7c7bfb3b8067404d616cedafe22783ea4aae72169e41b29071d1a2b",
+      "size": 2087
+    },
+    "torch_utils/misc.py": {
+      "sha256": "d1b9ccfa41cbb0e232675d49d1875179cb010dbbd2a021584aa5d1614348ac83",
+      "size": 10966
+    },
+    "torch_utils/persistence.py": {
+      "sha256": "71589e7a4b5175047a48a4bc58e30438b58bea87e415e6873d13d7d438c44b38",
+      "size": 10044
+    },
+    "torch_utils/training_stats.py": {
+      "sha256": "0f16df14740b91a040870e8425dce37014142be7f7016e6871fe19a5585a19c6",
+      "size": 10736
+    },
+    "train.py": {
+      "sha256": "e921f457354968de3b61d71fa3e4f7979fd0e20c3f73ea4f0121a821259f8c66",
+      "size": 15001
+    },
+    "training/__init__.py": {
+      "sha256": "c206ac297b56e0acc8671f9f93170e3822abc87abcdf5886b65ea326ade8dac8",
+      "size": 337
+    },
+    "training/augment.py": {
+      "sha256": "fd411af7c2d74489ce11a245293047369fc044d00a9aeed1c0bd46b322c8a8b5",
+      "size": 19424
+    },
+    "training/dataset.py": {
+      "sha256": "f46fe15ecd66206819e416ffca6ea22a06610405d6954ccc0fffc53092ab81c2",
+      "size": 9138
+    },
+    "training/loss.py": {
+      "sha256": "47b78423e887ef5a3d02ce5ba87898e213e169a4f7ca0652da11330c63bb854a",
+      "size": 5565
+    },
+    "training/networks.py": {
+      "sha256": "b12a8cf10ef1042d0decdcedcb503fe3bad668f2532a5a7a46bf98446dde0abb",
+      "size": 38922
+    },
+    "training/training_loop.py": {
+      "sha256": "c1f553b4538ef6286fa6c83c7041d72ee7360604382a7fb07244818036771bd8",
+      "size": 12921
+    }
+  },
+  "training_settings": {
+    "augment_kwargs": {
+      "aniso": 1,
+      "class_name": "training.augment.AugmentPipe",
+      "p": 0.12,
+      "rotate_frac": 1,
+      "scale": 1,
+      "translate_frac": 1,
+      "xflip": 100000000.0,
+      "yflip": 1
+    },
+    "batch_gpu": 128,
+    "batch_size": 512,
+    "cudnn_benchmark": true,
+    "data_loader_kwargs": {
+      "num_workers": 1,
+      "pin_memory": true,
+      "prefetch_factor": 2
+    },
+    "dataset_kwargs": {
+      "cache": true,
+      "class_name": "training.dataset.ImageFolderDataset",
+      "max_size": 50000,
+      "path": "datasets/cifar10-32x32.zip",
+      "random_seed": 0,
+      "resolution": 32,
+      "use_labels": true,
+      "xflip": false
+    },
+    "ema_halflife_kimg": 500,
+    "loss_kwargs": {
+      "class_name": "training.loss.EDMLoss"
+    },
+    "loss_scaling": 1.0,
+    "network_kwargs": {
+      "augment_dim": 9,
+      "channel_mult": [
+        2,
+        2,
+        2
+      ],
+      "channel_mult_noise": 1,
+      "class_name": "training.networks.EDMPrecond",
+      "decoder_type": "standard",
+      "dropout": 0.13,
+      "embedding_type": "positional",
+      "encoder_type": "standard",
+      "model_channels": 128,
+      "model_type": "SongUNet",
+      "resample_filter": [
+        1,
+        1
+      ],
+      "use_fp16": false
+    },
+    "optimizer_kwargs": {
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "class_name": "torch.optim.Adam",
+      "eps": 1e-08,
+      "lr": 0.001
+    },
+    "seed": 0
+  }
+}

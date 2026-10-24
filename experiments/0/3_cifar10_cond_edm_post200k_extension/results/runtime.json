@@ -1,0 +1,19 @@
+{
+  "cuda": "11.3",
+  "cudnn": 8302,
+  "driver": "550.67",
+  "gpu_name": "Quadro RTX 8000",
+  "gpu_uuid": "GPU-5182ddb4-13ad-f781-f39b-233c550fd019",
+  "hostname": "ai-astros",
+  "numerical_environment": {
+    "CUBLAS_WORKSPACE_CONFIG": null,
+    "NVIDIA_TF32_OVERRIDE": null
+  },
+  "numpy": "1.26.4",
+  "pci_bus_id": "00000000:1C:00.0",
+  "physical_gpu": "0",
+  "pillow": "11.3.0",
+  "python": "3.9.23 | packaged by conda-forge | (main, Jun  4 2025, 17:57:12) \n[GCC 13.3.0]",
+  "scipy": "1.13.1",
+  "torch": "1.12.1+cu113"
+}

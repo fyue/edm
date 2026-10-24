@@ -1,0 +1,13 @@
+{
+  "actual_kimg": 220000.390625,
+  "kimg": 220000,
+  "loss": 0.16057519369409898,
+  "snapshot": {
+    "sha256": "744fabd1dd2588c8a8525f8169edd37b171dc63c871a0363e96752788efb290b",
+    "size": 223191861
+  },
+  "state": {
+    "sha256": "99ca00aa776254a217aedbbceddef64681ef13ee86f2562bd130b3347bfd234c",
+    "size": 669425733
+  }
+}

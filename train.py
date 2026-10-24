@@ -75,6 +75,7 @@ def parse_int_list(s):
 @click.option('--snap',          help='How often to save snapshots (0 = disable)', metavar='TICKS', type=click.IntRange(min=0), default=50, show_default=True)
 @click.option('--dump',          help='How often to dump state (0 = disable)', metavar='TICKS',     type=click.IntRange(min=0), default=500, show_default=True)
 @click.option('--checkpoint-kimgs', help='Exact kimg targets for snapshot and state', metavar='LIST', type=parse_int_list)
+@click.option('--stop-file', help='Save and exit at the next exact checkpoint when this file exists', metavar='PATH', type=click.Path())
 @click.option('--seed',          help='Random seed  [default: random]', metavar='INT',              type=int)
 @click.option('--transfer',      help='Transfer learning from network pickle', metavar='PKL|URL',   type=str)
 @click.option('--resume',        help='Resume from previous training state', metavar='PT',          type=str)
@@ -93,7 +94,8 @@ def main(**kwargs):
     """
     opts = dnnlib.EasyDict(kwargs)
     torch.multiprocessing.set_start_method('spawn')
-    dist.init()
+    if not opts.dry_run:
+        dist.init()
 
     # Initialize config dict.
     c = dnnlib.EasyDict()
@@ -173,10 +175,16 @@ def main(**kwargs):
         if any(kimg <= 0 or kimg > c.total_kimg for kimg in opts.checkpoint_kimgs):
             raise click.ClickException(f'--checkpoint-kimgs must be between 1 and {c.total_kimg}')
         c.checkpoint_kimgs = opts.checkpoint_kimgs
+    if opts.stop_file is not None:
+        if not opts.checkpoint_kimgs or c.total_kimg not in opts.checkpoint_kimgs:
+            raise click.ClickException('--stop-file requires --checkpoint-kimgs including the final target')
+        c.stop_file = os.path.abspath(opts.stop_file)
 
     # Random seed.
     if opts.seed is not None:
         c.seed = opts.seed
+    elif opts.dry_run:
+        c.seed = 0
     else:
         seed = torch.randint(1 << 31, size=[], device=torch.device('cuda'))
         torch.distributed.broadcast(seed, src=0)

@@ -42,6 +42,7 @@ def training_loop(
     snapshot_ticks      = 50,       # How often to save network snapshots, None = disable.
     state_dump_ticks    = 500,      # How often to dump training state, None = disable.
     checkpoint_kimgs    = None,     # Exact kimg targets where both snapshot and state are saved.
+    stop_file           = None,     # Save and exit at the next exact checkpoint if this file exists.
     resume_pkl          = None,     # Start from the given network snapshot, None = random initialization.
     resume_state_dump   = None,     # Start from the given training state, None = reset training state.
     resume_kimg         = 0,        # Start from the given training progress.
@@ -157,6 +158,14 @@ def training_loop(
         if checkpoint_idx < len(checkpoint_kimgs) and cur_nimg >= checkpoint_kimgs[checkpoint_idx] * 1000:
             checkpoint_kimg = checkpoint_kimgs[checkpoint_idx]
             checkpoint_idx += 1
+        if stop_file is not None and checkpoint_kimg is not None:
+            stop_requested = torch.tensor(
+                int(dist.get_rank() == 0 and os.path.exists(stop_file)), device=device)
+            if dist.get_world_size() > 1:
+                torch.distributed.broadcast(stop_requested, src=0)
+            if stop_requested.item():
+                done = True
+                dist.print0(f'Stop file found; saving checkpoint {checkpoint_kimg} and exiting: {stop_file}')
         if (not done) and (checkpoint_kimg is None) and (cur_tick != 0) and (cur_nimg < tick_start_nimg + kimg_per_tick * 1000):
             continue
 
@@ -221,6 +230,8 @@ def training_loop(
             break
 
     # Done.
+    if stats_jsonl is not None:
+        stats_jsonl.close()
     dist.print0()
     dist.print0('Exiting...')
 

@@ -1,0 +1,58 @@
+[
+  {
+    "assessment": "screen_only",
+    "baseline_mean": 1.80678,
+    "baseline_std": null,
+    "candidate_mean": 1.8371,
+    "candidate_std": null,
+    "complete": false,
+    "improvement_mean": -0.030319999999999903,
+    "improvement_std": null,
+    "kimg": 210000,
+    "n": 1,
+    "positive_ranges": 0,
+    "restart_k": 0
+  },
+  {
+    "assessment": "screen_only",
+    "baseline_mean": 1.79335,
+    "baseline_std": null,
+    "candidate_mean": 1.81901,
+    "candidate_std": null,
+    "complete": false,
+    "improvement_mean": -0.025660000000000016,
+    "improvement_std": null,
+    "kimg": 210000,
+    "n": 1,
+    "positive_ranges": 0,
+    "restart_k": 1
+  },
+  {
+    "assessment": "screen_only",
+    "baseline_mean": 1.80678,
+    "baseline_std": null,
+    "candidate_mean": 2.00929,
+    "candidate_std": null,
+    "complete": false,
+    "improvement_mean": -0.20250999999999997,
+    "improvement_std": null,
+    "kimg": 220000,
+    "n": 1,
+    "positive_ranges": 0,
+    "restart_k": 0
+  },
+  {
+    "assessment": "screen_only",
+    "baseline_mean": 1.79335,
+    "baseline_std": null,
+    "candidate_mean": 2.05315,
+    "candidate_std": null,
+    "complete": false,
+    "improvement_mean": -0.25980000000000003,
+    "improvement_std": null,
+    "kimg": 220000,
+    "n": 1,
+    "positive_ranges": 0,
+    "restart_k": 1
+  }
+]

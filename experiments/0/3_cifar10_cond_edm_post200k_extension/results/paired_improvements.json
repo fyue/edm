@@ -1,0 +1,34 @@
+[
+  {
+    "fid_200k": 1.80678,
+    "fid_candidate": 1.8371,
+    "improvement": -0.030319999999999903,
+    "kimg": 210000,
+    "restart_k": 0,
+    "seeds": "0-49999"
+  },
+  {
+    "fid_200k": 1.79335,
+    "fid_candidate": 1.81901,
+    "improvement": -0.025660000000000016,
+    "kimg": 210000,
+    "restart_k": 1,
+    "seeds": "0-49999"
+  },
+  {
+    "fid_200k": 1.80678,
+    "fid_candidate": 2.00929,
+    "improvement": -0.20250999999999997,
+    "kimg": 220000,
+    "restart_k": 0,
+    "seeds": "0-49999"
+  },
+  {
+    "fid_200k": 1.79335,
+    "fid_candidate": 2.05315,
+    "improvement": -0.25980000000000003,
+    "kimg": 220000,
+    "restart_k": 1,
+    "seeds": "0-49999"
+  }
+]

@@ -1,0 +1,7 @@
+{
+  "confirmation_requested": false,
+  "fid_stage": "auto",
+  "passed": false,
+  "target_kimg": 210000,
+  "threshold": 0.01
+}
