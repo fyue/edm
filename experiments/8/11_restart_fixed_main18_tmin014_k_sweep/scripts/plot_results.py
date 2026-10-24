@@ -30,7 +30,7 @@ def load_groups(summary):
     return groups
 
 
-def make_figure(groups, count):
+def make_figure(groups, count, near_optimal=False):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
@@ -42,7 +42,9 @@ def make_figure(groups, count):
     colormap = LinearSegmentedColormap.from_list(
         "fid_delta", ["#3b4cc0", "#ffffff", "#b40426"], N=257)
     norm = Normalize(vmin=-COLOR_LIMIT, vmax=COLOR_LIMIT)
-    figure, axes = plt.subplots(1, 3, figsize=(18, 5))
+    figure, axes = plt.subplots(2, 2, figsize=(16, 10))
+    axes = axes.ravel()
+    figure.suptitle(f"Experiment 8-11: FID-{count:,}, main=18, t_min=0.14", fontsize=14)
     matrix = np.empty((len(experiment.CHECKPOINTS), len(experiment.KS)))
     best_ks = []
     for i, checkpoint in enumerate(experiment.CHECKPOINTS):
@@ -51,22 +53,59 @@ def make_figure(groups, count):
         axes[0].plot(xs, [group[k]["fid"] for k in xs], marker="o", label=checkpoint)
         matrix[i] = [group[k]["fid"] - group[0]["fid"] for k in experiment.KS]
         best_ks.append(min(experiment.KS, key=lambda k: (group[k]["fid"], k)))
-    axes[0].set(xlabel="K", ylabel="FID", title=f"FID-{count}, main=18, t_min=0.14")
+    axes[0].set(xlabel="K", ylabel="FID", title="FID by Restart K")
     axes[0].set_xticks(experiment.KS)
-    axes[0].legend(fontsize=8)
+    axes[0].legend(fontsize=8, ncol=5, loc="upper center")
     heatmap = axes[1].imshow(matrix, aspect="auto", cmap=colormap, norm=norm)
     axes[1].set_xticks(range(len(experiment.KS)), experiment.KS)
     axes[1].set_yticks(range(len(experiment.CHECKPOINTS)), experiment.CHECKPOINTS)
     axes[1].set(xlabel="K", ylabel="Checkpoint (kimg)", title="FID(K) - FID(0)")
     figure.colorbar(heatmap, ax=axes[1], ticks=np.linspace(-COLOR_LIMIT, COLOR_LIMIT, 9),
                    format=FormatStrFormatter("%.1f"))
-    axes[2].plot([int(checkpoint[:-1]) for checkpoint in experiment.CHECKPOINTS], best_ks, marker="o")
-    axes[2].set(xlabel="Training (kimg)", ylabel="Optimal K", title="Best among K=0..8")
-    axes[2].set_xticks([int(checkpoint[:-1]) for checkpoint in experiment.CHECKPOINTS],
-                      experiment.CHECKPOINTS)
-    axes[2].set_yticks(experiment.KS)
-    figure.tight_layout()
+    if near_optimal:
+        draw_near_optimal(axes[2], groups, count)
+    else:
+        axes[2].plot([int(checkpoint[:-1]) for checkpoint in experiment.CHECKPOINTS], best_ks, marker="o")
+        axes[2].set(xlabel="Training (kimg)", ylabel="Optimal K", title="Best among K=0..8")
+        axes[2].set_xticks([int(checkpoint[:-1]) for checkpoint in experiment.CHECKPOINTS],
+                          experiment.CHECKPOINTS)
+        axes[2].set_yticks(experiment.KS)
+    draw_improvement(axes[3], groups, count, improvement_limits(groups))
+    figure.tight_layout(rect=(0, 0, 1, 0.95))
     return figure
+
+
+def draw_near_optimal(axis, groups, count):
+    """Show distance to the best evaluated K only for complete checkpoints."""
+    import numpy as np
+    from matplotlib.colors import LinearSegmentedColormap, Normalize
+
+    matrix = np.full((len(experiment.KS), len(experiment.CHECKPOINTS)), np.nan)
+    best_x, best_y = [], []
+    for i, checkpoint in enumerate(experiment.CHECKPOINTS):
+        group = groups.get((checkpoint, count), {})
+        if set(group) != set(experiment.KS):
+            continue
+        best = min(experiment.KS, key=lambda k: (group[k]["fid"], k))
+        minimum = group[best]["fid"]
+        matrix[:, i] = [group[k]["fid"] - minimum for k in experiment.KS]
+        best_x.append(i)
+        best_y.append(experiment.KS.index(best))
+
+    colormap = LinearSegmentedColormap.from_list("near_optimal", ["#08306b", "#ffffff"])
+    colormap.set_bad("#eeeeee")
+    colormap.set_over("#ffffff")
+    image = axis.imshow(np.ma.masked_invalid(matrix), origin="lower", aspect="auto",
+                        cmap=colormap, norm=Normalize(vmin=0, vmax=0.05))
+    axis.scatter(best_x, best_y, color="black", s=20, label="Best K", zorder=3)
+    axis.set_xticks(range(len(experiment.CHECKPOINTS)), experiment.CHECKPOINTS)
+    axis.set_yticks(range(len(experiment.KS)), experiment.KS)
+    axis.set(xlabel="Training (kimg)", ylabel="K", title="K proximity to best FID")
+    axis.legend(loc="upper right", fontsize=8)
+    extend = "max" if np.any(matrix > 0.05) else "neither"
+    colorbar = axis.figure.colorbar(image, ax=axis, ticks=[0, 0.01, 0.02, 0.05], extend=extend)
+    colorbar.set_label("FID(K) - min FID")
+    colorbar.ax.set_yticklabels(["0", "0.01", "0.02", "0.05"])
 
 
 def improvement_limits(groups):
@@ -78,12 +117,9 @@ def improvement_limits(groups):
     return lower - padding, upper + padding
 
 
-def make_improvement_figure(groups, count, limits):
-    import matplotlib
-    matplotlib.use("Agg")
+def draw_improvement(axis, groups, count, limits):
     import matplotlib.pyplot as plt
 
-    figure, axis = plt.subplots(figsize=(8, 5.5))
     colors = plt.get_cmap("tab10").colors
     baselines = [groups[checkpoint, count][0]["fid"] for checkpoint in experiment.CHECKPOINTS]
     for k in experiment.KS:
@@ -95,11 +131,21 @@ def make_improvement_figure(groups, count, limits):
                      s=45, alpha=0.85, edgecolors="white", linewidths=0.4, zorder=3)
     axis.axhline(0, color="0.3", linestyle="--", linewidth=1, zorder=2)
     axis.set(xlabel="FID(K=0)", ylabel="Improvement: FID(K=0) - FID(K)",
-             title=f"FID-{count:,}, main=18, t_min=0.14", ylim=limits)
+             title="Baseline FID vs improvement", ylim=limits)
     axis.margins(x=0.05)
     axis.set_axisbelow(True)
     axis.grid(alpha=0.2)
     axis.legend(ncol=2, title="Restart K")
+
+
+def make_improvement_figure(groups, count, limits):
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+
+    figure, axis = plt.subplots(figsize=(8, 5.5))
+    draw_improvement(axis, groups, count, limits)
+    axis.set_title(f"FID-{count:,}, main=18, t_min=0.14")
     figure.tight_layout()
     return figure
 
@@ -110,8 +156,8 @@ def main():
                         help="merged summary JSON containing all 270 results")
     parser.add_argument("--outdir", type=Path, default=DEFAULT_RESULTS,
                         help="destination for PNG/SVG figures; result tables are never rewritten")
-    parser.add_argument("--plot-kind", choices=("overview", "baseline-improvement", "all"), default="overview",
-                        help="overview (default), K-colored improvement scatter plots, or both")
+    parser.add_argument("--plot-kind", choices=("overview", "baseline-improvement", "near-optimal", "all"), default="overview",
+                        help="overview (default), baseline-improvement scatter, near-optimal overview, or both original plots (all)")
     args = parser.parse_args()
     groups = load_groups(args.summary)
     args.outdir.mkdir(parents=True, exist_ok=True)
@@ -120,9 +166,11 @@ def main():
     for count in experiment.STAGES:
         kinds = ("overview", "baseline-improvement") if args.plot_kind == "all" else (args.plot_kind,)
         for kind in kinds:
-            if kind == "overview":
-                figure = make_figure(groups, count)
+            if kind in ("overview", "near-optimal"):
+                figure = make_figure(groups, count, near_optimal=kind == "near-optimal")
                 stem = f"fixed_main18_tmin014_fid{count}"
+                if kind == "near-optimal":
+                    stem += "_near_optimal"
             else:
                 figure = make_improvement_figure(groups, count, limits)
                 stem = f"fid_baseline_vs_improvement_fid{count}"
