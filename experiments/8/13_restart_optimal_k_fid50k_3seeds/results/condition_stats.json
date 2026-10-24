@@ -1,0 +1,110 @@
+[
+  {
+    "checkpoint": "20k",
+    "complete": true,
+    "condition": "20k-k0",
+    "mean": 2.9875166666666666,
+    "n": 3,
+    "restart_k": 0,
+    "std": 0.031194746886829126
+  },
+  {
+    "checkpoint": "20k",
+    "complete": true,
+    "condition": "20k-k7",
+    "mean": 2.606786666666667,
+    "n": 3,
+    "restart_k": 7,
+    "std": 0.019100058464134078
+  },
+  {
+    "checkpoint": "60k",
+    "complete": true,
+    "condition": "60k-k0",
+    "mean": 2.1036533333333334,
+    "n": 3,
+    "restart_k": 0,
+    "std": 0.015493883739506182
+  },
+  {
+    "checkpoint": "60k",
+    "complete": true,
+    "condition": "60k-k3",
+    "mean": 1.9989566666666667,
+    "n": 3,
+    "restart_k": 3,
+    "std": 0.010350846986277615
+  },
+  {
+    "checkpoint": "100k",
+    "complete": false,
+    "condition": "100k-k0",
+    "mean": 1.881,
+    "n": 1,
+    "restart_k": 0,
+    "std": null
+  },
+  {
+    "checkpoint": "100k",
+    "complete": false,
+    "condition": "100k-k3",
+    "mean": 1.83599,
+    "n": 1,
+    "restart_k": 3,
+    "std": null
+  },
+  {
+    "checkpoint": "140k",
+    "complete": false,
+    "condition": "140k-k0",
+    "mean": 1.86544,
+    "n": 1,
+    "restart_k": 0,
+    "std": null
+  },
+  {
+    "checkpoint": "140k",
+    "complete": false,
+    "condition": "140k-k1",
+    "mean": 1.82146,
+    "n": 1,
+    "restart_k": 1,
+    "std": null
+  },
+  {
+    "checkpoint": "180k",
+    "complete": true,
+    "condition": "180k-k0",
+    "mean": 1.8283066666666667,
+    "n": 3,
+    "restart_k": 0,
+    "std": 0.00635599192363667
+  },
+  {
+    "checkpoint": "180k",
+    "complete": true,
+    "condition": "180k-k1",
+    "mean": 1.80898,
+    "n": 3,
+    "restart_k": 1,
+    "std": 0.01568321395632918
+  },
+  {
+    "checkpoint": "200k",
+    "complete": true,
+    "condition": "200k-k0",
+    "mean": 1.8016733333333332,
+    "n": 3,
+    "restart_k": 0,
+    "std": 0.004699407764105263
+  },
+  {
+    "checkpoint": "200k",
+    "complete": true,
+    "condition": "200k-k1",
+    "mean": 1.78823,
+    "n": 3,
+    "restart_k": 1,
+    "std": 0.011445178023953983
+  }
+]

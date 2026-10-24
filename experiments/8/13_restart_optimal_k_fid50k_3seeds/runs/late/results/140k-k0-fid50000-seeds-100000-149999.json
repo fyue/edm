@@ -1,0 +1,71 @@
+{
+  "actual_t_min": null,
+  "checkpoint": "140k",
+  "condition": "140k-k0",
+  "fid": 1.8592,
+  "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+  "fid_sec": 126.03834212501533,
+  "generate_sec": 7433.102767399978,
+  "generated_images": 50000,
+  "gpu_name": "NVIDIA TITAN X (Pascal)",
+  "images": "/home/kyoukinkin/projects/edm/experiments/8/13_restart_optimal_k_fid50k_3seeds/runs/late/images/140k-k0/fid-n50000-seeds-100000-149999",
+  "main_steps": 18,
+  "network": "/home/kyoukinkin/projects/edm/experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-140000.pkl",
+  "nfe": 35,
+  "num_images": 50000,
+  "origin": "generated",
+  "protocol": {
+    "S_churn": 0,
+    "base_runner": {
+      "sha256": "be9bce9c222215bc6cc813226e93e2dacb62b1a235769e586a3f267ec3c87979",
+      "size": 36022
+    },
+    "condition": {
+      "actual_t_min": null,
+      "checkpoint": "140k",
+      "condition": "140k-k0",
+      "main_steps": 18,
+      "nfe": 35,
+      "restart_index": null,
+      "restart_k": 0,
+      "restart_steps": 0,
+      "t_max": 0.0,
+      "t_min": 0.0
+    },
+    "experiment": "8-13",
+    "fid": {
+      "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+      "size": 7329
+    },
+    "fid_batch": 64,
+    "fid_ref": {
+      "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+      "size": 33571316
+    },
+    "gen_batch": 64,
+    "generate": {
+      "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+      "size": 55435
+    },
+    "network": {
+      "sha256": "93401f6e8912a8025ffd2b790285b60444cb139f8f09d6715194c2cf6ee730d6",
+      "size": 223191847
+    },
+    "restart_noise": 1,
+    "rho": 7,
+    "runner": {
+      "sha256": "26660021c394ffc8e9080607660951a4c1e0776ada18a33f2790ed334ea1a2cb",
+      "size": 18550
+    },
+    "seeds": "100000-149999",
+    "sigma_max": 80,
+    "sigma_min": 0.002
+  },
+  "protocol_id": "bb02d9dc87ebe7b0efe9b4c13200ccd70876e199c535fdf6327430990e3df7aa",
+  "restart_index": null,
+  "restart_k": 0,
+  "restart_steps": 0,
+  "seeds": "100000-149999",
+  "t_max": 0.0,
+  "t_min": 0.0
+}

@@ -1,0 +1,56 @@
+[
+  {
+    "checkpoint": "20k",
+    "complete": true,
+    "mean": 0.38072999999999996,
+    "n": 3,
+    "optimal_k": 7,
+    "positive_ranges": 3,
+    "std": 0.012924190496893665
+  },
+  {
+    "checkpoint": "60k",
+    "complete": true,
+    "mean": 0.10469666666666651,
+    "n": 3,
+    "optimal_k": 3,
+    "positive_ranges": 3,
+    "std": 0.007333603025343901
+  },
+  {
+    "checkpoint": "100k",
+    "complete": true,
+    "mean": 0.04310333333333335,
+    "n": 3,
+    "optimal_k": 3,
+    "positive_ranges": 3,
+    "std": 0.011875358240210512
+  },
+  {
+    "checkpoint": "140k",
+    "complete": false,
+    "mean": 0.04397999999999991,
+    "n": 1,
+    "optimal_k": 1,
+    "positive_ranges": 1,
+    "std": null
+  },
+  {
+    "checkpoint": "180k",
+    "complete": false,
+    "mean": null,
+    "n": 0,
+    "optimal_k": 1,
+    "positive_ranges": 0,
+    "std": null
+  },
+  {
+    "checkpoint": "200k",
+    "complete": false,
+    "mean": null,
+    "n": 0,
+    "optimal_k": 1,
+    "positive_ranges": 0,
+    "std": null
+  }
+]

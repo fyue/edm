@@ -1,0 +1,17 @@
+condition	checkpoint	restart_k	nfe	num_images	seeds	fid	origin	fid_ref	fid_sec
+140k-k0	140k	0	35	50000	50000-99999	1.85187	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	131.18454057583585
+140k-k0	140k	0	35	50000	100000-149999	1.8592	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	126.03834212501533
+140k-k1	140k	1	39	50000	50000-99999	1.8223	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	126.09523560106754
+140k-k1	140k	1	39	50000	100000-149999	1.84102	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	126.10604165913537
+180k-k0	180k	0	35	50000	0-49999	1.83353	8-11	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	0.0
+180k-k0	180k	0	35	50000	50000-99999	1.83016	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	125.69542048103176
+180k-k0	180k	0	35	50000	100000-149999	1.82123	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	126.09499833500013
+180k-k1	180k	1	39	50000	0-49999	1.82222	8-11	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	0.0
+180k-k1	180k	1	39	50000	50000-99999	1.79166	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	125.97352259699255
+180k-k1	180k	1	39	50000	100000-149999	1.81306	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	126.11288254195824
+200k-k0	200k	0	35	50000	0-49999	1.80679	8-11	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	0.0
+200k-k0	200k	0	35	50000	50000-99999	1.80068	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	126.03145029302686
+200k-k0	200k	0	35	50000	100000-149999	1.79755	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	125.86126193380915
+200k-k1	200k	1	39	50000	0-49999	1.79334	8-11	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	0.0
+200k-k1	200k	1	39	50000	50000-99999	1.77512	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	135.9238087439444
+200k-k1	200k	1	39	50000	100000-149999	1.79623	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	125.93689981894568

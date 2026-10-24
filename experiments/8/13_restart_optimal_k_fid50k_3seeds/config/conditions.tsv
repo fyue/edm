@@ -1,0 +1,13 @@
+condition	checkpoint	main_steps	restart_steps	restart_k	t_min	t_max	nfe	network
+20k-k0	20k	18	0	0	0	0	35	experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-020000.pkl
+20k-k7	20k	18	3	7	0.14	0.3	63	experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-020000.pkl
+60k-k0	60k	18	0	0	0	0	35	experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-060000.pkl
+60k-k3	60k	18	3	3	0.14	0.3	47	experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-060000.pkl
+100k-k0	100k	18	0	0	0	0	35	experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-100000.pkl
+100k-k3	100k	18	3	3	0.14	0.3	47	experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-100000.pkl
+140k-k0	140k	18	0	0	0	0	35	experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-140000.pkl
+140k-k1	140k	18	3	1	0.14	0.3	39	experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-140000.pkl
+180k-k0	180k	18	0	0	0	0	35	experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-180000.pkl
+180k-k1	180k	18	3	1	0.14	0.3	39	experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-180000.pkl
+200k-k0	200k	18	0	0	0	0	35	experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-200000.pkl
+200k-k1	200k	18	3	1	0.14	0.3	39	experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-200000.pkl

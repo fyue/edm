@@ -1,0 +1,110 @@
+[
+  {
+    "checkpoint": "20k",
+    "complete": true,
+    "condition": "20k-k0",
+    "mean": 2.9875166666666666,
+    "n": 3,
+    "restart_k": 0,
+    "std": 0.031194746886829126
+  },
+  {
+    "checkpoint": "20k",
+    "complete": true,
+    "condition": "20k-k7",
+    "mean": 2.606786666666667,
+    "n": 3,
+    "restart_k": 7,
+    "std": 0.019100058464134078
+  },
+  {
+    "checkpoint": "60k",
+    "complete": true,
+    "condition": "60k-k0",
+    "mean": 2.1036533333333334,
+    "n": 3,
+    "restart_k": 0,
+    "std": 0.015493883739506182
+  },
+  {
+    "checkpoint": "60k",
+    "complete": true,
+    "condition": "60k-k3",
+    "mean": 1.9989566666666667,
+    "n": 3,
+    "restart_k": 3,
+    "std": 0.010350846986277615
+  },
+  {
+    "checkpoint": "100k",
+    "complete": true,
+    "condition": "100k-k0",
+    "mean": 1.87031,
+    "n": 3,
+    "restart_k": 0,
+    "std": 0.010740349156335625
+  },
+  {
+    "checkpoint": "100k",
+    "complete": true,
+    "condition": "100k-k3",
+    "mean": 1.8272066666666666,
+    "n": 3,
+    "restart_k": 3,
+    "std": 0.018811492054947015
+  },
+  {
+    "checkpoint": "140k",
+    "complete": false,
+    "condition": "140k-k0",
+    "mean": 1.86544,
+    "n": 1,
+    "restart_k": 0,
+    "std": null
+  },
+  {
+    "checkpoint": "140k",
+    "complete": false,
+    "condition": "140k-k1",
+    "mean": 1.82146,
+    "n": 1,
+    "restart_k": 1,
+    "std": null
+  },
+  {
+    "checkpoint": "180k",
+    "complete": false,
+    "condition": "180k-k0",
+    "mean": null,
+    "n": 0,
+    "restart_k": 0,
+    "std": null
+  },
+  {
+    "checkpoint": "180k",
+    "complete": false,
+    "condition": "180k-k1",
+    "mean": null,
+    "n": 0,
+    "restart_k": 1,
+    "std": null
+  },
+  {
+    "checkpoint": "200k",
+    "complete": false,
+    "condition": "200k-k0",
+    "mean": null,
+    "n": 0,
+    "restart_k": 0,
+    "std": null
+  },
+  {
+    "checkpoint": "200k",
+    "complete": false,
+    "condition": "200k-k1",
+    "mean": null,
+    "n": 0,
+    "restart_k": 1,
+    "std": null
+  }
+]

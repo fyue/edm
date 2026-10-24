@@ -1,0 +1,146 @@
+{
+  "actual_t_min": 0.13951646873101678,
+  "checkpoint": "20k",
+  "condition": "20k-k7",
+  "fid": 2.62869,
+  "fid_ref": "/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+  "fid_sec": 0.0,
+  "generate_sec": 0.0,
+  "generated_images": 0,
+  "gpu_name": "Quadro RTX 8000",
+  "images": "",
+  "main_steps": 18,
+  "network": "/data00/users/kyoukinkin/projects/edm/experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-020000.pkl",
+  "nfe": 63,
+  "num_images": 50000,
+  "origin": "8-11",
+  "protocol": {
+    "S_churn": 0,
+    "base_runner": {
+      "sha256": "be9bce9c222215bc6cc813226e93e2dacb62b1a235769e586a3f267ec3c87979",
+      "size": 36022
+    },
+    "condition": {
+      "actual_t_min": 0.13951646873101678,
+      "checkpoint": "20k",
+      "condition": "20k-k7",
+      "main_steps": 18,
+      "nfe": 63,
+      "restart_index": 13,
+      "restart_k": 7,
+      "restart_steps": 3,
+      "t_max": 0.3,
+      "t_min": 0.14
+    },
+    "experiment": "8-13",
+    "fid": {
+      "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+      "size": 7329
+    },
+    "fid_batch": 64,
+    "fid_ref": {
+      "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+      "size": 33571316
+    },
+    "gen_batch": 64,
+    "generate": {
+      "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+      "size": 55435
+    },
+    "network": {
+      "sha256": "72e802f3cd1edd0fa867279c871aeba8bb7ec24b1a6efbe00ebe423c9468965a",
+      "size": 223191845
+    },
+    "restart_noise": 1,
+    "rho": 7,
+    "runner": {
+      "sha256": "26660021c394ffc8e9080607660951a4c1e0776ada18a33f2790ed334ea1a2cb",
+      "size": 18550
+    },
+    "seeds": "0-49999",
+    "sigma_max": 80,
+    "sigma_min": 0.002
+  },
+  "protocol_id": "698fd9621358b0b00228e2ee6fa68001e14f3a13ade2151e8df10dcfe3122aa1",
+  "restart_index": 13,
+  "restart_k": 7,
+  "restart_steps": 3,
+  "seeds": "0-49999",
+  "source_path": "/data00/users/kyoukinkin/projects/edm/experiments/8/11_restart_fixed_main18_tmin014_k_sweep/runs/20k-140k/results/20k-k7-fid50000.json",
+  "source_result": {
+    "actual_t_min": 0.13951646873101678,
+    "checkpoint": "20k",
+    "condition": "20k-k7",
+    "elapsed_sec": 4150.7552590072155,
+    "fid": 2.62869,
+    "fid_batch": 64,
+    "fid_ref": "/data01/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 312.02914893627167,
+    "gen_batch": 64,
+    "generate_sec": 3810.8689546361566,
+    "generated_images": 25000,
+    "gpu_name": "Quadro RTX 8000",
+    "images": "/data01/kyoukinkin/projects/edm/experiments/8/11_restart_fixed_main18_tmin014_k_sweep/runs/20k-140k/images/20k-k7/fid-n50000-seeds-0-49999",
+    "log": "/data01/kyoukinkin/projects/edm/experiments/8/11_restart_fixed_main18_tmin014_k_sweep/runs/20k-140k/logs/20k-k7-fid50000.log",
+    "main_steps": 18,
+    "network": "/data01/kyoukinkin/projects/edm/experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-020000.pkl",
+    "nfe": 63,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.13951646873101678,
+        "checkpoint": "20k",
+        "condition": "20k-k7",
+        "main_steps": 18,
+        "nfe": 63,
+        "restart_index": 13,
+        "restart_k": 7,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "experiment": "8-11",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "network": {
+        "sha256": "72e802f3cd1edd0fa867279c871aeba8bb7ec24b1a6efbe00ebe423c9468965a",
+        "size": 223191845
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "be9bce9c222215bc6cc813226e93e2dacb62b1a235769e586a3f267ec3c87979",
+        "size": 36022
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002
+    },
+    "protocol_id": "1aba96804b6a7b3bc49aa85589f49b4d5e5bd04a50f8c33ff7387d2a881f57e8",
+    "restart_index": 13,
+    "restart_k": 7,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  "t_max": 0.3,
+  "t_min": 0.14
+}
