@@ -1,6 +1,6 @@
 # 実験8-12：NFE=55・t_min=0.14固定のK sweep
 
-実験0-1のCIFAR-10 class-conditional EDM（DDPM++、学習seed=0）を使い、固定計算量で主経路とRestartへの計算配分を比較する。実験8-10のt_min=0.06固定比較、実験8-11のN_main=18固定比較とは条件が異なる。評価済み条件の結果は`runs/*/results/`に記録する。
+実験0-1のCIFAR-10 class-conditional EDM（DDPM++、学習seed=0）を使い、固定計算量で主経路とRestartへの計算配分を比較する。実験8-10のt_min=0.06固定比較、実験8-11のN_main=18固定比較とは条件が異なる。両PCの全270評価は完了し、2026-10-20に統合した。統合結果と再生成手順は[results/README.md](results/README.md)を参照。PCごとの元結果は`runs/*/results/`に記録する。
 
 ## 再現条件
 
@@ -112,7 +112,9 @@ python experiments/8/12_restart_fixed_nfe55_tmin014_k_sweep/scripts/plot_results
 python experiments/8/12_restart_fixed_nfe55_tmin014_k_sweep/scripts/plot_results.py
 ```
 
-8-11と同じ18×5の3パネル、PNG/SVG・180dpiとし、Kの目盛りは0〜8、最適K図の学習量は20k〜200kの20k刻みで表示する。checkpointの線色は欠測によらず固定する。
+8-11と同じ16×10の2×2パネル、PNG/SVG・180dpiとする。左上にFID–K曲線、右上に差分ヒートマップ、左下に学習量と最適K、右下にK=0のFIDとRestart改善量の散布図を配置する。全体タイトルに実験番号・FID枚数・NFE=55・t_min=0.14を表示し、FID曲線の凡例は上部5列に配置する。Kの目盛りは0〜8、最適K図の学習量は20k〜200kの20k刻み。checkpointの線色は欠測によらず固定する。
+
+散布図の横軸は`FID(K=0)`、縦軸は`FID(K=0)−FID(K)`（正なら改善）。K=1〜8を8-11と同じ色で区別し、0の破線と薄いグリッドを付ける。全取得ステージの有効な改善量に0を含め、上下に範囲幅の5％の余白を付けた共通縦軸を使う。K=0または対象Kがない点は描画しない。単独散布図は出力しない。
 
 ヒートマップは`FID(K)−FID(0)`を青（改善）→純白（0）→赤（悪化）で表示する。色範囲は−0.4〜+0.4固定、カラーバーは0.1刻み。範囲外は端の色に飽和させ、超過した側に三角マークを付ける。元の差分値は変更しない。未取得セルは薄い灰色とし、K=0が未取得のcheckpointでは差分を表示しない。最適Kは全9条件が揃ったcheckpointだけ表示し、同値なら小さいKを選ぶ。
 
