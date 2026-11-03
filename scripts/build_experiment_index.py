@@ -96,9 +96,11 @@ def experiment_id(group: str, name: str) -> str:
 
 
 def has_results(exp_dir: Path) -> str:
-    results = exp_dir / "results"
-    if results.is_dir() and any(results.iterdir()):
-        return "✓"
+    # A results/ holding only README.md (e.g. a not-yet-run plan) does not count.
+    # Multi-PC experiments keep their outputs under runs/<name>/results/.
+    for results in [exp_dir / "results", *sorted(exp_dir.glob("runs/*/results"))]:
+        if results.is_dir() and any(p.name != "README.md" for p in results.iterdir()):
+            return "✓"
     return ""
 
 
@@ -109,6 +111,7 @@ def build_index(experiments: Path) -> str:
         "`python scripts/build_experiment_index.py` が自動生成する。手で編集しない。",
         "全体の地図と読む順序は [README.md](README.md)、グループごとの問いと結論は各グループの `README.md` を参照する。",
         "概要列は各実験READMEのH1直後の段落（無ければ「目的」で始まる節の先頭段落）を切り詰めたもの。",
+        "results列は `results/` または `runs/*/results/` にREADME以外の出力があれば✓。完了を意味しない。",
         "",
     ]
 
