@@ -1,1 +1,4 @@
 /.git
+/experiments/**/logs
+**/__pycache__
+**/*.pyc
