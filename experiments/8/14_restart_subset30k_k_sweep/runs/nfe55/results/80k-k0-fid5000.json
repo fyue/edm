@@ -1,0 +1,74 @@
+{
+  "actual_t_min": null,
+  "checkpoint": "80k",
+  "condition": "80k-k0",
+  "elapsed_sec": 774.4666040763259,
+  "fid": 8.42739,
+  "fid_batch": 64,
+  "fid_ref": "/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+  "fid_sec": 101.37731375172734,
+  "gen_batch": 64,
+  "generate_sec": 672.1951558291912,
+  "generated_images": 5000,
+  "gpu_name": "Quadro RTX 8000",
+  "images": "/data00/users/kyoukinkin/projects/edm/experiments/8/14_restart_subset30k_k_sweep/runs/nfe55/images/80k-k0/fid-n5000-seeds-0-4999",
+  "log": "/data00/users/kyoukinkin/projects/edm/experiments/8/14_restart_subset30k_k_sweep/runs/nfe55/logs/80k-k0-fid5000.log",
+  "main_steps": 28,
+  "network": "/data00/users/kyoukinkin/projects/edm/experiments/0/2_cifar10_cond_edm_30k_subset/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k/network-snapshot-080000.pkl",
+  "nfe": 55,
+  "num_images": 5000,
+  "protocol": {
+    "S_churn": 0,
+    "condition": {
+      "actual_t_min": null,
+      "checkpoint": "80k",
+      "condition": "80k-k0",
+      "main_steps": 28,
+      "nfe": 55,
+      "restart_index": null,
+      "restart_k": 0,
+      "restart_steps": 0,
+      "t_max": 0.0,
+      "t_min": 0.0
+    },
+    "experiment": "8-14-nfe55",
+    "fid": {
+      "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+      "size": 7329
+    },
+    "fid_batch": 64,
+    "fid_ref": {
+      "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+      "size": 33571316
+    },
+    "gen_batch": 64,
+    "generate": {
+      "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+      "size": 55435
+    },
+    "network": {
+      "sha256": "8ffbaa459532227da631b7cc0c05638168aa440af60bdb82856bd8e1a67ffe72",
+      "size": 223191863
+    },
+    "restart_noise": 1,
+    "rho": 7,
+    "runner": {
+      "sha256": "174339c3ea2575b99d913dc1e06b6e93d7a2cd1afdf46d88044eb5c44921eeb6",
+      "size": 43328
+    },
+    "seeds": "0-49999",
+    "sigma_max": 80,
+    "sigma_min": 0.002
+  },
+  "protocol_id": "6d236b877e6be2f748e47bc3bbc740d33ce533fd97fff4fbe864ba1f7da80218",
+  "restart_index": null,
+  "restart_k": 0,
+  "restart_noise": 1,
+  "restart_steps": 0,
+  "reuse_source": "",
+  "reused_images": 0,
+  "rho": 7,
+  "seeds": "0-4999",
+  "t_max": 0.0,
+  "t_min": 0.0
+}

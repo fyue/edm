@@ -1,0 +1,74 @@
+{
+  "actual_t_min": 0.13951646873101678,
+  "checkpoint": "40k",
+  "condition": "40k-k7",
+  "elapsed_sec": 6812.253731001634,
+  "fid": 3.56458,
+  "fid_batch": 64,
+  "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+  "fid_sec": 126.0421322346665,
+  "gen_batch": 64,
+  "generate_sec": 6683.181130758021,
+  "generated_images": 25000,
+  "gpu_name": "NVIDIA TITAN X (Pascal)",
+  "images": "/home/kyoukinkin/projects/edm/experiments/8/14_restart_subset30k_k_sweep/runs/main18/images/40k-k7/fid-n50000-seeds-0-49999",
+  "log": "/home/kyoukinkin/projects/edm/experiments/8/14_restart_subset30k_k_sweep/runs/main18/logs/40k-k7-fid50000.log",
+  "main_steps": 18,
+  "network": "/home/kyoukinkin/projects/edm/experiments/0/2_cifar10_cond_edm_30k_subset/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k/network-snapshot-040000.pkl",
+  "nfe": 63,
+  "num_images": 50000,
+  "protocol": {
+    "S_churn": 0,
+    "condition": {
+      "actual_t_min": 0.13951646873101678,
+      "checkpoint": "40k",
+      "condition": "40k-k7",
+      "main_steps": 18,
+      "nfe": 63,
+      "restart_index": 13,
+      "restart_k": 7,
+      "restart_steps": 3,
+      "t_max": 0.3,
+      "t_min": 0.14
+    },
+    "experiment": "8-14-main18",
+    "fid": {
+      "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+      "size": 7329
+    },
+    "fid_batch": 64,
+    "fid_ref": {
+      "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+      "size": 33571316
+    },
+    "gen_batch": 64,
+    "generate": {
+      "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+      "size": 55435
+    },
+    "network": {
+      "sha256": "139316bd51e2d18660c03d996261adcefd910af7fa98dc4b508e63fa421f5d16",
+      "size": 223191861
+    },
+    "restart_noise": 1,
+    "rho": 7,
+    "runner": {
+      "sha256": "a5272ce13e72593fe6f3fda2485e1ab043e228606a6b91d59043b201be5bf443",
+      "size": 45568
+    },
+    "seeds": "0-49999",
+    "sigma_max": 80,
+    "sigma_min": 0.002
+  },
+  "protocol_id": "a0c3defd8e72afca4a1246992b9a8b436d8f82874e8861bf505562712a8e102b",
+  "restart_index": 13,
+  "restart_k": 7,
+  "restart_noise": 1,
+  "restart_steps": 3,
+  "reuse_source": "",
+  "reused_images": 0,
+  "rho": 7,
+  "seeds": "0-49999",
+  "t_max": 0.3,
+  "t_min": 0.14
+}
