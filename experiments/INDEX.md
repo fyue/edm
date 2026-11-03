@@ -3,16 +3,17 @@
 `python scripts/build_experiment_index.py` が自動生成する。手で編集しない。
 全体の地図と読む順序は [README.md](README.md)、グループごとの問いと結論は各グループの `README.md` を参照する。
 概要列は各実験READMEのH1直後の段落（無ければ「目的」で始まる節の先頭段落）を切り詰めたもの。
+results列は `results/` または `runs/*/results/` にREADME以外の出力があれば✓。完了を意味しない。
 
 ## 0（[グループREADME](0/README.md)）
 
 | ID | タイトル | 概要 | results |
 |---|---|---|:-:|
-| [0-1](0/1_cifar10_cond_edm_10k_retraining/README.md) | Experiment 0-1: CIFAR-10 Conditional EDM Exact 10k Retraining | 修論本番用にCIFAR-10 class-conditional EDM/DDPM++をseed 0から200kまで再学習し、 10k刻みの均一なcheckpoint系列を作る。既存実験で評価した `5.5k, 20k, 120k, 200k` の不均一な選択とは分離し、 `1… | ✓ |
+| [0-1](0/1_cifar10_cond_edm_10k_retraining/README.md) | Experiment 0-1: CIFAR-10 Conditional EDM Exact 10k Retraining | 全データ・学習seed 0で0→200kを1プロセスで連続学習し、10k刻み20点の均一なcheckpoint系列を作る。完了済みで、8-4・8-6・8-10〜8-13の評価対象（本実験ではFIDを評価しない）。 | ✓ |
 | [0-2](0/2_cifar10_cond_edm_30k_subset/README.md) | Experiment 0-2: CIFAR-10 Conditional EDM on a 30k Subset | CIFAR-10の30,000枚subsetで学習し、データ量が学習進行とFIDに与える影響を調べる。100kまでのFID-50kは50k時点の2.34864が最良で、その後100kでは4.44395へ悪化した（評価結果）。 | ✓ |
-| [0-3](0/3_cifar10_cond_edm_post200k_extension/README.md) | 実験0-3：200k以降の継続学習 | 実験0-1の200kから学習率0.001を維持して210kまで継続し、FIDの改善を調べる。 元の実験0-1を読み取り専用の出発点として使い、この実験のtraining-runsへ保存する。 今回は210kで停止する。220k以降への延長は明示的にtargetを指定する。 | ✓ |
-| [0-4](0/4_post200k_restart_k1_fid50k_3seeds/README.md) | 実験0-4：200k・210kのRestart K=1効果、FID-50k・3生成seed範囲 | 固定した200k・210kの各モデルで、Restart K=1のFID改善が生成seed範囲を変えても 再現するかを確認する。学習は行わず、実験0-3のモデル・コード・成果物は読み取りのみとする。 3 seedは3回の再学習ではなく、固定モデルからの3つの生成seed範囲を意味… | ✓ |
-| [0-5](0/5_cifar10_cond_edm_10k_subset/README.md) | Experiment 0-5: CIFAR-10 Conditional EDM on a 10k Subset | 0-2と同じ学習・評価条件を使い、学習サブセットを30,000枚から10,000枚へ変更する。 seed 0から新規学習し、30,000 kimg（30 Mimg）まで学習する。 ここでサブセットの10kは画像枚数、学習量の30kはkimg単位を表す。 | ✓ |
+| [0-3](0/3_cifar10_cond_edm_post200k_extension/README.md) | 実験0-3：200k以降の継続学習 | 実験0-1の200kから学習率0.001のまま210k・220kまで継続学習し、FIDが改善するかを調べる。FID-50k（seed 0-49999）ではK=0が200k 1.80678→210k 1.83710→220k 2.00929と悪化し、K=1も同様だった。 | ✓ |
+| [0-4](0/4_post200k_restart_k1_fid50k_3seeds/README.md) | 実験0-4：200k・210kのRestart K=1効果、FID-50k・3生成seed範囲 | 200k・210kでRestart K=1のFID改善が3つの生成seed範囲で再現するかをFID-50kで確かめる。このPCには初回範囲の4評価のみ（K=1の改善は200k +0.01343、210k +0.01809）で、3範囲の結果は元PCと要照合。 | ✓ |
+| [0-5](0/5_cifar10_cond_edm_10k_subset/README.md) | Experiment 0-5: CIFAR-10 Conditional EDM on a 10k Subset | 0-2と同じ条件で学習データを10,000枚に減らし、30k（kimg）まで学習してデータ量の影響を調べる。実行中で、FID-50kは10k 4.63680、20k 2.82997。 | ✓ |
 
 ## 1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18
 
@@ -26,26 +27,26 @@
 
 | ID | タイトル | 概要 | results |
 |---|---|---|:-:|
-| [3-1](3/1_120k-160k-lr-ema-sweep/README.md) | Experiment 3: 120kからのlr/EMA分岐実験 | Experiment 1では、CIFAR-10 class-conditional DDPM++ EDM の本番学習で 120k のFIDが最も良く、その後 160k/200k で悪化しました。 | ✓ |
-| [3-2](3/2_160k-200k-lr5e-4-ema0.5/README.md) | Experiment 3 continuation: lr=0.0005, EMA=0.5, 160k -> 200k | `120k-160k-lr-ema-sweep` では、120k -> 160k の分岐実験で `lr=0.0005, EMA=0.5` が最も良いFIDを示しました。 | ✓ |
-| [3-3](3/3_160k-170k-lr2e-4-ema0.5/README.md) | Experiment 3 continuation: lr=0.0002, EMA=0.5, 160k -> 170k | `120k-160k-lr-ema-sweep` で最も良いFIDを示した 160k checkpoint から、 EMA half-lifeは `0.5` のまま learning rate を `0.0002` に下げて 170k まで継続します。 170k時点のFIDを確… | ✓ |
-| [3-4](3/4_fid50k_170k_lr5e-4_ema0.5/README.md) | 実験3-4: lr=0.0005, EMA=0.5 の170k FID-50k | `160k-200k-lr5e-4-ema0.5` の学習途中に保存された170k checkpointについて、 FID-50kを計算します。学習は行わず、保存済みsnapshotから画像生成とFID計算だけを実行します。 | ✓ |
-| [3-5](3/5_170k-200k-lr2e-4-ema0.5/README.md) | Experiment 3_5: lr=0.0002, EMA=0.5, 170k -> 180k + 175k再評価 | 実験3_3では、`lr=0.0002, EMA=0.5` で160kから170kまで継続し、170k時点でFIDが改善しました。 | ✓ |
-| [3-6](3/6_170k-180k-lr1e-4-ema0.5/README.md) | Experiment 3_6: lr=0.0001, EMA=0.5, 170k -> 180k | 実験3_3で改善した170k checkpointを起点に、learning rateを `0.0001` に下げて 175k、180kまで段階的に継続して評価します。加えて、起点の170kも同じ条件で 再評価し、ベースラインの再現性を確認します。実験3_5（`lr=0.000… | ✓ |
-| [3-7](3/7_170k-180k-lr5e-5-ema0.5/README.md) | Experiment 3_7: lr=0.00005, EMA=0.5, 170k -> 180k | 実験3_3で改善した170k checkpointを起点に、learning rateを `0.00005` に下げて 175k、180kまで段階的に継続して評価します。加えて、起点の170kも同じ条件で 再評価し、ベースラインの再現性を確認します。実験3_6（`lr=0.00… | ✓ |
-| [3-8](3/8_fid50k_167526_165018_lr2e-4_ema0.5/README.md) | Experiment 3_8: 167526 / 165018 snapshots の3 seed評価 | 実験3_3 `lr=0.0002, EMA=0.5, 160k -> 170k` の保存済みsnapshotから、次の2点をFID-50kで3 seed範囲評価します。 | ✓ |
-| [3-9](3/9_fid50k_172509_175018_lr2e-4_lr1e-4_ema0.5/README.md) | Experiment 3-9: lr=2e-4 / lr=1e-4 の 172509 / 175018 snapshot 3 seed FID評価 | 次の4条件について、FID-50kを3 seed範囲で評価します。学習は行わず、保存済みsnapshotを参照します。 | ✓ |
-| [3-10](3/10_160k-fid2.05-to-170k-lr2e-4-ema0.5/README.md) | Experiment 3-10: 160k FID~2.05 checkpoint -> 170k, lr=2e-4 | Experiment 3-1 の `lr1e-3-ema0.5-repro` 分岐で得られた、160k時点の3 seed平均FIDがおよそ `2.05` のcheckpointを起点に、`lr=0.0002`, `EMA=0.5` で170kまで継続学習する。 | ✓ |
-| [3-11](3/11_fid50k_around170k_lr5e-4_ema0.5/README.md) | Experiment 3-11: lr=5e-4, EMA=0.5, 170k周辺4 checkpointの3 seed評価 | `lr=0.0005`, `EMA=0.5` 条件で生成済みの checkpoint から、170k 近傍の4点を FID-50k の3 seed範囲で評価する。 | ✓ |
-| [3-12](3/12_170k-to-180k-lr2e-4-ema0.5/README.md) | Experiment 3-12: Experiment 3-10 170k checkpoint -> 180k, lr=2e-4 | Experiment 3-10 で得られた 170k checkpoint を起点に、同じ学習条件 `lr=0.0002`, `EMA=0.5` で180kまで継続学習する。 | ✓ |
-| [3-13](3/13_170k-to-180k-lr1e-4-ema0.5/README.md) | Experiment 3-13: best 170k checkpoint -> 180k, lr=1e-4 | Experiment 3-10 で得られた最良の 170k checkpoint を起点に、`lr=0.0001`, `EMA=0.5` で180kまで継続学習する。 | ✓ |
-| [3-14](3/14_160k-fid2.05-to-175k-lr15e-4-ema0.5/README.md) | Experiment 3-14: 160k FID 2.05 checkpoint -> 175k, lr=15e-4 | Experiment 3-1 の 160k checkpoint のうち、3 seed FID平均が約 `2.05` の枝を起点に、`lr=0.0015`, `EMA=0.5` で 175k まで継続学習する。 | ✓ |
-| [3-15](3/15_160k-fid2.05-to-170k-lr15e-4-ema0.5/README.md) | Experiment 3-15: 160k FID 2.05 checkpoint -> 170k, lr=15e-4 | Experiment 3-1 の 160k checkpoint のうち、3 seed FID平均が約 `2.05` の枝を起点に、`lr=0.0015`, `EMA=0.5` で 170k まで継続学習する。 | ✓ |
-| [3-16](3/16_160k-fid2.05-to-170k-lr15e-5-ema0.5/README.md) | Experiment 3-16: 160k FID 2.05 checkpoint -> 170k, lr=15e-5 | Experiment 3-1 の 160k checkpoint のうち、3 seed FID平均が約 `2.05` の枝を起点に、`lr=0.00015`, `EMA=0.5` で 170k まで継続学習する。 | ✓ |
-| [3-17](3/17_170k-to-175k-same-as-3-16-lr15e-5-ema0.5/README.md) | Experiment 3-17: 3-16 170k checkpoint -> 175k, same setting | Experiment 3-16 の 170k checkpoint を起点に、3-16 と同じ `lr=0.00015`, `EMA=0.5` で 175k まで継続学習する。 | ✓ |
-| [3-18](3/18_160k-fid2.05-to-175k-lr1e-4-ema0.5/README.md) | Experiment 3-18: 160k FID 2.05 checkpoint -> 175k, lr=1e-4 | Experiment 3-1 の 160k checkpoint のうち、3 seed FID平均が約 `2.05` の枝を起点に、`lr=0.0001`, `EMA=0.5` で 175k まで継続学習する。 | ✓ |
-| [3-19](3/19_175k-fid1.89-to-190k-lr1e-4-ema0.5/README.md) | Experiment 3-19: 175k FID 1.89 checkpoint -> 190k, lr=1e-4 | Experiment 3-18 の 175k checkpoint のうち、3 seed FID平均が約 `1.89` の枝を起点に、3-18 と同じ `lr=0.0001`, `EMA=0.5` で 190k まで継続学習する。 | ✓ |
-| [3-20](3/20_175k-fid1.89-to-190k-lr5e-5-ema0.5/README.md) | Experiment 3-20: 175k FID 1.89 checkpoint -> 190k, lr=5e-5 | Experiment 3-18 の 175k checkpoint のうち、3 seed FID平均が約 `1.89` の枝を起点に、`lr=0.00005`, `EMA=0.5` で 190k まで継続学習する。 | ✓ |
+| [3-1](3/1_120k-160k-lr-ema-sweep/README.md) | Experiment 3-1: 120kからのlr/EMA分岐実験 | 基準学習の120kから160kまで、lrとEMA half-lifeを変えた3分岐を学習する。160kのFID-50k（3 seed平均）はlr=5e-4で2.010、元設定（lr=1e-3）で2.050、EMA=1.0で2.162だった。 | ✓ |
+| [3-2](3/2_160k-200k-lr5e-4-ema0.5/README.md) | Experiment 3 continuation: lr=0.0005, EMA=0.5, 160k -> 200k | 3-1のlr=5e-4の160kから、同じ設定で200kまで継続する。FID-50k（3 seed平均）は180kで2.032、200kで2.292と悪化した。 | ✓ |
+| [3-3](3/3_160k-170k-lr2e-4-ema0.5/README.md) | Experiment 3 continuation: lr=0.0002, EMA=0.5, 160k -> 170k | 3-1のlr=5e-4の160kから、lr=2e-4に下げて170kまで継続する。170kのFID-50k（3 seed平均）は1.939で、起点の2.010より改善した。 | ✓ |
+| [3-4](3/4_fid50k_170k_lr5e-4_ema0.5/README.md) | 実験3-4: lr=0.0005, EMA=0.5 の170k FID-50k | 3-2（lr=5e-4）の学習途中の170k（170035）をFID-50k×3 seed範囲で評価する（学習なし）。3 seed平均は2.011だった。 | ✓ |
+| [3-5](3/5_170k-200k-lr2e-4-ema0.5/README.md) | Experiment 3_5: lr=0.0002, EMA=0.5, 170k -> 180k + 175k再評価 | 3-3の170kから同じlr=2e-4で継続する（200kの予定を180kで打ち切った）。FID-50k（3 seed平均）は175kで2.274、180kで2.298と、170kの1.939から悪化した。 | ✓ |
+| [3-6](3/6_170k-180k-lr1e-4-ema0.5/README.md) | Experiment 3_6: lr=0.0001, EMA=0.5, 170k -> 180k | 3-3の170kからlr=1e-4で180kまで継続する。FID-50k（3 seed平均）は175kで2.264、180kで2.662と悪化した。170kの再評価は3-3の値と完全に一致した。 | ✓ |
+| [3-7](3/7_170k-180k-lr5e-5-ema0.5/README.md) | Experiment 3_7: lr=0.00005, EMA=0.5, 170k -> 180k | 3-3の170kからlr=5e-5で180kまで継続する。FID-50k（3 seed平均）は175kで2.228、180kで2.529と悪化した。170kの再評価は3-3の値と完全に一致した。 | ✓ |
+| [3-8](3/8_fid50k_167526_165018_lr2e-4_ema0.5/README.md) | Experiment 3_8: 167526 / 165018 snapshots の3 seed評価 | 3-3（lr=2e-4）の途中snapshotの165kと167.5kをFID-50k×3 seed範囲で評価する（学習なし）。3 seed平均は165kで1.976、167.5kで2.014で、170kの1.939には届かない。 | ✓ |
+| [3-9](3/9_fid50k_172509_175018_lr2e-4_lr1e-4_ema0.5/README.md) | Experiment 3-9: lr=2e-4 / lr=1e-4 の 172509 / 175018 snapshot 3 seed FID評価 | 3-5（lr=2e-4）と3-6（lr=1e-4）の172.5k・175kをFID-50k×3 seed範囲で評価する（学習なし）。3 seed平均は2.254〜2.302で、どれも170kより悪い。 | ✓ |
+| [3-10](3/10_160k-fid2.05-to-170k-lr2e-4-ema0.5/README.md) | Experiment 3-10: 160k FID~2.05 checkpoint -> 170k, lr=2e-4 | 3-1の元設定の160k（FID 2.050）からlr=2e-4で170kまで継続する。170kのFID-50k（3 seed平均）は1.851で、実験3の最良。8-7・8-8の「実験3のbest」はこのsnapshot。 | ✓ |
+| [3-11](3/11_fid50k_around170k_lr5e-4_ema0.5/README.md) | Experiment 3-11: lr=5e-4, EMA=0.5, 170k周辺4 checkpointの3 seed評価 | 3-2（lr=5e-4）の170k付近の4 checkpoint（165k〜172.5k）をFID-50k×3 seed範囲で評価する（学習なし）。3 seed平均は2.011〜2.038でほぼ横ばいだった。 | ✓ |
+| [3-12](3/12_170k-to-180k-lr2e-4-ema0.5/README.md) | Experiment 3-12: Experiment 3-10 170k checkpoint -> 180k, lr=2e-4 | 3-10の最良170k（1.851）から同じlr=2e-4で180kまで継続する。172.5k〜180kのFID-50k（3 seed平均）は2.038〜2.140で、すべて170kより悪化した。 | ✓ |
+| [3-13](3/13_170k-to-180k-lr1e-4-ema0.5/README.md) | Experiment 3-13: best 170k checkpoint -> 180k, lr=1e-4 | 3-10の最良170k（1.851）からlr=1e-4で180kまで継続する。172.5k〜180kのFID-50k（3 seed平均）は2.026〜2.135で、すべて170kより悪化した。 | ✓ |
+| [3-14](3/14_160k-fid2.05-to-175k-lr15e-4-ema0.5/README.md) | Experiment 3-14: 160k FID 2.05 checkpoint -> 175k, lr=15e-4 | 3-1の元設定の160k（2.050）からlr=1.5e-3に上げて175kまで継続する。FID-50k（3 seed平均）は2.306〜2.541で、すべて起点より悪化した。 | ✓ |
+| [3-15](3/15_160k-fid2.05-to-170k-lr15e-4-ema0.5/README.md) | Experiment 3-15: 160k FID 2.05 checkpoint -> 170k, lr=15e-4 | 3-1の元設定の160kからlr=1.5e-3で170kまで継続する。学習は170kまで完了したが、FID評価は2026-07-11に開始直後で止まり、未評価。同じ起点・lrの結果は3-14を参照。 | ✓ |
+| [3-16](3/16_160k-fid2.05-to-170k-lr15e-5-ema0.5/README.md) | Experiment 3-16: 160k FID 2.05 checkpoint -> 170k, lr=15e-5 | 3-1の元設定の160k（2.050）からlr=1.5e-4で170kまで継続する。170kのFID-50k（3 seed平均）は1.854で、3-10（lr=2e-4）の1.851とほぼ同じ。 | ✓ |
+| [3-17](3/17_170k-to-175k-same-as-3-16-lr15e-5-ema0.5/README.md) | Experiment 3-17: 3-16 170k checkpoint -> 175k, same setting | 3-16の170k（1.854）から同じlr=1.5e-4で175kまで継続する。FID-50k（3 seed平均）は172.5kで2.009、175kで2.014と悪化した。 | ✓ |
+| [3-18](3/18_160k-fid2.05-to-175k-lr1e-4-ema0.5/README.md) | Experiment 3-18: 160k FID 2.05 checkpoint -> 175k, lr=1e-4 | 3-1の元設定の160k（2.050）からlr=1e-4で175kまで継続する。FID-50k（3 seed平均）は170kで1.858（3-10とほぼ同じ）、175kで1.890だった。 | ✓ |
+| [3-19](3/19_175k-fid1.89-to-190k-lr1e-4-ema0.5/README.md) | Experiment 3-19: 175k FID 1.89 checkpoint -> 190k, lr=1e-4 | 3-18の175k（1.890）から同じlr=1e-4で190kまで継続する。FID-50k（3 seed平均）の最良は185kの1.910で、190kでは2.027と悪化した。 | ✓ |
+| [3-20](3/20_175k-fid1.89-to-190k-lr5e-5-ema0.5/README.md) | Experiment 3-20: 175k FID 1.89 checkpoint -> 190k, lr=5e-5 | 3-18の175k（1.890）からlr=5e-5で190kまで継続する。FID-50k（3 seed平均）の最良は185kの1.903で、190kでは2.010と悪化した。 | ✓ |
 
 資料（実験READMEなし）：`3/report/`
 
@@ -69,19 +70,19 @@
 
 | ID | タイトル | 概要 | results |
 |---|---|---|:-:|
-| [5-1](5/1_pndm_fid50k_3seeds/README.md) | Experiment 5-1: PNDM Sampler FID-50k over 3 Seed Ranges | `generate.py --sampler=pndm` の FID-50k を、3つの seed 範囲で評価する。 | ✓ |
-| [5-2](5/2_spndm_fid50k_3seeds/README.md) | Experiment 5-2: S-PNDM Sampler FID-50k over 3 Seed Ranges | `generate.py --sampler=spndm` の FID-50k を、3つの seed 範囲で評価する。 | ✓ |
-| [5-3](5/3_rk4_fid50k_3seeds/README.md) | Experiment 5-3: RK4 Sampler FID-50k over 3 Seed Ranges | `generate.py --sampler=rk4` の FID-50k を、3つの seed 範囲で評価する。 | ✓ |
-| [5-4](5/4_ab_fid50k_3seeds/README.md) | Experiment 5-4: Adams-Bashforth Multiple-Step Sampler FID-50k over 3 Seed Ranges | `generate.py --sampler=ab` の FID-50k を、3つの seed 範囲で評価する。 | ✓ |
-| [5-5](5/5_pndm_35nfe_fid50k_3seeds/README.md) | Experiment 5-5: PNDM Sampler 35NFE FID-50k over 3 Seed Ranges | `generate.py --sampler=pndm` の35NFE条件での FID-50k を、3つの seed 範囲で評価する。 | ✓ |
-| [5-6](5/6_pndm_linear_fid50k_3seeds/README.md) | Experiment 5-6: PNDM Fixed AB4 with Linear Sigma Schedule FID-50k over 3 Seed Ranges | `generate.py --sampler=pndm-linear` の FID-50k を、3つの seed 範囲で評価する。 | ✓ |
-| [5-7](5/7_ab_35nfe_fid50k_3seeds/README.md) | Experiment 5-7: No-RK Warmup AB 35NFE FID-50k over 3 Seed Ranges | `generate.py --sampler=ab`を35 steps / 35NFEで実行し、FID-50kを3つの seed範囲で評価する。 | ✓ |
-| [5-8](5/8_pndm_no_rk_warmup_fid50k_3seeds/README.md) | Experiment 5-8: PNDM without RK Warmup | 実験5-5のPNDMから最初の3区間のRK4 warmupだけを除き、FID-50kを3つの seed範囲で評価する。no-RK版はEuler, AB2, AB3で履歴を作り、その後は 実験5-5と同じ固定係数AB4を使う。 | ✓ |
-| [5-9](5/9_pndm_no_rk_35nfe_fid50k_3seeds/README.md) | Experiment 5-9: PNDM no-RK 35NFE FID-50k over 3 Seed Ranges | 実験5-8の `pndm-no-rk` を `steps=35`, `NFE=35` に増やし、FID-50kを3つのseed範囲で評価する。 | ✓ |
-| [5-10](5/10_spndm_35nfe_fid50k_3seeds/README.md) | Experiment 5-10: S-PNDM Sampler 35NFE FID-50k over 3 Seed Ranges | 実験5-2を基準に、`generate.py --sampler=spndm` の35NFE条件でFID-50kを 3つのseed範囲について評価する。 | ✓ |
-| [5-11](5/11_pndm_no_rk_18nfe_fid50k_3seeds/README.md) | Experiment 5-11: PNDM no-RK 18NFE FID-50k over 3 Seed Ranges | 固定係数Adams-Bashforthを使う `pndm-no-rk` を18 steps / 18 NFEで評価する。 実験5-4の可変係数ABとsteps、NFE、sigma schedule、warmup、seed範囲を揃え、 非等間隔のEDM rho scheduleに… | ✓ |
-| [5-12](5/12_ab_26nfe_fid50k_3seeds/README.md) | Experiment 5-12: Variable-Coefficient AB 26NFE FID-50k over 3 Seed Ranges | EDM rho scheduleに合わせた可変係数Adams-Bashforth sampler `ab` を 26 steps / 26 NFEで評価する。実験5-8の固定係数PNDM no-RKとsteps、NFE、 sigma schedule、warmup、seed範囲… | ✓ |
-| [5-13](5/13_trajectory_distance_5-4_vs_5-11/README.md) | Experiment 5-13: Trajectory Distance for 5-4 vs 5-11 | 実験5-4（不等間隔に合わせた可変係数AB）と実験5-11（等間隔用の固定係数 PNDM no-RK）が、同じ学習済みdenoiserのODEに対する高精度参照軌道からどれだけ 離れるかを測る。 | ✓ |
+| [5-1](5/1_pndm_fid50k_3seeds/README.md) | Experiment 5-1: PNDM Sampler FID-50k over 3 Seed Ranges | 公式pretrainedで、EDM座標系へ移植したPNDM（RK4 warmup＋固定係数AB4）を18 steps／27 NFEで評価する。FID-50k（3 seed平均）は1.99152で、EDM Heun（35 NFE）の1.83906に届かない。 | ✓ |
+| [5-2](5/2_spndm_fid50k_3seeds/README.md) | Experiment 5-2: S-PNDM Sampler FID-50k over 3 Seed Ranges | 公式pretrainedで、S-PNDM（初回だけHeun補正）を18 steps／19 NFEで評価する。FID-50k（3 seed平均）は3.14766だった。 | ✓ |
+| [5-3](5/3_rk4_fid50k_3seeds/README.md) | Experiment 5-3: RK4 Sampler FID-50k over 3 Seed Ranges | 公式pretrainedで、RK4を18 steps／69 NFEで評価する。FID-50k（3 seed平均）は1.92574で、NFEが約2倍でもEDM Heun（35 NFE）の1.83906より悪い。 | ✓ |
+| [5-4](5/4_ab_fid50k_3seeds/README.md) | Experiment 5-4: Adams-Bashforth Multiple-Step Sampler FID-50k over 3 Seed Ranges | 公式pretrainedで、rho scheduleに合わせた可変係数Adams-Bashforth（RK warmupなし）を18 steps／18 NFEで評価する。FID-50k（3 seed平均）は3.57748だった。 | ✓ |
+| [5-5](5/5_pndm_35nfe_fid50k_3seeds/README.md) | Experiment 5-5: PNDM Sampler 35NFE FID-50k over 3 Seed Ranges | 5-1のPNDMをsteps=26にしてEDM Heunと同じ35 NFEで評価する。FID-50k（3 seed平均）は1.91047で、EDM Heunの1.83906に届かない。 | ✓ |
+| [5-6](5/6_pndm_linear_fid50k_3seeds/README.md) | Experiment 5-6: PNDM Fixed AB4 with Linear Sigma Schedule FID-50k over 3 Seed Ranges | 5-1のPNDMのsigma scheduleだけを等間隔（linear）に変える（18 steps／27 NFE）。FID-50k（3 seed平均）は98.1024で失敗。最後の1 stepでσ=4.44から0へ飛ぶなど、低ノイズ側のstepが足りないためと考えられる。 | ✓ |
+| [5-7](5/7_ab_35nfe_fid50k_3seeds/README.md) | Experiment 5-7: No-RK Warmup AB 35NFE FID-50k over 3 Seed Ranges | 5-4の可変係数ABを35 steps／35 NFEに増やして評価する。FID-50k（3 seed平均）は2.12443で、18 NFEの3.57748から改善したが、同じ35 NFEのPNDM（1.91047）やEDM Heun（1.83906）より悪い。 | ✓ |
+| [5-8](5/8_pndm_no_rk_warmup_fid50k_3seeds/README.md) | Experiment 5-8: PNDM without RK Warmup | 5-5のPNDMからRK4 warmupだけを除く（固定係数AB、26 steps／26 NFE）。FID-50k（3 seed平均）は1.91000で、35 NFEの5-5（1.91047）と同等だった。 | ✓ |
+| [5-9](5/9_pndm_no_rk_35nfe_fid50k_3seeds/README.md) | Experiment 5-9: PNDM no-RK 35NFE FID-50k over 3 Seed Ranges | 5-8のPNDM no-RK（固定係数AB）を35 steps／35 NFEに増やす。FID-50k（3 seed平均）は1.89947で追加samplerの中で最良だが、EDM Heun（1.83906）には届かない。 | ✓ |
+| [5-10](5/10_spndm_35nfe_fid50k_3seeds/README.md) | Experiment 5-10: S-PNDM Sampler 35NFE FID-50k over 3 Seed Ranges | 5-2のS-PNDMをsteps=34にして35 NFEで評価する。FID-50k（3 seed平均）は2.21971で、19 NFEの3.14766から改善した。 | ✓ |
+| [5-11](5/11_pndm_no_rk_18nfe_fid50k_3seeds/README.md) | Experiment 5-11: PNDM no-RK 18NFE FID-50k over 3 Seed Ranges | 固定係数AB（PNDM no-RK）を5-4の可変係数ABと同じ18 steps／18 NFEで評価し、AB係数の違いだけを比べる。FID-50k（3 seed平均）は1.99106で、可変係数（3.57748）より大幅に良い。 | ✓ |
+| [5-12](5/12_ab_26nfe_fid50k_3seeds/README.md) | Experiment 5-12: Variable-Coefficient AB 26NFE FID-50k over 3 Seed Ranges | 可変係数ABを5-8の固定係数ABと同じ26 steps／26 NFEで評価し、AB係数の違いだけを比べる。FID-50k（3 seed平均）は2.45947で、固定係数（1.91000）より悪い。 | ✓ |
+| [5-13](5/13_trajectory_distance_5-4_vs_5-11/README.md) | Experiment 5-13: Trajectory Distance for 5-4 vs 5-11 | 5-4（可変係数AB）と5-11（固定係数AB）の、高精度RK4参照軌道からの距離を測る（1024 seed）。最終出力の相対L2誤差は5-11が0.02286、5-4が0.07195で、固定係数の方が参照解に近い。 | ✓ |
 
 資料（実験READMEなし）：[SAMPLER_EXPERIMENT_TEMPLATE.md](5/SAMPLER_EXPERIMENT_TEMPLATE.md)、`5/report/`
 
@@ -95,28 +96,28 @@
 
 | ID | タイトル | 概要 | results |
 |---|---|---|:-:|
-| [7-1](7/1_cifar10_cond_linear_fm_baseline/README.md) | Experiment 7-1: CIFAR-10 Class-Conditional Linear Flow Matching Baseline | CIFAR-10 class-conditionalを対象に、EDMと同じDDPM++構造・学習設定を使う linear-path flow matching (FM) baselineを追加する。EDMとFMの違いを 「経路と学習目標」だけに絞り、architecture・b… | ✓ |
-| [7-2](7/2_cifar10_cond_linear_fm_pilot/README.md) | Experiment 7-2: CIFAR-10 Conditional Linear FM Pilot | Experiment 7-1で動作確認したlinear-path Flow Matching baselineを、修論で傾向を 判断できる20,000 kimgまで段階的に学習する。1,000 / 3,000 / 10,000 / 20,000 kimgで学習状態、固定seed… | ✓ |
-| [7-3](7/3_fm_solver_nfe_and_edm_comparison/README.md) | Experiment 7-3: FM Solver/NFE Sweep and EDM Comparison | Experiment 7-2で20,000 kimgまで学習したlinear FMについて、生成品質の差が 学習誤差ではなく数値積分誤差から来ている可能性を調べる。同じFM velocity場を Euler/Heunで積分し、同一NFEでFID-5kを比較する。さらに、学習条件… | ✓ |
-| [7-4](7/4_fm_edm_fid50k_confirmation/README.md) | Experiment 7-4: FM/EDM FID-50k Confirmation | Experiment 7-3のFID-5kで得た主要傾向を、標準的な50,000生成画像のFIDで確認する。 20,000 kimgまで学習した同一規模のCIFAR-10 conditionalモデルを使い、次の2点を検証する。 | ✓ |
-| [7-5](7/5_fm_edm_trajectory_error/README.md) | Experiment 7-5: FM/EDM Trajectory and Integration Error | Experiment 7-3と7-4では、FMはNFEを増やすと改善する一方、同じNFE 35では EDMよりFIDが悪かった。本実験では、この差を次の2要素に分けて調べる。 | ✓ |
+| [7-1](7/1_cifar10_cond_linear_fm_baseline/README.md) | Experiment 7-1: CIFAR-10 Class-Conditional Linear Flow Matching Baseline | EDMと同じDDPM++・学習設定でlinear-path flow matching（FM）を実装し、50 kimgのsmokeで確認する。lossの低下、checkpoint再読込、生成の決定性を確認した。pilotは7-2で実施し、full（200k）は未実施。 | ✓ |
+| [7-2](7/2_cifar10_cond_linear_fm_pilot/README.md) | Experiment 7-2: CIFAR-10 Conditional Linear FM Pilot | 7-1のFMを20k kimgまで学習し、段階ごとにFID-5k（Euler 18 NFE）を測る。FIDは1k 42.62、3k 24.93、10k 13.27、20k 11.79と改善し、学習は正常に進んだ。 | ✓ |
+| [7-3](7/3_fm_solver_nfe_and_edm_comparison/README.md) | Experiment 7-3: FM Solver/NFE Sweep and EDM Comparison | 20k学習のFMとEDMで、solverとNFEを変えてFID-5kを比べる。FMはNFEとともに改善し、Heunは5・9 NFEでわずかに良く、19・35 NFEでは逆。18 NFEのEulerではFM 11.79がEDM 12.28より良い。 | ✓ |
+| [7-4](7/4_fm_edm_fid50k_confirmation/README.md) | Experiment 7-4: FM/EDM FID-50k Confirmation | 7-3の主要条件をFID-50k（seed 0-49999）で確認する。FM Eulerは18 NFEの7.286から35 NFEで5.302に改善したが、35 NFEのEDM Heun（2.990）との差は残った。 | ✓ |
+| [7-5](7/5_fm_edm_trajectory_error/README.md) | Experiment 7-5: FM/EDM Trajectory and Integration Error | FMとEDMの各solverについて、高精度RK4参照解からの最終誤差（相対L2、256 seed）と経路形状を測る。35 NFEではFM Euler 0.123、FM Heun 0.054、EDM Euler 0.105、EDM Heun 0.033だった。 | ✓ |
 
 ## 8（[グループREADME](8/README.md)）
 
 | ID | タイトル | 概要 | results |
 |---|---|---|:-:|
-| [8-1](8/1_restart_sampling_checkpoint_sweep/README.md) | Experiment 8-1: Restart Sampling Checkpoint Sweep | CIFAR-10 class-conditional EDMの学習途中checkpointに対し、Restart Samplingが通常の ODE（EDM schedule + Heun）より生成品質を改善するか調べる。特に、学習不足なmodel ほどRestartの改善幅が大… | ✓ |
-| [8-2](8/2_restart_k5_fid5k_confirmation/README.md) | Experiment 8-2: Selected Restart K FID-5k Confirmation | Experiment 8-1のFID-1k screeningで観測した「学習不足modelほどRestartの改善幅が 大きい」という傾向を、FID-5kで再確認する。 | ✓ |
-| [8-3](8/3_restart_k5_fid50k_3seeds/README.md) | Experiment 8-3: Restart K=5 FID-50k over 3 Seed Ranges | Experiment 8-2のFID-5kで確認した「Restartは学習不足checkpointでは改善し、学習後期 では悪化する」という傾向を、FID-50k × 3独立seed範囲で正式評価する。 | ✓ |
-| [8-4](8/4_restart_k_sweep_10k_interval/README.md) | Experiment 8-4: Restart K Sweep at 10k Checkpoint Intervals | 厳密な10k刻み再学習系列の利用可能な全checkpointで`K=0,1,...,8`を走査し、 FIDを最小にするKが学習進行に伴って変化するか調べる。checkpointは実行時に検出し、 K=0～8の条件TSVを自動生成する。checkpoint追加時にコードやTSVを… | ✓ |
-| [8-6](8/6_exact_10k_restart_k5_fid50k_1seed/README.md) | Experiment 8-6: Progressive Exact-10k Restart K=5 FID Evaluation | Experiment 0-1で同一学習系列から保存した`10k, 20k, ..., 120k`の12 checkpointを、 Experiment 8-3と同じsampling条件で評価する。FID画像数は一度に50kまで生成せず、 `5k → 25k → 50k`の順に段… | ✓ |
-| [8-7](8/7_trained_restart_k1_fid50k_1seed/README.md) | Experiment 8-7: Trained Restart K=1 vs. Equal-NFE ODE, FID-50k | 十分学習した2 checkpointについて、Restart K=1と同計算量の通常ODEを比較する。 各条件のFID-50kをseed範囲`0-49999`の1組で評価する。「1 seed」は1枚の生成ではなく、 50,000個の生成seedからなる1範囲を意味する。seed… | ✓ |
-| [8-8](8/8_restart_tmin_comparison/README.md) | 実験8-8：Restart t_min 比較（K=5） | EDM条件付きCIFAR-10の20k・40k・60kと、実験3-10の最良170kチェックポイントで、Restart区間 `(0.06, 0.30)` と `(0.14, 0.30)` を比較する。同じ画像集合をFID-5k→25k→50kへ段階的に拡張する。8条件・全24件… | ✓ |
-| [8-10](8/10_restart_fixed_nfe55_k_sweep/README.md) | 実験8-10：NFE=55固定で学習量とKを比較 | 実験0-1のCIFAR-10 class-conditional EDM（DDPM++、学習seed=0）を使い、学習量ごとに、固定計算量で主経路とRestartへの計算配分を比較する。K=5は今回の生成・集計対象から除外する。実験8-4のK=5結果の取り込みは後続作業とする。 | ✓ |
-| [8-11](8/11_restart_fixed_main18_tmin014_k_sweep/README.md) | 実験8-11：N_main=18・t_min=0.14固定のK sweep | 実験0-1のCIFAR-10 class-conditional EDM（DDPM++、学習seed=0）について、主経路を18 stepsに固定し、Restart回数Kと学習量の関係を比較する。計算量はKに応じて変化する。実験8-10のNFE固定比較とは異なる条件である。 | ✓ |
-| [8-12](8/12_restart_fixed_nfe55_tmin014_k_sweep/README.md) | 実験8-12：NFE=55・t_min=0.14固定のK sweep | 実験0-1のCIFAR-10 class-conditional EDM（DDPM++、学習seed=0）を使い、固定計算量で主経路とRestartへの計算配分を比較する。実験8-10のt_min=0.06固定比較、実験8-11のN_main=18固定比較とは条件が異なる。両P… | ✓ |
-| [8-13](8/13_restart_optimal_k_fid50k_3seeds/README.md) | 実験8-13：最適KとK=0のFID-50k・3シード比較 | 8-11で選択した最適Kを固定し、固定モデルにおける生成シード間のFID変動とpaired改善幅を確認する。学習seedは0のままであり、3回の再学習ではない。 | ✓ |
-| [8-14](8/14_restart_subset30k_k_sweep/README.md) | 実験8-14：30,000枚学習の20k〜100kにおけるRestart K比較 | 実験0-2（CIFAR-10 class-conditional、DDPM++/EDM、学習seed=0、subset seed=0、30,000枚）の保存済みcheckpointを使う。追加学習は行わない。ベースラインFIDが悪いほど同じKでRestart改善幅が大きいかを調… |  |
+| [8-1](8/1_restart_sampling_checkpoint_sweep/README.md) | Experiment 8-1: Restart Sampling Checkpoint Sweep | 学習途中の4 checkpointでRestart（K=1,2,5、t_min=0.06）と通常ODEをFID-1kで比べる予備評価。学習不足ほど改善が大きく（5.5kのK=5で同NFE比+2.21）、200kのK=5では悪化した。 | ✓ |
+| [8-2](8/2_restart_k5_fid5k_confirmation/README.md) | Experiment 8-2: Selected Restart K FID-5k Confirmation | 8-1の傾向をFID-5kで再確認する。K=5の同NFE ODE比の改善は5.5k +1.58、20k +0.33で、120k・200kでは−0.11、−0.24と悪化した。 | ✓ |
+| [8-3](8/3_restart_k5_fid50k_3seeds/README.md) | Experiment 8-3: Restart K=5 FID-50k over 3 Seed Ranges | 固定K=5（t_min=0.06、NFE 55）をFID-50k×3生成seed範囲で正式評価する。同NFE ODE比の改善は5.5k +1.718、20k +0.318、120k −0.048、200k −0.181で、学習後期では悪化する。 | ✓ |
+| [8-4](8/4_restart_k_sweep_10k_interval/README.md) | Experiment 8-4: Restart K Sweep at 10k Checkpoint Intervals | 0-1の10k刻みcheckpointでK=0〜8（main 18、t_min=0.06）を走査し、最適Kの変化を調べる。FID-5kの最適Kはばらつきが大きく、FID-25k（80k以降）では多くが1。FID-50kは20kのみで未完了。 | ✓ |
+| [8-6](8/6_exact_10k_restart_k5_fid50k_1seed/README.md) | Experiment 8-6: Progressive Exact-10k Restart K=5 FID Evaluation | 0-1の10k〜120kでK=5（t_min=0.06）と同NFE ODEをFID-5k→25k→50kと段階的に比べる。FID-25kの改善は10k +0.712から100k +0.012へほぼ単調に縮小した（25kは10k〜100kのみ、50kは未実施）。 | ✓ |
+| [8-7](8/7_trained_restart_k1_fid50k_1seed/README.md) | Experiment 8-7: Trained Restart K=1 vs. Equal-NFE ODE, FID-50k | 十分学習した2モデル（3-10の170k、公式pretrained）でRestart K=1と同NFE（39）のODEをFID-50kで比べる。差は−0.014、+0.006でほぼ同等だった。 | ✓ |
+| [8-8](8/8_restart_tmin_comparison/README.md) | 実験8-8：Restart t_min 比較（K=5） | Restartのt_min=0.06と0.14をK=5で比べる（20k・40k・60k、3-10の170k）。FID-50kでは20k・40kで0.06、60k・170kで0.14がわずかに良い（差0.01〜0.09）。 | ✓ |
+| [8-10](8/10_restart_fixed_nfe55_k_sweep/README.md) | 実験8-10：NFE=55固定で学習量とKを比較 | NFE=55固定・t_min=0.06で、K（K=5を除く）とmain stepsへの計算配分を比べる計画。本評価は未実行で、主設定はt_min=0.14の8-12に移った。 |  |
+| [8-11](8/11_restart_fixed_main18_tmin014_k_sweep/README.md) | 実験8-11：N_main=18・t_min=0.14固定のK sweep | 主実験。0-1の20k〜200kでN_main=18・t_min=0.14に固定してK=0〜8を走査する。FID-50kの最適Kは20k:7、40k〜120k:3、140k以降は主に1で、学習が進むほど小さい。 | ✓ |
+| [8-12](8/12_restart_fixed_nfe55_tmin014_k_sweep/README.md) | 実験8-12：NFE=55・t_min=0.14固定のK sweep | 補完実験。NFE=55固定（N_main=28−2K）・t_min=0.14でK=0〜8を走査する。FID-50kの最適Kは20k:8、40k〜140k:4〜7、160k以降:1。主スケジュールも変わるのでKだけの効果ではない。 | ✓ |
+| [8-13](8/13_restart_optimal_k_fid50k_3seeds/README.md) | 実験8-13：最適KとK=0のFID-50k・3シード比較 | 8-11の最適KとK=0をFID-50k×3生成seed範囲で比べる。平均改善幅は20k 0.381、60k 0.105、180k 0.019、200k 0.013。100k・140kはこのPCではn=1（Slackでは完了と報告）。 | ✓ |
+| [8-14](8/14_restart_subset30k_k_sweep/README.md) | 実験8-14：30,000枚学習の20k〜100kにおけるRestart K比較 | 0-2（30,000枚学習）の20k〜100kで8-11型・8-12型のK sweepを行い、全データ学習の結果と比べる。実行中（2026-11-03時点、100kのFID-50kは未完了）。 | ✓ |
 
 資料（実験READMEなし）：`8/report/`
 
