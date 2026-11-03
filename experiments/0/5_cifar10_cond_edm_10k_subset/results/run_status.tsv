@@ -1,0 +1,2 @@
+status	current_kimg	best_kimg	best_fid	stale_count	evaluations	min_delta	patience	max_kimg
+running	20000	20000	2.82997	0	2	0.1	2	30000
