@@ -1,5 +1,7 @@
 # Experiment 5-5: PNDM Sampler 35NFE FID-50k over 3 Seed Ranges
 
+5-1のPNDMをsteps=26にしてEDM Heunと同じ35 NFEで評価する。FID-50k（3 seed平均）は1.91047で、EDM Heunの1.83906に届かない。
+
 ## Purpose
 
 `generate.py --sampler=pndm` の35NFE条件での FID-50k を、3つの seed 範囲で評価する。
@@ -52,8 +54,7 @@ tmux new -s edm-exp5-5-pndm-35nfe-fid50k
 experiments/5/5_pndm_35nfe_fid50k_3seeds/scripts/run_pndm_35nfe_fid50k_3seeds.sh
 ```
 
-index 0 の Quadro RTX 8000 が既に使われている場合は、待機スケジューラをtmuxで起動する。
-GPU index 0上の compute process がなくなったら自動で本実験を開始する。
+対象GPUが既に使われている場合は、待機スケジューラをtmuxで起動する。ローカル設定（`~/.config/edm/gpu.env` の `GPU_INDEX`・`EXPECTED_GPU_NAME`）のGPU上の compute process がなくなったら自動で本実験を開始する。
 
 ```bash
 tmux new -s edm-exp5-5-pndm-35nfe-fid50k-scheduled
@@ -81,11 +82,10 @@ tail -f experiments/5/5_pndm_35nfe_fid50k_3seeds/logs/pndm-35nfe-fid50k-3seeds.l
 tail -f experiments/5/5_pndm_35nfe_fid50k_3seeds/logs/schedule-after-gpu-free.log
 ```
 
-待機間隔や対象GPUは環境変数で変更できる。既定では `GPU_INDEX=0` を見て、
-そのGPU名が `Quadro RTX 8000` であることを確認する。
+対象GPUはローカル設定（`~/.config/edm/gpu.env` の `GPU_INDEX`・`EXPECTED_GPU_NAME`）で決まり、コマンドラインの環境変数では変更しない。別の設定ファイルは `EDM_GPU_CONFIG` で指定する。確認間隔は `CHECK_INTERVAL_SEC` で変更できる。
 
 ```bash
-GPU_INDEX=0 EXPECTED_GPU_NAME="Quadro RTX 8000" CHECK_INTERVAL_SEC=60 \
+CHECK_INTERVAL_SEC=60 \
   experiments/5/5_pndm_35nfe_fid50k_3seeds/scripts/schedule_after_gpu_free.sh
 ```
 
@@ -138,3 +138,5 @@ Outputs:
 experiments/5/5_pndm_35nfe_fid50k_3seeds/results/pndm_35nfe_fid50k_3seeds_summary.tsv
 experiments/5/5_pndm_35nfe_fid50k_3seeds/results/pndm_35nfe_fid50k_3seeds_stats.tsv
 ```
+
+`pndm_35nfe_fid50k_3seeds_stats.tsv` には、1024枚の動作確認（checkpoint `pretrained-smoke`、FID 30.1815）の行も含まれる。本評価の値は `pretrained` の行（FID-50k×3 seed）を使う。

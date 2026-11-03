@@ -1,5 +1,7 @@
 # Experiment 5-10: S-PNDM Sampler 35NFE FID-50k over 3 Seed Ranges
 
+5-2のS-PNDMをsteps=34にして35 NFEで評価する。FID-50k（3 seed平均）は2.21971で、19 NFEの3.14766から改善した。
+
 ## Purpose
 
 実験5-2を基準に、`generate.py --sampler=spndm` の35NFE条件でFID-50kを
@@ -74,7 +76,7 @@ tail -f experiments/5/10_spndm_35nfe_fid50k_3seeds/logs/spndm-35nfe-fid50k-3seed
 tail -f experiments/5/10_spndm_35nfe_fid50k_3seeds/logs/schedule-after-gpu-free.log
 ```
 
-待機対象は `GPU_INDEX`、GPU名の検証は `EXPECTED_GPU_NAME`、確認間隔は
+待機対象のGPUとGPU名の検証はローカル設定（`~/.config/edm/gpu.env` の `GPU_INDEX`・`EXPECTED_GPU_NAME`）で決まる。確認間隔は
 `CHECK_INTERVAL_SEC` で変更できる。
 
 ## Partial Runs

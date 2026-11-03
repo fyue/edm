@@ -1,5 +1,7 @@
 # Experiment 5-8: PNDM without RK Warmup
 
+5-5のPNDMからRK4 warmupだけを除く（固定係数AB、26 steps／26 NFE）。FID-50k（3 seed平均）は1.91000で、35 NFEの5-5（1.91047）と同等だった。
+
 ## Purpose
 
 実験5-5のPNDMから最初の3区間のRK4 warmupだけを除き、FID-50kを3つの

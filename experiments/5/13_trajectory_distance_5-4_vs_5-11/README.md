@@ -1,5 +1,7 @@
 # Experiment 5-13: Trajectory Distance for 5-4 vs 5-11
 
+5-4（可変係数AB）と5-11（固定係数AB）の、高精度RK4参照軌道からの距離を測る（1024 seed）。最終出力の相対L2誤差は5-11が0.02286、5-4が0.07195で、固定係数の方が参照解に近い。
+
 ## Purpose
 
 実験5-4（不等間隔に合わせた可変係数AB）と実験5-11（等間隔用の固定係数
@@ -98,7 +100,7 @@ CONFIG=experiments/5/13_trajectory_distance_5-4_vs_5-11/config/final.tsv \
 
 ## Run Pilot
 
-GPU 0が空くまで待ってからpilotを開始する。
+ローカル設定（`~/.config/edm/gpu.env` の `GPU_INDEX`・`EXPECTED_GPU_NAME`）のGPUが空くまで待ってからpilotを開始する。
 
 ```bash
 tmux new -s edm-exp5-13-pilot

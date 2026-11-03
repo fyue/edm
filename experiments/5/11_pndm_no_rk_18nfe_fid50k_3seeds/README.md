@@ -1,5 +1,7 @@
 # Experiment 5-11: PNDM no-RK 18NFE FID-50k over 3 Seed Ranges
 
+固定係数AB（PNDM no-RK）を5-4の可変係数ABと同じ18 steps／18 NFEで評価し、AB係数の違いだけを比べる。FID-50k（3 seed平均）は1.99106で、可変係数（3.57748）より大幅に良い。
+
 ## Purpose
 
 固定係数Adams-Bashforthを使う `pndm-no-rk` を18 steps / 18 NFEで評価する。
@@ -37,7 +39,7 @@ PLAN_ONLY=1 \
 
 ## Run
 
-GPU 0が空くまで待機してから開始する。
+ローカル設定（`~/.config/edm/gpu.env` の `GPU_INDEX`・`EXPECTED_GPU_NAME`）のGPUが空くまで待機してから開始する。
 
 ```bash
 tmux new -s edm-exp5-11-pndm-no-rk-18nfe

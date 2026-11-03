@@ -1,5 +1,7 @@
 # Experiment 5-3: RK4 Sampler FID-50k over 3 Seed Ranges
 
+公式pretrainedで、RK4を18 steps／69 NFEで評価する。FID-50k（3 seed平均）は1.92574で、NFEが約2倍でもEDM Heun（35 NFE）の1.83906より悪い。
+
 ## Purpose
 
 `generate.py --sampler=rk4` の FID-50k を、3つの seed 範囲で評価する。

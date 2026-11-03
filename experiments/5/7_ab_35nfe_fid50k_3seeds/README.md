@@ -1,5 +1,7 @@
 # Experiment 5-7: No-RK Warmup AB 35NFE FID-50k over 3 Seed Ranges
 
+5-4の可変係数ABを35 steps／35 NFEに増やして評価する。FID-50k（3 seed平均）は2.12443で、18 NFEの3.57748から改善したが、同じ35 NFEのPNDM（1.91047）やEDM Heun（1.83906）より悪い。
+
 ## Purpose
 
 `generate.py --sampler=ab`を35 steps / 35NFEで実行し、FID-50kを3つの

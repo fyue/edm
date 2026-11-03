@@ -1,5 +1,7 @@
 # Experiment 5-6: PNDM Fixed AB4 with Linear Sigma Schedule FID-50k over 3 Seed Ranges
 
+5-1のPNDMのsigma scheduleだけを等間隔（linear）に変える（18 steps／27 NFE）。FID-50k（3 seed平均）は98.1024で失敗。最後の1 stepでσ=4.44から0へ飛ぶなど、低ノイズ側のstepが足りないためと考えられる。
+
 ## Purpose
 
 `generate.py --sampler=pndm-linear` の FID-50k を、3つの seed 範囲で評価する。
@@ -50,8 +52,7 @@ tmux new -s edm-exp5-6-pndm-linear-fid50k
 experiments/5/6_pndm_linear_fid50k_3seeds/scripts/run_pndm_linear_fid50k_3seeds.sh
 ```
 
-index 0 の Quadro RTX 8000 が既に使われている場合は、待機スケジューラをtmuxで起動する。
-GPU index 0上の compute process がなくなったら自動で本実験を開始する。
+対象GPUが既に使われている場合は、待機スケジューラをtmuxで起動する。ローカル設定（`~/.config/edm/gpu.env` の `GPU_INDEX`・`EXPECTED_GPU_NAME`）のGPU上の compute process がなくなったら自動で本実験を開始する。
 
 ```bash
 tmux new -s edm-exp5-6-pndm-linear-fid50k-scheduled
@@ -79,11 +80,10 @@ tail -f experiments/5/6_pndm_linear_fid50k_3seeds/logs/pndm-linear-fid50k-3seeds
 tail -f experiments/5/6_pndm_linear_fid50k_3seeds/logs/schedule-after-gpu-free.log
 ```
 
-待機間隔や対象GPUは環境変数で変更できる。既定では `GPU_INDEX=0` を見て、
-そのGPU名が `Quadro RTX 8000` であることを確認する。
+対象GPUはローカル設定（`~/.config/edm/gpu.env` の `GPU_INDEX`・`EXPECTED_GPU_NAME`）で決まり、コマンドラインの環境変数では変更しない。別の設定ファイルは `EDM_GPU_CONFIG` で指定する。確認間隔は `CHECK_INTERVAL_SEC` で変更できる。
 
 ```bash
-GPU_INDEX=0 EXPECTED_GPU_NAME="Quadro RTX 8000" CHECK_INTERVAL_SEC=60 \
+CHECK_INTERVAL_SEC=60 \
   experiments/5/6_pndm_linear_fid50k_3seeds/scripts/schedule_after_gpu_free.sh
 ```
 

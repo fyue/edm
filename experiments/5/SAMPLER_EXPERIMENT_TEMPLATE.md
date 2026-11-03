@@ -45,15 +45,21 @@ CONFIG=experiments/5/<experiment_dir>/config/<smoke_config>.tsv \
 tail -f experiments/5/<experiment_dir>/logs/schedule-after-gpu-free.log
 ```
 
-## Defaults
+## GPU設定
 
-- `GPU_INDEX=0`
-- `EXPECTED_GPU_NAME="Quadro RTX 8000"`
-- `CHECK_INTERVAL_SEC=300`
+対象GPUは、PCごとの同期対象外ファイル `~/.config/edm/gpu.env` の `GPU_INDEX` と
+`EXPECTED_GPU_NAME` で決まる（`scripts/load_gpu_config.sh` が読み込む）。設定がなければ
+GPU処理を開始しない。共有コードやREADMEにGPU番号・GPU名を固定せず、コマンドラインの
+環境変数でも上書きしない。別の設定ファイルを使う場合は `EDM_GPU_CONFIG` で指定する。
 
-別GPUを見る場合は、環境変数で明示する。
+確認間隔だけは環境変数で変更できる（既定300秒）。
 
 ```bash
-GPU_INDEX=0 EXPECTED_GPU_NAME="Quadro RTX 8000" CHECK_INTERVAL_SEC=60 \
+CHECK_INTERVAL_SEC=60 \
   experiments/5/<experiment_dir>/scripts/schedule_after_gpu_free.sh
 ```
+
+## README冒頭
+
+H1の直後に、目的を1〜2文で書く。結果が確定したら結論（主要なFIDなど）も同じ段落に加え、
+グループREADMEを更新して `python scripts/build_experiment_index.py` でINDEXを再生成する。

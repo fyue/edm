@@ -1,5 +1,7 @@
 # Experiment 5-1: PNDM Sampler FID-50k over 3 Seed Ranges
 
+公式pretrainedで、EDM座標系へ移植したPNDM（RK4 warmup＋固定係数AB4）を18 steps／27 NFEで評価する。FID-50k（3 seed平均）は1.99152で、EDM Heun（35 NFE）の1.83906に届かない。
+
 ## Purpose
 
 `generate.py --sampler=pndm` の FID-50k を、3つの seed 範囲で評価する。

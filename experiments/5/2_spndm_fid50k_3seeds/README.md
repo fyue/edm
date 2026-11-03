@@ -1,5 +1,7 @@
 # Experiment 5-2: S-PNDM Sampler FID-50k over 3 Seed Ranges
 
+公式pretrainedで、S-PNDM（初回だけHeun補正）を18 steps／19 NFEで評価する。FID-50k（3 seed平均）は3.14766だった。
+
 ## Purpose
 
 `generate.py --sampler=spndm` の FID-50k を、3つの seed 範囲で評価する。

@@ -1,5 +1,7 @@
 # Experiment 5-9: PNDM no-RK 35NFE FID-50k over 3 Seed Ranges
 
+5-8のPNDM no-RK（固定係数AB）を35 steps／35 NFEに増やす。FID-50k（3 seed平均）は1.89947で追加samplerの中で最良だが、EDM Heun（1.83906）には届かない。
+
 ## Purpose
 
 実験5-8の `pndm-no-rk` を `steps=35`, `NFE=35` に増やし、FID-50kを3つのseed範囲で評価する。

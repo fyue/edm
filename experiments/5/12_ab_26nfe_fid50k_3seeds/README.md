@@ -1,5 +1,7 @@
 # Experiment 5-12: Variable-Coefficient AB 26NFE FID-50k over 3 Seed Ranges
 
+可変係数ABを5-8の固定係数ABと同じ26 steps／26 NFEで評価し、AB係数の違いだけを比べる。FID-50k（3 seed平均）は2.45947で、固定係数（1.91000）より悪い。
+
 ## Purpose
 
 EDM rho scheduleに合わせた可変係数Adams-Bashforth sampler `ab` を
@@ -37,7 +39,7 @@ PLAN_ONLY=1 \
 
 ## Run
 
-GPU 0が空くまで待機してから開始する。
+ローカル設定（`~/.config/edm/gpu.env` の `GPU_INDEX`・`EXPECTED_GPU_NAME`）のGPUが空くまで待機してから開始する。
 
 ```bash
 tmux new -s edm-exp5-12-ab-26nfe

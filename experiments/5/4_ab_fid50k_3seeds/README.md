@@ -1,5 +1,7 @@
 # Experiment 5-4: Adams-Bashforth Multiple-Step Sampler FID-50k over 3 Seed Ranges
 
+公式pretrainedで、rho scheduleに合わせた可変係数Adams-Bashforth（RK warmupなし）を18 steps／18 NFEで評価する。FID-50k（3 seed平均）は3.57748だった。
+
 ## Purpose
 
 `generate.py --sampler=ab` の FID-50k を、3つの seed 範囲で評価する。
