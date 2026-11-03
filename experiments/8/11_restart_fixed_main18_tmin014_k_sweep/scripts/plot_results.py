@@ -34,14 +34,8 @@ def make_figure(groups, count, near_optimal=False):
     import matplotlib
     matplotlib.use("Agg")
     import matplotlib.pyplot as plt
-    from matplotlib.colors import LinearSegmentedColormap, Normalize
-    from matplotlib.ticker import FormatStrFormatter
     import numpy as np
 
-    # An odd LUT length includes pure white exactly at normalized zero (0.5).
-    colormap = LinearSegmentedColormap.from_list(
-        "fid_delta", ["#3b4cc0", "#ffffff", "#b40426"], N=257)
-    norm = Normalize(vmin=-COLOR_LIMIT, vmax=COLOR_LIMIT)
     figure, axes = plt.subplots(2, 2, figsize=(16, 10))
     axes = axes.ravel()
     figure.suptitle(f"Experiment 8-11: FID-{count:,}, main=18, t_min=0.14", fontsize=14)
@@ -56,12 +50,8 @@ def make_figure(groups, count, near_optimal=False):
     axes[0].set(xlabel="K", ylabel="FID", title="FID by Restart K")
     axes[0].set_xticks(experiment.KS)
     axes[0].legend(fontsize=8, ncol=5, loc="upper center")
-    heatmap = axes[1].imshow(matrix, aspect="auto", cmap=colormap, norm=norm)
-    axes[1].set_xticks(range(len(experiment.KS)), experiment.KS)
-    axes[1].set_yticks(range(len(experiment.CHECKPOINTS)), experiment.CHECKPOINTS)
-    axes[1].set(xlabel="K", ylabel="Checkpoint (kimg)", title="FID(K) - FID(0)")
-    figure.colorbar(heatmap, ax=axes[1], ticks=np.linspace(-COLOR_LIMIT, COLOR_LIMIT, 9),
-                   format=FormatStrFormatter("%.1f"))
+    draw_delta_heatmap(axes[1], matrix)
+
     if near_optimal:
         draw_near_optimal(axes[2], groups, count)
     else:
@@ -73,6 +63,24 @@ def make_figure(groups, count, near_optimal=False):
     draw_improvement(axes[3], groups, count, improvement_limits(groups))
     figure.tight_layout(rect=(0, 0, 1, 0.95))
     return figure
+
+
+def draw_delta_heatmap(axis, matrix):
+    import numpy as np
+    from matplotlib.colors import LinearSegmentedColormap, Normalize
+    from matplotlib.ticker import FormatStrFormatter
+
+    # An odd LUT length includes pure white exactly at normalized zero (0.5).
+    colormap = LinearSegmentedColormap.from_list(
+        "fid_delta", ["#3b4cc0", "#ffffff", "#b40426"], N=257)
+    norm = Normalize(vmin=-COLOR_LIMIT, vmax=COLOR_LIMIT)
+
+    heatmap = axis.imshow(matrix, aspect="auto", cmap=colormap, norm=norm)
+    axis.set_xticks(range(len(experiment.KS)), experiment.KS)
+    axis.set_yticks(range(len(experiment.CHECKPOINTS)), experiment.CHECKPOINTS)
+    axis.set(xlabel="K", ylabel="Checkpoint (kimg)", title="FID(K) - FID(0)")
+    axis.figure.colorbar(heatmap, ax=axis, ticks=np.linspace(-COLOR_LIMIT, COLOR_LIMIT, 9),
+                        format=FormatStrFormatter("%.1f"))
 
 
 def draw_near_optimal(axis, groups, count):
@@ -106,6 +114,91 @@ def draw_near_optimal(axis, groups, count):
     colorbar = axis.figure.colorbar(image, ax=axis, ticks=[0, 0.01, 0.02, 0.05], extend=extend)
     colorbar.set_label("FID(K) - min FID")
     colorbar.ax.set_yticklabels(["0", "0.01", "0.02", "0.05"])
+
+
+def fid_weighted_mean(ks, fids, temperature):
+    """Average all K using normalized exp(-(FID - min FID) / temperature)."""
+    import numpy as np
+
+    if not np.isfinite(temperature) or temperature <= 0:
+        raise ValueError("weight temperature must be finite and positive")
+    values = np.asarray(fids, dtype=float)
+    weights = np.exp(-(values - values.min()) / temperature)
+    weights /= weights.sum()
+    return float(np.dot(np.asarray(ks, dtype=float), weights))
+
+
+def make_dots_figure(groups, count, weighted_temperature=None):
+    """Draw exactly two data panels: baseline deltas and near-optimal K dots."""
+    import math
+
+    import matplotlib
+    matplotlib.use("Agg")
+    import matplotlib.pyplot as plt
+    import numpy as np
+
+    figure, axes = plt.subplots(1, 2, figsize=(14, 5.5))
+    figure.suptitle(f"Experiment 8-11: FID-{count:,}, main=18, t_min=0.14", fontsize=14)
+    matrix = np.full((len(experiment.CHECKPOINTS), len(experiment.KS)), np.nan)
+    close_x, close_y, near_x, near_y, best_x, best_y = [], [], [], [], [], []
+    mean_ks = np.full(len(experiment.CHECKPOINTS), np.nan)
+    for i, checkpoint in enumerate(experiment.CHECKPOINTS):
+        group = groups.get((checkpoint, count), {})
+        if 0 in group:
+            for j, k in enumerate(experiment.KS):
+                if k in group:
+                    matrix[i, j] = group[k]["fid"] - group[0]["fid"]
+        if set(group) != set(experiment.KS):
+            axes[1].axvspan(i - 0.5, i + 0.5, color="#eeeeee", zorder=0)
+            continue
+        best = min(experiment.KS, key=lambda k: (group[k]["fid"], k))
+        best_x.append(i)
+        best_y.append(best)
+        candidates = []
+        for k in experiment.KS:
+            delta = group[k]["fid"] - group[best]["fid"]
+            # Include decimal boundaries despite floating-point subtraction error.
+            if delta <= 0.01 or math.isclose(delta, 0.01, rel_tol=0, abs_tol=1e-12):
+                close_x.append(i)
+                close_y.append(k)
+                candidates.append(k)
+            elif delta <= 0.02 or math.isclose(delta, 0.02, rel_tol=0, abs_tol=1e-12):
+                near_x.append(i)
+                near_y.append(k)
+                candidates.append(k)
+        if weighted_temperature is None:
+            mean_ks[i] = np.mean(candidates)
+        else:
+            mean_ks[i] = fid_weighted_mean(
+                experiment.KS, [group[k]["fid"] for k in experiment.KS], weighted_temperature)
+    draw_delta_heatmap(axes[0], matrix)
+    axis = axes[1]
+    if weighted_temperature is None:
+        axis.scatter(close_x, close_y, s=85, color="#2166ac", label="0 <= FID gap <= 0.01", zorder=2)
+        axis.scatter(near_x, near_y, s=85, color="#a6cee3", label="0.01 < FID gap <= 0.02", zorder=2)
+        mean_label = "Mean K (FID gap <= 0.02)"
+    else:
+        mean_label = f"FID-weighted mean K (tau={weighted_temperature:g})"
+    axis.scatter(best_x, best_y, s=120, color="black", label="Best K (smallest K if tied)", zorder=3)
+    axis.plot(range(len(experiment.CHECKPOINTS)), mean_ks, color="#ff7f0e",
+              marker="o", markersize=4, linewidth=2, label=mean_label, zorder=4)
+    axis.set_xticks(range(len(experiment.CHECKPOINTS)), experiment.CHECKPOINTS)
+    axis.set_yticks(experiment.KS)
+    title = ("Near-optimal K and mean: FID gap = FID(K) - min FID"
+             if weighted_temperature is None else "Best K and FID-weighted mean")
+    axis.set(xlabel="Training (kimg)", ylabel="K", title=title,
+             xlim=(-0.5, len(experiment.CHECKPOINTS) - 0.5), ylim=(-0.5, 8.5))
+    axis.set_axisbelow(True)
+    axis.grid(alpha=0.15)
+    axis.legend(loc="upper center", bbox_to_anchor=(0.5, -0.15), fontsize=8, ncol=2)
+    note = ("FID gap thresholds are display tolerances, not statistical equivalence."
+            if weighted_temperature is None else
+            f"All K included: weight proportional to exp(-(FID(K) - min FID) / {weighted_temperature:g}). "
+            "Mean K describes the weighted center, not the optimal K.")
+    figure.text(0.5, 0.02, note,
+                ha="center", fontsize=9)
+    figure.tight_layout(rect=(0, 0.06, 1, 0.94))
+    return figure
 
 
 def improvement_limits(groups):
@@ -156,9 +249,13 @@ def main():
                         help="merged summary JSON containing all 270 results")
     parser.add_argument("--outdir", type=Path, default=DEFAULT_RESULTS,
                         help="destination for PNG/SVG figures; result tables are never rewritten")
-    parser.add_argument("--plot-kind", choices=("overview", "baseline-improvement", "near-optimal", "all"), default="overview",
-                        help="overview (default), baseline-improvement scatter, near-optimal overview, or both original plots (all)")
+    parser.add_argument("--plot-kind", choices=("overview", "baseline-improvement", "near-optimal", "near-optimal-dots", "fid-weighted-k", "all"), default="overview",
+                        help="overview (default), baseline-improvement scatter, near-optimal overview, near-optimal-dots or fid-weighted-k (2 panels), or both original plots (all)")
+    parser.add_argument("--weight-temperature", type=float, default=0.02,
+                        help="positive temperature in FID units for fid-weighted-k (default: 0.02)")
     args = parser.parse_args()
+    if args.plot_kind == "fid-weighted-k":
+        fid_weighted_mean(experiment.KS, [0.0] * len(experiment.KS), args.weight_temperature)
     groups = load_groups(args.summary)
     args.outdir.mkdir(parents=True, exist_ok=True)
     os.environ.setdefault("MPLCONFIGDIR", str(DEFAULT_RESULTS.parent / "logs" / "matplotlib"))
@@ -171,6 +268,13 @@ def main():
                 stem = f"fixed_main18_tmin014_fid{count}"
                 if kind == "near-optimal":
                     stem += "_near_optimal"
+            elif kind == "fid-weighted-k":
+                figure = make_dots_figure(groups, count, weighted_temperature=args.weight_temperature)
+                temperature_tag = str(args.weight_temperature).replace(".", "p")
+                stem = f"fixed_main18_tmin014_fid{count}_fid_weighted_k_tau{temperature_tag}"
+            elif kind == "near-optimal-dots":
+                figure = make_dots_figure(groups, count)
+                stem = f"fixed_main18_tmin014_fid{count}_near_optimal_dots"
             else:
                 figure = make_improvement_figure(groups, count, limits)
                 stem = f"fid_baseline_vs_improvement_fid{count}"
