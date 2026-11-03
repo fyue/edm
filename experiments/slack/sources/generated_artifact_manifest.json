@@ -43,8 +43,8 @@
     },
     {
       "path": "data/full_3seeds_improvement_stats.tsv",
-      "bytes": 484,
-      "sha256": "be74292d4e6d50581319215dc1ab81714f00958f1cde4b60f353f66249977401"
+      "bytes": 362,
+      "sha256": "ca550bfab33dacc3a47fea83da3d444d95f1f601d8af49b826dd5b9db4df8e02"
     },
     {
       "path": "data/full_main18.tsv",

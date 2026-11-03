@@ -5,4 +5,3 @@ checkpoint	optimal_k	positive_ranges	n	mean	std	complete
 140k	1	1	1	0.04397999999999991		False
 180k	1	3	3	0.019326666666666714	0.016678652023869662	True
 200k	1	3	3	0.013443333333333326	0.012120001375137456	True
-vscode-remote://ssh-remote%2Bai-astros/home/kyoukinkin/data/projects/edm/experiments/0/4_post200k_restart_k1_fid50k_3seeds

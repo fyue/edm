@@ -47,8 +47,8 @@
       "source": "experiments/8/13_restart_optimal_k_fid50k_3seeds/results/improvement_stats.tsv",
       "destination": "data/full_3seeds_improvement_stats.tsv",
       "status": "copied",
-      "sha256": "be74292d4e6d50581319215dc1ab81714f00958f1cde4b60f353f66249977401",
-      "bytes": 484
+      "sha256": "ca550bfab33dacc3a47fea83da3d444d95f1f601d8af49b826dd5b9db4df8e02",
+      "bytes": 362
     },
     {
       "source": "experiments/0/4_post200k_restart_k1_fid50k_3seeds/results/condition_stats.tsv",
