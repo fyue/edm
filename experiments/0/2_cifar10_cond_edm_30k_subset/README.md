@@ -1,5 +1,7 @@
 # Experiment 0-2: CIFAR-10 Conditional EDM on a 30k Subset
 
+CIFAR-10の30,000枚subsetで学習し、データ量が学習進行とFIDに与える影響を調べる。100kまでのFID-50kは50k時点の2.34864が最良で、その後100kでは4.44395へ悪化した（[評価結果](results/fid_summary.tsv)）。
+
 ## 目的
 
 CIFAR-10の50,000件から固定seedで30,000件を抽出し、class-conditional
