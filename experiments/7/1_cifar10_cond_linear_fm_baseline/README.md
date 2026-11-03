@@ -1,11 +1,13 @@
 # Experiment 7-1: CIFAR-10 Class-Conditional Linear Flow Matching Baseline
 
+EDMと同じDDPM++・学習設定でlinear-path flow matching（FM）を実装し、50 kimgのsmokeで確認する。lossの低下、checkpoint再読込、生成の決定性を確認した。pilotは7-2で実施し、full（200k）は未実施。
+
 ## Purpose
 
 CIFAR-10 class-conditionalを対象に、EDMと同じDDPM++構造・学習設定を使う
 linear-path flow matching (FM) baselineを追加する。EDMとFMの違いを
 「経路と学習目標」だけに絞り、architecture・batch・LR・EMA・augmentationは
-既存のEDM実験 (`experiments/1`, `experiments/3`) と揃える。
+既存のEDM実験 (`experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18`, `experiments/3`) と揃える。
 
 ## Formulation
 
@@ -114,7 +116,7 @@ PLAN_ONLY=1 PROFILE=full \
   experiments/7/1_cifar10_cond_linear_fm_baseline/scripts/run_fm_linear_baseline.sh
 
 # GPUが空くまで待ってから実行
-PROFILE=smoke GPU_INDEX=0 \
+PROFILE=smoke \
   experiments/7/1_cifar10_cond_linear_fm_baseline/scripts/schedule_after_gpu_free.sh
 
 # unit test (GPU不要)
@@ -237,6 +239,8 @@ smokeはあくまで数値の有限性・保存/再読込・生成経路・決�
 画質の判断は pilot (FID-5k) 以降で行う。
 
 ### 次にやること (未実行)
+
+> 2026-11-03時点：1はExperiment 7-2、3はExperiment 7-3として実施済み。2（`PROFILE=full`、200k）と4（Minibatch OT）は未実施。
 
 1. `PROFILE=pilot` を実行し、1k/3k/10k/20k kimg のFID-5kでEDM baselineと
    学習初期の立ち上がりを比較する。

@@ -1,5 +1,7 @@
 # Experiment 7-4: FM/EDM FID-50k Confirmation
 
+7-3の主要条件をFID-50k（seed 0-49999）で確認する。FM Eulerは18 NFEの7.286から35 NFEで5.302に改善したが、35 NFEのEDM Heun（2.990）との差は残った。
+
 ## 目的
 
 Experiment 7-3のFID-5kで得た主要傾向を、標準的な50,000生成画像のFIDで確認する。
@@ -22,7 +24,7 @@ Experiment 7-3のFID-5kで得た主要傾向を、標準的な50,000生成画像
 checkpoint、既存FID-5k値、既存画像の場所は
 [config/conditions.tsv](config/conditions.tsv)に記録している。
 
-EDM Heun・NFE 35は、Experiment 4で同じcheckpoint、sampler、steps、`S_churn=0`、
+EDM Heun・NFE 35は、実験4 Stage 2-1（S_churn感度、`experiments/4/stage2/1_fid50k_selected_churn`）で同じcheckpoint、sampler、steps、`S_churn=0`、
 seed範囲を使って生成した50,000枚を再利用する。既存値はFID-50k `2.98971`だが、
 7-4の結果表に同じ手順で記録するためFIDを再計算する。FMの2条件は新規生成する。
 
@@ -47,18 +49,17 @@ PLAN_ONLY=1 \
   experiments/7/4_fm_edm_fid50k_confirmation/scripts/schedule_after_gpu_free.sh
 ```
 
-GPU 0が空くまで待ってから全条件を実行する。
+ローカル設定（`~/.config/edm/gpu.env` の `GPU_INDEX`・`EXPECTED_GPU_NAME`）のGPUが空くまで待ってから全条件を実行する。
 
 ```bash
 tmux new -s edm-exp7-4
-GPU_INDEX=0 \
   experiments/7/4_fm_edm_fid50k_confirmation/scripts/schedule_after_gpu_free.sh
 ```
 
 一部の条件だけを実行する場合は空白区切りで指定する。
 
 ```bash
-CONDITION_FILTER="fm-euler-nfe18" GPU_INDEX=0 \
+CONDITION_FILTER="fm-euler-nfe18" \
   experiments/7/4_fm_edm_fid50k_confirmation/scripts/schedule_after_gpu_free.sh
 ```
 

@@ -49,7 +49,7 @@ RUN_DIR="${RUN_DIR:-$EXP_ROOT/training-runs/cifar10-cond-ddpmpp-fm-linear}"
 PROFILE="${PROFILE:-smoke}"
 PLAN_ONLY="${PLAN_ONLY:-0}"
 
-# 学習設定。EDM実験 (experiments/1, experiments/3) と揃えています。
+# 学習設定。EDM実験 (experiments/1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18, experiments/3) と揃えています。
 DATASET="${DATASET:-datasets/cifar10-32x32.zip}"
 ARCH="${ARCH:-ddpmpp}"
 PRECOND="${PRECOND:-fm}"

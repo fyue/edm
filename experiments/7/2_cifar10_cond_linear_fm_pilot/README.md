@@ -1,5 +1,7 @@
 # Experiment 7-2: CIFAR-10 Conditional Linear FM Pilot
 
+7-1のFMを20k kimgまで学習し、段階ごとにFID-5k（Euler 18 NFE）を測る。FIDは1k 42.62、3k 24.93、10k 13.27、20k 11.79と改善し、学習は正常に進んだ。
+
 ## 目的
 
 Experiment 7-1で動作確認したlinear-path Flow Matching baselineを、修論で傾向を
@@ -56,15 +58,14 @@ PLAN_ONLY=1 \
 
 ```bash
 tmux new -s edm-exp7-2
-GPU_INDEX=0 \
   experiments/7/2_cifar10_cond_linear_fm_pilot/scripts/schedule_after_gpu_free.sh
 ```
 
-既定GPU名が異なる環境では`EXPECTED_GPU_NAME`を設定する。完全な新規初期化から
+対象GPUはローカル設定（`~/.config/edm/gpu.env` の `GPU_INDEX`・`EXPECTED_GPU_NAME`）で決まる。完全な新規初期化から
 始める場合だけ`BASE_STATE=''`を指定する。
 
 ```bash
-BASE_STATE='' GPU_INDEX=0 EXPECTED_GPU_NAME='' \
+BASE_STATE='' \
   experiments/7/2_cifar10_cond_linear_fm_pilot/scripts/schedule_after_gpu_free.sh
 ```
 

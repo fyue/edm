@@ -1,5 +1,7 @@
 # Experiment 7-5: FM/EDM Trajectory and Integration Error
 
+FMとEDMの各solverについて、高精度RK4参照解からの最終誤差（相対L2、256 seed）と経路形状を測る。35 NFEではFM Euler 0.123、FM Heun 0.054、EDM Euler 0.105、EDM Heun 0.033だった。
+
 ## 目的
 
 Experiment 7-3と7-4では、FMはNFEを増やすと改善する一方、同じNFE 35では
@@ -76,7 +78,6 @@ PLAN_ONLY=1 \
 
 ```bash
 tmux new -s edm-exp7-5-pilot
-GPU_INDEX=0 \
   experiments/7/5_fm_edm_trajectory_error/scripts/schedule_after_gpu_free.sh
 ```
 
@@ -88,7 +89,6 @@ finalへ進む。
 ```bash
 tmux new -s edm-exp7-5-final
 CONFIG=experiments/7/5_fm_edm_trajectory_error/config/final.tsv \
-GPU_INDEX=0 \
   experiments/7/5_fm_edm_trajectory_error/scripts/schedule_after_gpu_free.sh
 ```
 

@@ -1,5 +1,7 @@
 # Experiment 7-3: FM Solver/NFE Sweep and EDM Comparison
 
+20k学習のFMとEDMで、solverとNFEを変えてFID-5kを比べる。FMはNFEとともに改善し、Heunは5・9 NFEでわずかに良く、19・35 NFEでは逆。18 NFEのEulerではFM 11.79がEDM 12.28より良い。
+
 ## 目的
 
 Experiment 7-2で20,000 kimgまで学習したlinear FMについて、生成品質の差が
@@ -62,14 +64,13 @@ GPUが空くまで待ってから評価を開始する。
 
 ```bash
 tmux new -s edm-exp7-3
-GPU_INDEX=0 \
   experiments/7/3_fm_solver_nfe_and_edm_comparison/scripts/schedule_after_gpu_free.sh
 ```
 
 特定条件だけを実行する場合は空白区切りで指定する。
 
 ```bash
-CONDITION_FILTER="fm-euler-nfe18 edm-euler-nfe18" GPU_INDEX=0 \
+CONDITION_FILTER="fm-euler-nfe18 edm-euler-nfe18" \
   experiments/7/3_fm_solver_nfe_and_edm_comparison/scripts/schedule_after_gpu_free.sh
 ```
 
