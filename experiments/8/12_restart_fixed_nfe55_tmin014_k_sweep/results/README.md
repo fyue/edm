@@ -47,3 +47,33 @@ python experiments/8/12_restart_fixed_nfe55_tmin014_k_sweep/scripts/plot_results
 ```
 
 GPU処理やFID再計算は不要。
+
+## 2パネル図：改善・悪化と良好なKの点分布
+
+`--plot-kind near-optimal-dots`で横並び2パネルの図を出力する。左は既存の`FID(K) − FID(0)`ヒートマップ（青白赤、−0.4〜＋0.4共通）。右は横軸が学習量、縦軸がKで、同じcheckpoint・評価枚数の最小FIDとの差が0.01以内を濃青、0.01超〜0.02以内を薄青の点で示す。最良Kには大きな黒点を重ね、同値なら小さいKを選ぶ。点同士は線で結ばない。全Kが揃わないcheckpoint列は右を灰色にして点を表示しない。許容幅は表示上の基準で、統計的な同等性を意味しない。
+
+FID-5k・25k・50kを各14×5.5インチ、PNGは180dpi（2520×990px）、SVGでも出力する。名前は既存の統合図名に`_near_optimal_dots`を付ける。既定動作・既存図・元データは保持し、GPU処理やFID再計算は行わない。
+
+```bash
+/home/kyoukinkin/data/conda-envs/edm/bin/python \
+  experiments/8/12_restart_fixed_nfe55_tmin014_k_sweep/scripts/plot_results.py \
+  --plot-kind near-optimal-dots
+```
+
+### 良好なKの平均線
+
+2パネル図の右には、各checkpoint・評価枚数で最良FIDとの差が0.02以内の全候補Kの算術平均をオレンジの折れ線と小さな丸印で重ねる。濃青・薄青の候補を等重みで1回ずつ数え、重ね描きした最良Kの黒点は二重計上しない。平均は丸めず表示し、全Kが揃わないcheckpointでは欠損として線を途切れさせる。平均Kは候補分布の中心であり、FIDを最小化するKとは異なる。再生成は上記の`--plot-kind near-optimal-dots`を使用する。
+
+### 全Kを使うFID重み付き平均（別図）
+
+`--plot-kind fid-weighted-k`は2パネル構成で、左の改善・悪化ヒートマップを維持し、右に最良Kの黒点と重み付き平均のオレンジ線を表示する。Best K以外の点は描かず、平均の計算には全K=0〜8を含める。重みは`w(K) = exp(-(FID(K) - min FID) / τ)`を合計1に正規化し、平均を`Σ K w(K)`で計算する。FID差による候補の除外は行わない（極端に小さい重みは浮動小数点で0になる場合がある）。全Kが揃わないcheckpointは灰色にし、平均線を途切れさせる。
+
+`--weight-temperature`の既定値τ=0.02はFID単位の表示パラメータで、FID差の上限ではない。小さいほど最良Kを重視し、大きいほど全Kの等重み平均4に近づく。同値最良Kが複数あるとき、小さいτでの平均は同値候補の中心に近づく。重み付き平均Kは候補分布の中心であり、実際の最良Kや統計的推定値とは異なる。
+
+```bash
+/home/kyoukinkin/data/conda-envs/edm/bin/python \
+  experiments/8/12_restart_fixed_nfe55_tmin014_k_sweep/scripts/plot_results.py \
+  --plot-kind fid-weighted-k --weight-temperature 0.02
+```
+
+出力はFID-5k・25k・50kのPNG/SVGで、従来の統合図名に`_fid_weighted_k_tau0p02`を付ける。温度を変更するとファイル名にも反映する。既存の図と元データは保持する。
