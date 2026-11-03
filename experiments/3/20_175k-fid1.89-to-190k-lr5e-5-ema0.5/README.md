@@ -1,5 +1,7 @@
 # Experiment 3-20: 175k FID 1.89 checkpoint -> 190k, lr=5e-5
 
+3-18の175k（1.890）からlr=5e-5で190kまで継続する。FID-50k（3 seed平均）の最良は185kの1.903で、190kでは2.010と悪化した。
+
 ## 目的
 
 Experiment 3-18 の 175k checkpoint のうち、3 seed FID平均が約 `1.89` の枝を起点に、`lr=0.00005`, `EMA=0.5` で 190k まで継続学習する。

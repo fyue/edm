@@ -24,7 +24,7 @@ set -Eeuo pipefail
 #
 # tmuxでの起動例:
 #   tmux new -s edm-exp3
-#   experiments/3/scripts/run_lr_ema_branches_from_120k.sh
+#   experiments/3/1_120k-160k-lr-ema-sweep/scripts/run_lr_ema_branches_from_120k.sh
 #
 # tmuxから切り離す:
 #   Ctrl-b を押してから d
@@ -33,17 +33,17 @@ set -Eeuo pipefail
 #   tmux attach -t edm-exp3
 #
 # 進捗確認:
-#   tail -f experiments/3/logs/lr-ema-branches.log
+#   tail -f experiments/3/1_120k-160k-lr-ema-sweep/logs/lr-ema-branches.log
 #
 # 結果確認:
-#   cat experiments/3/results/summary.tsv
-#   cat experiments/3/results/health.tsv
+#   cat experiments/3/1_120k-160k-lr-ema-sweep/results/summary.tsv
+#   cat experiments/3/1_120k-160k-lr-ema-sweep/results/health.tsv
 #
 # 実行前の設定確認だけを行う場合:
-#   PLAN_ONLY=1 experiments/3/scripts/run_lr_ema_branches_from_120k.sh
+#   PLAN_ONLY=1 experiments/3/1_120k-160k-lr-ema-sweep/scripts/run_lr_ema_branches_from_120k.sh
 #
 # 現在の分岐が終わったところで止めたい場合:
-#   touch experiments/3/STOP_AFTER_CURRENT_BRANCH
+#   touch experiments/3/1_120k-160k-lr-ema-sweep/STOP_AFTER_CURRENT_BRANCH
 
 cd "$(dirname "$0")/../../.."
 
@@ -53,7 +53,7 @@ export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
 TORCHRUN="${TORCHRUN:-torchrun}"
 PYTHON="${PYTHON:-python}"
 
-EXP_ROOT="${EXP_ROOT:-experiments/3}"
+EXP_ROOT="${EXP_ROOT:-experiments/3/1_120k-160k-lr-ema-sweep}"
 CONFIG="${CONFIG:-$EXP_ROOT/config/branches.tsv}"
 RUN_ROOT="${RUN_ROOT:-$EXP_ROOT/training-runs}"
 FID_ROOT="${FID_ROOT:-$EXP_ROOT/fid-evals}"

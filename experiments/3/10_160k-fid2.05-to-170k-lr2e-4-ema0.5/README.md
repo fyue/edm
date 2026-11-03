@@ -1,5 +1,7 @@
 # Experiment 3-10: 160k FID~2.05 checkpoint -> 170k, lr=2e-4
 
+3-1の元設定の160k（FID 2.050）からlr=2e-4で170kまで継続する。170kのFID-50k（3 seed平均）は1.851で、実験3の最良。8-7・8-8の「実験3のbest」はこのsnapshot。
+
 ## 目的
 
 Experiment 3-1 の `lr1e-3-ema0.5-repro` 分岐で得られた、160k時点の3 seed平均FIDがおよそ `2.05` のcheckpointを起点に、`lr=0.0002`, `EMA=0.5` で170kまで継続学習する。

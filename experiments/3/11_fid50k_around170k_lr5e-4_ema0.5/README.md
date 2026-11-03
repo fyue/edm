@@ -1,6 +1,6 @@
 # Experiment 3-11: lr=5e-4, EMA=0.5, 170k周辺4 checkpointの3 seed評価
 
-`lr=0.0005`, `EMA=0.5` 条件で生成済みの checkpoint から、170k 近傍の4点を FID-50k の3 seed範囲で評価する。
+3-2（lr=5e-4）の170k付近の4 checkpoint（165k〜172.5k）をFID-50k×3 seed範囲で評価する（学習なし）。3 seed平均は2.011〜2.038でほぼ横ばいだった。
 
 ## 対象 checkpoint
 

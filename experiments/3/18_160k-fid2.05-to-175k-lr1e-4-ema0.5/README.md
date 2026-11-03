@@ -1,5 +1,7 @@
 # Experiment 3-18: 160k FID 2.05 checkpoint -> 175k, lr=1e-4
 
+3-1の元設定の160k（2.050）からlr=1e-4で175kまで継続する。FID-50k（3 seed平均）は170kで1.858（3-10とほぼ同じ）、175kで1.890だった。
+
 ## 目的
 
 Experiment 3-1 の 160k checkpoint のうち、3 seed FID平均が約 `2.05` の枝を起点に、`lr=0.0001`, `EMA=0.5` で 175k まで継続学習する。

@@ -1,5 +1,7 @@
 # Experiment 3-13: best 170k checkpoint -> 180k, lr=1e-4
 
+3-10の最良170k（1.851）からlr=1e-4で180kまで継続する。172.5k〜180kのFID-50k（3 seed平均）は2.026〜2.135で、すべて170kより悪化した。
+
 ## 目的
 
 Experiment 3-10 で得られた最良の 170k checkpoint を起点に、`lr=0.0001`, `EMA=0.5` で180kまで継続学習する。

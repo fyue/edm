@@ -1,5 +1,7 @@
 # Experiment 3-15: 160k FID 2.05 checkpoint -> 170k, lr=15e-4
 
+3-1の元設定の160kからlr=1.5e-3で170kまで継続する。学習は170kまで完了したが、FID評価は2026-07-11に開始直後で止まり、未評価。同じ起点・lrの結果は3-14を参照。
+
 ## 目的
 
 Experiment 3-1 の 160k checkpoint のうち、3 seed FID平均が約 `2.05` の枝を起点に、`lr=0.0015`, `EMA=0.5` で 170k まで継続学習する。
@@ -77,6 +79,8 @@ cat experiments/3/15_160k-fid2.05-to-170k-lr15e-4-ema0.5/results/health.tsv
 ```
 
 `summary.tsv` は checkpoint x seed range の生結果、`aggregate.tsv` は checkpoint ごとの3 seed平均・標準偏差・最小・最大を記録する。
+
+2026-11-03時点ではFID評価が未実施のため、`summary.tsv` はヘッダーのみで、`aggregate.tsv` はまだない（評価を完了すると出力される）。
 
 ## 再開と停止
 

@@ -1,17 +1,21 @@
 # 実験3-4: lr=0.0005, EMA=0.5 の170k FID-50k
 
+3-2（lr=5e-4）の学習途中の170k（170035）をFID-50k×3 seed範囲で評価する（学習なし）。3 seed平均は2.011だった。
+
 ## 目的
 
-`160k-200k-lr5e-4-ema0.5` の学習途中に保存された170k checkpointについて、
+`160k-200k-lr5e-4-ema0.5`（実験3-2）の学習途中に保存された170k checkpointについて、
 FID-50kを計算します。学習は行わず、保存済みsnapshotから画像生成とFID計算だけを実行します。
 
 ## 対象checkpoint
 
 ```text
-experiments/3/160k-200k-lr5e-4-ema0.5/training-runs/lr5e-4-ema0.5-160k-200k/network-snapshot-170035.pkl
+experiments/3/2_160k-200k-lr5e-4-ema0.5/training-runs/lr5e-4-ema0.5-160k-200k/network-snapshot-170035.pkl
 ```
 
 保存周期の都合でファイル名は `170035` ですが、本実験では170k checkpointとして扱います。
+
+`results/summary.tsv` に記録された network のパスは、ディレクトリ再編前（`experiments/3/160k-200k-lr5e-4-ema0.5/`）の実行時のもの。
 
 ## デフォルト設定
 

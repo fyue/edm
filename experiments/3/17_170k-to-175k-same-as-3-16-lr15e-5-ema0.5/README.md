@@ -1,5 +1,7 @@
 # Experiment 3-17: 3-16 170k checkpoint -> 175k, same setting
 
+3-16の170k（1.854）から同じlr=1.5e-4で175kまで継続する。FID-50k（3 seed平均）は172.5kで2.009、175kで2.014と悪化した。
+
 ## 目的
 
 Experiment 3-16 の 170k checkpoint を起点に、3-16 と同じ `lr=0.00015`, `EMA=0.5` で 175k まで継続学習する。

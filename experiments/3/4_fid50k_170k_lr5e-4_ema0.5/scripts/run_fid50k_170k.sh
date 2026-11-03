@@ -12,7 +12,7 @@ export CUDA_VISIBLE_DEVICES="${CUDA_VISIBLE_DEVICES:-0}"
 TORCHRUN="${TORCHRUN:-torchrun}"
 
 EXP_ROOT="${EXP_ROOT:-experiments/3/4_fid50k_170k_lr5e-4_ema0.5}"
-NETWORK="${NETWORK:-experiments/3/160k-200k-lr5e-4-ema0.5/training-runs/lr5e-4-ema0.5-160k-200k/network-snapshot-170035.pkl}"
+NETWORK="${NETWORK:-experiments/3/2_160k-200k-lr5e-4-ema0.5/training-runs/lr5e-4-ema0.5-160k-200k/network-snapshot-170035.pkl}"
 FID_REF="${FID_REF:-fid-refs/cifar10-32x32.npz}"
 IMAGE_ROOT="${IMAGE_ROOT:-$EXP_ROOT/images}"
 RESULTS_DIR="${RESULTS_DIR:-$EXP_ROOT/results}"

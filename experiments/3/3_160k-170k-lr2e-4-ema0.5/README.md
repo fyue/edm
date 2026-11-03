@@ -1,5 +1,7 @@
 # Experiment 3 continuation: lr=0.0002, EMA=0.5, 160k -> 170k
 
+3-1のlr=5e-4の160kから、lr=2e-4に下げて170kまで継続する。170kのFID-50k（3 seed平均）は1.939で、起点の2.010より改善した。
+
 ## 目的
 
 `120k-160k-lr-ema-sweep` で最も良いFIDを示した 160k checkpoint から、

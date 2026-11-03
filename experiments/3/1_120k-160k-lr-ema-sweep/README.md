@@ -1,4 +1,6 @@
-# Experiment 3: 120kからのlr/EMA分岐実験
+# Experiment 3-1: 120kからのlr/EMA分岐実験
+
+基準学習の120kから160kまで、lrとEMA half-lifeを変えた3分岐を学習する。160kのFID-50k（3 seed平均）はlr=5e-4で2.010、元設定（lr=1e-3）で2.050、EMA=1.0で2.162だった。
 
 ## 目的
 
@@ -31,7 +33,7 @@ tmux内で実行します。
 
 ```bash
 tmux new -s edm-exp3
-experiments/3/scripts/run_lr_ema_branches_from_120k.sh
+experiments/3/1_120k-160k-lr-ema-sweep/scripts/run_lr_ema_branches_from_120k.sh
 ```
 
 tmuxから切り離す場合:
@@ -49,32 +51,33 @@ tmux attach -t edm-exp3
 ## 進捗確認
 
 ```bash
-tail -f experiments/3/logs/lr-ema-branches.log
+tail -f experiments/3/1_120k-160k-lr-ema-sweep/logs/lr-ema-branches.log
 ```
 
 分岐ごとの学習ログ:
 
 ```bash
-tail -f experiments/3/training-runs/lr1e-3-ema0.5-repro/log.txt
-tail -f experiments/3/training-runs/lr5e-4-ema0.5/log.txt
-tail -f experiments/3/training-runs/lr1e-3-ema1.0/log.txt
+tail -f experiments/3/1_120k-160k-lr-ema-sweep/training-runs/lr1e-3-ema0.5-repro/log.txt
+tail -f experiments/3/1_120k-160k-lr-ema-sweep/training-runs/lr5e-4-ema0.5/log.txt
+tail -f experiments/3/1_120k-160k-lr-ema-sweep/training-runs/lr1e-3-ema1.0/log.txt
 ```
 
 ## 結果確認
 
 ```bash
-cat experiments/3/results/summary.tsv
-cat experiments/3/results/health.tsv
+cat experiments/3/1_120k-160k-lr-ema-sweep/results/summary.tsv
+cat experiments/3/1_120k-160k-lr-ema-sweep/results/health.tsv
 ```
 
 `summary.tsv` には、分岐条件、seed範囲、FID、評価snapshot、生成画像ディレクトリが記録されます。
+`results/` 内に記録された snapshot・画像のパスは、ディレクトリ再編前（`experiments/3/` 直下）の実行時のもの。
 
 ## 再開方法
 
 途中で止まった場合は、同じコマンドを再実行します。
 
 ```bash
-experiments/3/scripts/run_lr_ema_branches_from_120k.sh
+experiments/3/1_120k-160k-lr-ema-sweep/scripts/run_lr_ema_branches_from_120k.sh
 ```
 
 各分岐に `training-state-*.pt` があれば、その最新stateから再開します。
@@ -86,17 +89,17 @@ FIDが `summary.tsv` に記録済みのseed範囲はスキップします。
 現在の分岐が完了したところで止めたい場合:
 
 ```bash
-touch experiments/3/STOP_AFTER_CURRENT_BRANCH
+touch experiments/3/1_120k-160k-lr-ema-sweep/STOP_AFTER_CURRENT_BRANCH
 ```
 
 ## 出力先
 
 ```text
-experiments/3/training-runs/<branch_id>/
-experiments/3/fid-evals/<branch_id>/
-experiments/3/results/summary.tsv
-experiments/3/results/health.tsv
-experiments/3/logs/lr-ema-branches.log
+experiments/3/1_120k-160k-lr-ema-sweep/training-runs/<branch_id>/
+experiments/3/1_120k-160k-lr-ema-sweep/fid-evals/<branch_id>/
+experiments/3/1_120k-160k-lr-ema-sweep/results/summary.tsv
+experiments/3/1_120k-160k-lr-ema-sweep/results/health.tsv
+experiments/3/1_120k-160k-lr-ema-sweep/logs/lr-ema-branches.log
 ```
 
 ## 注意
