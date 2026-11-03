@@ -1,0 +1,113 @@
+{
+  "actual_t_min": null,
+  "checkpoint": "200k",
+  "condition": "200k-k0",
+  "fid": 1.79755,
+  "fid_sec": 125.94094398478046,
+  "generate_sec": 7418.4022731548175,
+  "images": "images/200k-k0/fid-n50000-seeds-100000-149999",
+  "main_steps": 18,
+  "network": "/home/kyoukinkin/projects/edm/experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-200000.pkl",
+  "nfe": 35,
+  "num_images": 50000,
+  "origin": "generated",
+  "protocol": {
+    "S_churn": 0,
+    "condition": {
+      "actual_t_min": null,
+      "checkpoint": "200k",
+      "condition": "200k-k0",
+      "main_steps": 18,
+      "nfe": 35,
+      "restart_index": null,
+      "restart_k": 0,
+      "restart_steps": 0,
+      "t_max": 0.0,
+      "t_min": 0.0
+    },
+    "evaluation_runner": {
+      "sha256": "bb933d2a9c42e525610e5d4c4e22d054c3e1015935483877d7795baf11ee2918",
+      "size": 24479
+    },
+    "experiment": "0-4",
+    "extension_runner": {
+      "sha256": "ebdb887fde39ab9fe67c71316b8340ddf166997bf6d10944cfde539d2a1aa988",
+      "size": 21378
+    },
+    "fid": {
+      "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+      "size": 7329
+    },
+    "fid_batch": 64,
+    "fid_ref": {
+      "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+      "size": 33571316
+    },
+    "gen_batch": 64,
+    "generate": {
+      "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+      "size": 55435
+    },
+    "gpu_loader": {
+      "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+      "size": 655
+    },
+    "gpu_waiter": {
+      "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+      "size": 3106
+    },
+    "gpu_worker": {
+      "sha256": "c8d61471f22165001804c14c0347e04c089c6c4d6cd177fb61cb497f756604c8",
+      "size": 212
+    },
+    "network": {
+      "sha256": "ef52ec8b43a085f4be6174b397c965b1ba67e4e7a652164eae2a009d7f6c41ab",
+      "size": 223191847
+    },
+    "pause_controller": {
+      "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+      "size": 6178
+    },
+    "pause_eta": {
+      "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+      "size": 12867
+    },
+    "restart_noise": 1,
+    "rho": 7,
+    "runner": {
+      "sha256": "be9bce9c222215bc6cc813226e93e2dacb62b1a235769e586a3f267ec3c87979",
+      "size": 36022
+    },
+    "runtime": {
+      "cuda": "11.6",
+      "cudnn": 8302,
+      "driver": "580.178.04",
+      "gpu_name": "NVIDIA TITAN X (Pascal)",
+      "gpu_uuid": "GPU-90193a86-b215-531e-2cee-3f347fa96f75",
+      "hostname": "turing2",
+      "numerical_environment": {
+        "CUBLAS_WORKSPACE_CONFIG": null,
+        "NVIDIA_TF32_OVERRIDE": null
+      },
+      "numpy": "1.26.4",
+      "pci_bus_id": "00000000:05:00.0",
+      "physical_gpu": "1",
+      "pillow": "11.3.0",
+      "python": "3.9.25 (main, Nov  3 2025, 22:33:05) \n[GCC 11.2.0]",
+      "scipy": "1.13.1",
+      "torch": "1.12.1"
+    },
+    "seeds": "100000-149999",
+    "sigma_max": 80,
+    "sigma_min": 0.002
+  },
+  "protocol_id": "b0c13813c409d147652f26024ed29feba5b47f3dc7203471336611cbb8637123",
+  "restart_index": null,
+  "restart_k": 0,
+  "restart_steps": 0,
+  "seeds": "100000-149999",
+  "source_path": "",
+  "source_result": null,
+  "t_max": 0.0,
+  "t_min": 0.0
+}

@@ -1,0 +1,7 @@
+{
+  "complete": false,
+  "completed": 8,
+  "expected": 12,
+  "mixed_environments": false,
+  "note": "Fixed main=18; K=0:35 NFE, K=1:39 NFE; generation seed ranges, not retraining seeds"
+}

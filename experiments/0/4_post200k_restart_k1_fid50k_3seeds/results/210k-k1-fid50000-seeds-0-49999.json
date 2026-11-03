@@ -26,8 +26,8 @@
       "t_min": 0.14
     },
     "evaluation_runner": {
-      "sha256": "079e916a6a0d356fd5e9823252612533d13452604ab22f6cc6eff5476d0c5d18",
-      "size": 18310
+      "sha256": "bb933d2a9c42e525610e5d4c4e22d054c3e1015935483877d7795baf11ee2918",
+      "size": 24479
     },
     "experiment": "0-4",
     "extension_runner": {
@@ -64,6 +64,14 @@
       "sha256": "18b5d09751dbaabffcc60716775424ffbebf069d50ca7e7a6a53296e914c27ad",
       "size": 223191863
     },
+    "pause_controller": {
+      "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+      "size": 6178
+    },
+    "pause_eta": {
+      "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+      "size": 12867
+    },
     "restart_noise": 1,
     "rho": 7,
     "runner": {
@@ -93,7 +101,7 @@
     "sigma_max": 80,
     "sigma_min": 0.002
   },
-  "protocol_id": "89cfeecc2f264feb4b4a86e7408c14596e594a652b7617b0b9802cde79af6057",
+  "protocol_id": "3eb5012ffbc03df32d25a92e426da8f3af9e069beb9baf383fc885a4598007f1",
   "restart_index": 13,
   "restart_k": 1,
   "restart_steps": 3,

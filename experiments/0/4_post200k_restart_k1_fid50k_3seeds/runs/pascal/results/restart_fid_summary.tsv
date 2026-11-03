@@ -1,0 +1,17 @@
+condition	checkpoint	restart_k	nfe	seeds	fid	origin	num_images	fid_sec	fid_ref	gpu_name	gpu_uuid	hostname	driver	python	torch	cuda	cudnn	numpy	scipy	pillow
+200k-k0	200k	0	35	50000-99999	1.80068	generated	50000	126.08076486876234	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	NVIDIA TITAN X (Pascal)	GPU-90193a86-b215-531e-2cee-3f347fa96f75	turing2	580.178.04	"3.9.25 (main, Nov  3 2025, 22:33:05) 
+[GCC 11.2.0]"	1.12.1	11.6	8302	1.26.4	1.13.1	11.3.0
+200k-k0	200k	0	35	100000-149999	1.79755	generated	50000	125.94094398478046	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	NVIDIA TITAN X (Pascal)	GPU-90193a86-b215-531e-2cee-3f347fa96f75	turing2	580.178.04	"3.9.25 (main, Nov  3 2025, 22:33:05) 
+[GCC 11.2.0]"	1.12.1	11.6	8302	1.26.4	1.13.1	11.3.0
+200k-k1	200k	1	39	50000-99999	1.77512	generated	50000	125.91275343531743	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	NVIDIA TITAN X (Pascal)	GPU-90193a86-b215-531e-2cee-3f347fa96f75	turing2	580.178.04	"3.9.25 (main, Nov  3 2025, 22:33:05) 
+[GCC 11.2.0]"	1.12.1	11.6	8302	1.26.4	1.13.1	11.3.0
+200k-k1	200k	1	39	100000-149999	1.79623	generated	50000	136.1821247418411	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	NVIDIA TITAN X (Pascal)	GPU-90193a86-b215-531e-2cee-3f347fa96f75	turing2	580.178.04	"3.9.25 (main, Nov  3 2025, 22:33:05) 
+[GCC 11.2.0]"	1.12.1	11.6	8302	1.26.4	1.13.1	11.3.0
+210k-k0	210k	0	35	50000-99999	1.826	generated	50000	125.88445667922497	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	NVIDIA TITAN X (Pascal)	GPU-90193a86-b215-531e-2cee-3f347fa96f75	turing2	580.178.04	"3.9.25 (main, Nov  3 2025, 22:33:05) 
+[GCC 11.2.0]"	1.12.1	11.6	8302	1.26.4	1.13.1	11.3.0
+210k-k0	210k	0	35	100000-149999	1.81895	generated	50000	126.26291987160221	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	NVIDIA TITAN X (Pascal)	GPU-90193a86-b215-531e-2cee-3f347fa96f75	turing2	580.178.04	"3.9.25 (main, Nov  3 2025, 22:33:05) 
+[GCC 11.2.0]"	1.12.1	11.6	8302	1.26.4	1.13.1	11.3.0
+210k-k1	210k	1	39	50000-99999	1.80329	generated	50000	125.8981172516942	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	NVIDIA TITAN X (Pascal)	GPU-90193a86-b215-531e-2cee-3f347fa96f75	turing2	580.178.04	"3.9.25 (main, Nov  3 2025, 22:33:05) 
+[GCC 11.2.0]"	1.12.1	11.6	8302	1.26.4	1.13.1	11.3.0
+210k-k1	210k	1	39	100000-149999	1.8111	generated	50000	126.07248507393524	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	NVIDIA TITAN X (Pascal)	GPU-90193a86-b215-531e-2cee-3f347fa96f75	turing2	580.178.04	"3.9.25 (main, Nov  3 2025, 22:33:05) 
+[GCC 11.2.0]"	1.12.1	11.6	8302	1.26.4	1.13.1	11.3.0

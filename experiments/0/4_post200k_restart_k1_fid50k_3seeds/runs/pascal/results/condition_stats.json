@@ -1,0 +1,42 @@
+[
+  {
+    "checkpoint": "200k",
+    "complete": false,
+    "condition": "200k-k0",
+    "mean": 1.799115,
+    "n": 2,
+    "nfe": 35,
+    "restart_k": 0,
+    "std": 0.0022132442251139484
+  },
+  {
+    "checkpoint": "200k",
+    "complete": false,
+    "condition": "200k-k1",
+    "mean": 1.785675,
+    "n": 2,
+    "nfe": 39,
+    "restart_k": 1,
+    "std": 0.014927024150847991
+  },
+  {
+    "checkpoint": "210k",
+    "complete": false,
+    "condition": "210k-k0",
+    "mean": 1.822475,
+    "n": 2,
+    "nfe": 35,
+    "restart_k": 0,
+    "std": 0.004985102807365161
+  },
+  {
+    "checkpoint": "210k",
+    "complete": false,
+    "condition": "210k-k1",
+    "mean": 1.807195,
+    "n": 2,
+    "nfe": 39,
+    "restart_k": 1,
+    "std": 0.0055225039610668466
+  }
+]

@@ -10,12 +10,14 @@ import math
 import os
 from pathlib import Path
 import statistics
-import subprocess
 import sys
 from types import SimpleNamespace
 
 ROOT = Path(__file__).resolve().parents[1]
 REPO = ROOT.parents[2]
+sys.path.insert(0, str(REPO / 'scripts'))
+from condition_pause import ConditionPause, StopRequested
+
 SOURCE = REPO / 'experiments/0/3_cifar10_cond_edm_post200k_extension'
 spec = importlib.util.spec_from_file_location('experiment03', SOURCE / 'scripts/run_experiment.py')
 base = importlib.util.module_from_spec(spec)
@@ -27,6 +29,34 @@ CHECKPOINTS = ('200k', '210k')
 
 def read(path):
     return json.loads(path.read_text())
+
+
+def portable_path(value, relative):
+    """Accept repository/experiment-relative paths or their original absolute location."""
+    if not isinstance(value, str) or not value:
+        return False
+    path, relative = Path(value), Path(relative)
+    if '..' in path.parts:
+        return False
+    return path == relative or (path.is_absolute() and path.parts[-len(relative.parts):] == relative.parts)
+
+
+def runtime_identity(environment):
+    # Device numbering and mount/host names are provenance, not numerical conditions.
+    return {k: v for k, v in environment.items() if k not in ('hostname', 'physical_gpu', 'pci_bus_id')}
+
+
+def validate_runtime(actual, reference):
+    if (not isinstance(actual, dict) or set(actual) != set(reference)
+            or any(not isinstance(actual[k], type(v)) for k, v in reference.items())):
+        raise ValueError('Missing or invalid execution runtime metadata')
+
+
+def check_pair_runtime(results, row, seeds, actual):
+    for result in results:
+        if result['checkpoint'] == row['checkpoint'] and result['seeds'] == seeds:
+            if runtime_identity(result['protocol']['runtime']) != runtime_identity(actual):
+                raise ValueError('K=0/K=1 of the same checkpoint/seed range require the same GPU/software runtime')
 
 
 def definitions():
@@ -70,13 +100,15 @@ def protocol(args, row, seeds, environment):
     p.update(experiment='0-4', evaluation_runner=util.identity(Path(__file__)),
              gpu_worker=util.identity(ROOT / 'scripts/gpu_worker.sh'),
              gpu_waiter=util.identity(REPO / 'scripts/wait_for_gpu_and_run.sh'),
-             gpu_loader=util.identity(REPO / 'scripts/load_gpu_config.sh'))
+             gpu_loader=util.identity(REPO / 'scripts/load_gpu_config.sh'),
+             pause_controller=util.identity(REPO / 'scripts/condition_pause.py'),
+             pause_eta=util.identity(REPO / 'scripts/pause_eta.py'))
     return p
 
 
 def source_protocol(p):
     result = {k: v for k, v in p.items() if k not in
-              ('evaluation_runner', 'gpu_worker', 'gpu_waiter', 'gpu_loader')}
+              ('evaluation_runner', 'gpu_worker', 'gpu_waiter', 'gpu_loader', 'pause_controller', 'pause_eta')}
     result['experiment'] = '0-3'
     return result
 
@@ -93,16 +125,20 @@ def imported(args, row, path, source, environment):
 def validate(args, results, environment, images=False):
     definitions_by_name = {r['condition']: r for r in definitions()}
     seen = set()
-    for result in results:
+    for index, result in enumerate(results):
         row = definitions_by_name.get(result.get('condition'))
         seed = result.get('seeds')
         key = result.get('condition'), seed
         if key in seen:
             raise ValueError(f'Duplicate completed result: {key}')
         seen.add(key)
-        if row is None or seed not in SEEDS or any(result.get(k) != v for k, v in row.items()):
+        if (row is None or seed not in SEEDS
+                or any(result.get(k) != v for k, v in row.items() if k != 'network')
+                or not portable_path(result.get('network'), Path(row['network']).relative_to(REPO))):
             raise ValueError('Unknown or modified result condition/seed')
-        p = protocol(args, row, seed, environment)
+        recorded = result.get('protocol', {}).get('runtime')
+        validate_runtime(recorded, environment)
+        p = protocol(args, row, seed, recorded)
         if (result.get('protocol') != p or result.get('protocol_id') != util.digest(p)
                 or result.get('num_images') != 50000 or not isinstance(result.get('fid'), (int, float))
                 or not math.isfinite(result['fid']) or result['fid'] < 0):
@@ -110,30 +146,81 @@ def validate(args, results, environment, images=False):
         if seed == SEEDS[0]:
             source = result.get('source_result', {})
             expected_path = SOURCE / 'results' / marker(args, row, seed).name
-            if (result.get('origin') != '0-3' or result.get('source_path') != str(expected_path)
+            if (result.get('origin') != '0-3'
+                    or not portable_path(result.get('source_path'), expected_path.relative_to(REPO))
                     or source != read(expected_path) or source.get('protocol') != source_protocol(p)
                     or source.get('protocol_id') != util.digest(source['protocol'])
                     or source.get('fid') != result['fid'] or result.get('images') != ''):
                 raise ValueError('Imported source/protocol/FID mismatch')
         else:
             folder = folder_for(args, row, seed)
-            if (result.get('origin') != 'generated' or result.get('images') != str(folder)
+            if (result.get('origin') != 'generated'
+                    or not portable_path(result.get('images'), folder.relative_to(args.exp_root))
                     or result.get('source_path') != '' or result.get('source_result') is not None):
                 raise ValueError('Invalid generated-result provenance')
             if images:
                 util.ensure_protocol(folder, p, create=False)
                 util.inventory(folder, util.parse_seeds(seed), complete=True)
+        check_pair_runtime(results[:index], row, seed, recorded)
 
 
-def load_results(args, environment, images=False):
+def load_results(args, environment, images=False, roots=None):
     results = []
-    for path in sorted((args.exp_root / 'results').glob('*-fid50000-seeds-*.json')):
-        result = read(path)
-        if path != marker(args, result, result['seeds']):
-            raise ValueError('Result filename mismatch')
-        results.append(result)
-    validate(args, results, environment, images=images)
+    for root in roots or [args.exp_root]:
+        local = SimpleNamespace(**dict(vars(args), exp_root=root))
+        batch = []
+        for path in sorted((root / 'results').glob('*-fid50000-seeds-*.json')):
+            result = read(path)
+            if path != marker(local, result, result['seeds']):
+                raise ValueError('Result filename mismatch')
+            batch.append(result)
+        validate(local, batch, environment, images=images)
+        results.extend(batch)
+    validate(args, results, environment)
     return results
+
+
+def refresh_imports(args, environment, originals):
+    """Rebind only verified source imports; never migrate generated/partial output."""
+    for name in ('images', 'samples'):
+        if any(p.is_file() for p in (args.exp_root / name).rglob('*')):
+            raise ValueError('Cannot refresh imports with generated or partial image artifacts')
+    definitions_by_name = {r['condition']: r for r in definitions()}
+    changes = []
+    seen = set()
+    for path in sorted((args.exp_root / 'results').glob('*-fid50000-seeds-*.json')):
+        old = read(path)
+        row = definitions_by_name.get(old.get('condition'))
+        p = old.get('protocol', {})
+        if row is None or old.get('seeds') != SEEDS[0] or old.get('origin') != '0-3':
+            raise ValueError('Refresh supports only source-imported first-range results')
+        source_path, source = originals[row['condition']]
+        if (row['condition'] in seen or path != marker(args, row, SEEDS[0])
+                or any(old.get(k) != v for k, v in row.items() if k != 'network')
+                or not portable_path(old.get('network'), Path(row['network']).relative_to(REPO))
+                or old.get('num_images') != 50000 or old.get('images') != ''
+                or not portable_path(old.get('source_path'), source_path.relative_to(REPO))
+                or old.get('source_result') != source
+                or old.get('fid') != source['fid'] or p.get('experiment') != '0-4'
+                or old.get('protocol_id') != util.digest(p) or source_protocol(p) != source['protocol']):
+            raise ValueError('Old import/source/protocol mismatch; refusing refresh')
+        seen.add(row['condition'])
+        replacement = imported(args, row, source_path, source, environment)
+        validate(args, [replacement], environment)
+        if old != replacement:
+            changes.append((path, old, replacement))
+    # Validate everything before backing up or replacing any completion markers.
+    for path, old, _ in changes:
+        backup = args.exp_root / 'results/import_backups' / old['protocol_id'] / path.name
+        if backup.exists() and read(backup) != old:
+            raise ValueError(f'Existing import backup differs: {backup}')
+    for path, old, _ in changes:
+        util.write_json(args.exp_root / 'results/import_backups' / old['protocol_id'] / path.name, old)
+    for path, _, replacement in changes:
+        util.write_json(path, replacement)
+    results = load_results(args, environment)
+    aggregate(args, results, environment)
+    print(f'Refreshed {len(changes)} imported results; {len(results)}/12 evaluations retained', flush=True)
 
 
 def stats(values):
@@ -145,11 +232,16 @@ def aggregate(args, results, environment):
     validate(args, results, environment)
     out = args.exp_root / 'results'
     lookup = {(r['condition'], r['seeds']): r['fid'] for r in results}
-    raw = [{k: r[k] for k in ('condition', 'checkpoint', 'restart_k', 'nfe', 'seeds', 'fid', 'origin')}
+    runtime_fields = ('gpu_name', 'gpu_uuid', 'hostname', 'driver', 'python', 'torch', 'cuda', 'cudnn',
+                      'numpy', 'scipy', 'pillow')
+    raw = [dict({k: r[k] for k in ('condition', 'checkpoint', 'restart_k', 'nfe', 'seeds', 'fid', 'origin',
+                                  'num_images', 'fid_sec')}, fid_ref=str(args.fid_ref),
+                **{k: r['protocol']['runtime'][k] for k in runtime_fields})
            for r in sorted(results, key=lambda r: (r['checkpoint'], r['restart_k'], SEEDS.index(r['seeds'])))]
     util.write_json(out / 'restart_fid_summary.json', results)
     util.write_tsv(out / 'restart_fid_summary.tsv', raw,
-                   ['condition', 'checkpoint', 'restart_k', 'nfe', 'seeds', 'fid', 'origin'])
+                   ['condition', 'checkpoint', 'restart_k', 'nfe', 'seeds', 'fid', 'origin',
+                    'num_images', 'fid_sec', 'fid_ref', *runtime_fields])
     conditions, paired, improvements, training, training_stats = [], [], [], [], []
     for row in definitions():
         values = [lookup[(row['condition'], seed)] for seed in SEEDS if (row['condition'], seed) in lookup]
@@ -179,7 +271,9 @@ def aggregate(args, results, environment):
             ('training_delta_stats', training_stats, list(training_stats[0]))]:
         util.write_json(out / f'{name}.json', table)
         util.write_tsv(out / f'{name}.tsv', table, fields)
+    environments = {util.digest(runtime_identity(r['protocol']['runtime'])) for r in results}
     util.write_json(out / 'status.json', dict(completed=len(results), expected=12, complete=len(results) == 12,
+                                             mixed_environments=len(environments) > 1,
                                              note='Fixed main=18; K=0:35 NFE, K=1:39 NFE; generation seed ranges, not retraining seeds'))
     plot(out, lookup)
 
@@ -233,68 +327,67 @@ def stopped(args):
     return False
 
 
-def evaluate(args, row, seeds, environment, smoke=False):
+def evaluate(args, row, seeds, environment, smoke=False, pause=None):
     seeds = '0-1' if smoke else seeds
     folder = folder_for(args, row, seeds, smoke)
     p = protocol(args, row, seeds, environment)
     util.ensure_protocol(folder, p)
     allowed = util.parse_seeds(seeds)
+    log = args.exp_root / 'logs' / f'{row["condition"]}-seeds-{seeds}.log'
+    if pause is not None:
+        pause.phase('validate', row, seeds, log)
     present = util.inventory(folder, allowed)
     generate_sec = 0.0
-    log = args.exp_root / 'logs' / f'{row["condition"]}-seeds-{seeds}.log'
     for missing in util.seed_ranges(sorted(set(allowed) - set(present))):
+        if pause is not None:
+            pause.phase('generate', log=log)
         elapsed, _ = util.run_logged(util.generate_command(row, folder, missing, args), log)
         generate_sec += elapsed
+    if pause is not None:
+        pause.phase('validate', log=log)
     util.inventory(folder, allowed, complete=True)
     if smoke:
+        if pause is not None:
+            pause.phase('saved')
         print(f'SMOKE OK {row["condition"]}: two valid RGB 32x32 PNGs', flush=True)
         return
     command = [args.torchrun, '--standalone', '--nproc_per_node=1', 'fid.py', 'calc',
                f'--images={folder}', f'--ref={args.fid_ref}', '--num=50000', '--batch=64']
+    if pause is not None:
+        pause.phase('fid', log=log)
     fid_sec, fid = util.run_logged(command, log)
     if fid is None or not math.isfinite(fid) or fid < 0:
         raise ValueError('Missing/nonfinite/negative FID')
+    if pause is not None:
+        pause.phase('save', log=log)
     result = dict(row, seeds=seeds, num_images=50000, fid=fid, protocol=p, protocol_id=util.digest(p),
-                  origin='generated', source_path='', source_result=None, images=str(folder),
+                  origin='generated', source_path='', source_result=None,
+                  images=str(folder.relative_to(args.exp_root)),
                   generate_sec=generate_sec, fid_sec=fid_sec)
     validate(args, [result], environment)
     util.write_json(marker(args, row, seeds), result)
 
 
-def launch(args, row, seeds):
-    env = dict(os.environ, PYTHON=sys.executable, RUN_SCRIPT=str(ROOT / 'scripts/gpu_worker.sh'),
-               EXP_ROOT=str(args.exp_root), SCHEDULE_LABEL=f'0-4 {row["condition"]} {seeds}', PLAN_ONLY='0')
-    command = ['bash', 'scripts/wait_for_gpu_and_run.sh', '--gpu-worker', row['condition'],
-               '--exp-root', str(args.exp_root), '--fid-ref', str(args.fid_ref),
-               '--torchrun', args.torchrun, '--seed-filter', seeds]
-    if args.samples_only:
-        command.append('--samples-only')
-    # Preserve progress in tmux and master.log, including shared-waiter errors.
-    with subprocess.Popen(command, cwd=REPO, env=env, stdout=subprocess.PIPE,
-                          stderr=subprocess.STDOUT, text=True) as process:
-        with (args.exp_root / 'logs/master.log').open('a') as handle:
-            for line in process.stdout:
-                print(line, end='', flush=True)
-                handle.write(line)
-                handle.flush()
-        if process.wait():
-            raise RuntimeError('GPU stage failed; see logs/master.log')
-
-
 def arguments():
     parser = argparse.ArgumentParser(description=__doc__)
     modes = parser.add_mutually_exclusive_group()
-    for name in ('plan-only', 'verify-only', 'aggregate-only', 'samples-only'):
+    for name in ('plan-only', 'verify-only', 'aggregate-only', 'samples-only', 'refresh-imports'):
         modes.add_argument('--' + name, action='store_true')
     parser.add_argument('--exp-root', type=Path, default=Path(os.environ.get('EXP_ROOT', ROOT)))
     parser.add_argument('--checkpoint-filter', default='all')
     parser.add_argument('--seed-filter', default='all')
     parser.add_argument('--fid-ref', type=Path, default=REPO / 'fid-refs/cifar10-32x32.npz')
+    parser.add_argument('--result-roots', type=Path, nargs='+', help='Input experiment roots for CPU aggregation/verification')
     parser.add_argument('--torchrun', default=os.environ.get('TORCHRUN', str(Path(sys.executable).parent / 'torchrun')))
-    parser.add_argument('--gpu-worker', help=argparse.SUPPRESS)
     args = parser.parse_args()
     args.exp_root = args.exp_root.resolve()
     args.fid_ref = args.fid_ref.resolve()
+    if args.result_roots:
+        args.result_roots = [r.resolve() for r in args.result_roots]
+        if not (args.aggregate_only or args.verify_only):
+            parser.error('--result-roots requires --aggregate-only or --verify-only')
+        if any(not (r / 'results').is_dir() for r in args.result_roots):
+            parser.error('Every --result-roots entry must contain a results directory')
     args.gen_batch = args.fid_batch = 64
     return args
 
@@ -305,7 +398,14 @@ def main():
     selected_seeds = select(SEEDS, args.seed_filter)
     rows = [r for r in definitions() if r['checkpoint'] in selected_cps]
     environment, originals = sources(args)
-    results = load_results(args, environment)
+    if args.refresh_imports:
+        args.exp_root.mkdir(parents=True, exist_ok=True)
+        with (args.exp_root / '.runner.lock').open('a') as lock:
+            fcntl.flock(lock, fcntl.LOCK_EX | fcntl.LOCK_NB)
+            refresh_imports(args, environment, originals)
+        return
+    result_roots = getattr(args, 'result_roots', None)
+    results = load_results(args, environment, roots=result_roots)
     if args.plan_only or os.environ.get('PLAN_ONLY') == '1':
         jobs = [(r, s) for r in rows for s in selected_seeds]
         print(f'{len(jobs)} evaluations selected; initial full plan: 4 reused + 8 new = 12; 400000 new images')
@@ -314,18 +414,8 @@ def main():
                   'import 0-3' if seed == SEEDS[0] else 'generate', flush=True)
         return
     if args.verify_only:
-        load_results(args, environment, images=True)
+        load_results(args, environment, images=True, roots=result_roots)
         print(f'Verified {len(results)}/12 evaluations')
-        return
-    if args.gpu_worker:
-        candidates = [r for r in definitions() if r['condition'] == args.gpu_worker]
-        if len(candidates) != 1 or len(selected_seeds) != 1 or (selected_seeds[0] == SEEDS[0] and not args.samples_only):
-            raise ValueError('Invalid worker condition/seed')
-        if stopped(args):
-            return
-        if base.runtime() != environment:
-            raise ValueError('GPU/software runtime differs from original 0-3 evaluations')
-        evaluate(args, candidates[0], selected_seeds[0], environment, smoke=args.samples_only)
         return
     args.exp_root.mkdir(parents=True, exist_ok=True)
     with (args.exp_root / '.runner.lock').open('a') as lock:
@@ -347,6 +437,7 @@ def main():
                     util.write_json(marker(args, row, SEEDS[0]), result)
                     results.append(result)
             aggregate(args, results, environment)
+        jobs = []
         for row in rows:
             for seed in (SEEDS[:1] if args.samples_only else selected_seeds):
                 if stopped(args):
@@ -357,12 +448,33 @@ def main():
                 if not args.samples_only and path.exists():
                     validate(args, [read(path)], environment, images=True)
                     continue
-                launch(args, row, seed)
-                if stopped(args) and not path.exists():
-                    return
+                jobs.append((row, '0-1' if args.samples_only else seed))
+        if not jobs:
+            print('Selected evaluations finished; no GPU work needed.', flush=True)
+            return
+        pause = ConditionPause(args.exp_root, '0-4', args.exp_root / 'results/restart_fid_summary.tsv', args.fid_ref)
+        pause.info['num_images'] = 2 if args.samples_only else 50000
+        terminal = 'error'
+        try:
+            for row, seed in jobs:
+                pause.boundary(row, seed)
+                actual = base.runtime()
+                validate_runtime(actual, environment)
+                if actual != environment:
+                    changed = ', '.join(k for k in environment if environment[k] != actual[k])
+                    pause.event(f'Runtime differs from imported 0-3 ({changed}); recording actual environment')
+                check_pair_runtime(results, row, seed, actual)
+                evaluate(args, row, seed, actual, smoke=args.samples_only, pause=pause)
                 if not args.samples_only:
                     results = load_results(args, environment)
                     aggregate(args, results, environment)
+                    pause.phase('saved')
+                pause.check_exit()
+            terminal = 'complete'
+        except StopRequested:
+            terminal = 'exit'
+        finally:
+            pause.close(terminal)
         print('Selected evaluations finished.', flush=True)
 
 

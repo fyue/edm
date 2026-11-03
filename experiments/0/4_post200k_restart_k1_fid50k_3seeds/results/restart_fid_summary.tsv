@@ -1,5 +1,9 @@
-condition	checkpoint	restart_k	nfe	seeds	fid	origin
-200k-k0	200k	0	35	0-49999	1.80678	0-3
-200k-k1	200k	1	39	0-49999	1.79335	0-3
-210k-k0	210k	0	35	0-49999	1.8371	0-3
-210k-k1	210k	1	39	0-49999	1.81901	0-3
+condition	checkpoint	restart_k	nfe	seeds	fid	origin	num_images	fid_sec	fid_ref	gpu_name	gpu_uuid	hostname	driver	python	torch	cuda	cudnn	numpy	scipy	pillow
+200k-k0	200k	0	35	0-49999	1.80678	0-3	50000	0.0	/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	Quadro RTX 8000	GPU-5182ddb4-13ad-f781-f39b-233c550fd019	ai-astros	550.67	"3.9.23 | packaged by conda-forge | (main, Jun  4 2025, 17:57:12) 
+[GCC 13.3.0]"	1.12.1+cu113	11.3	8302	1.26.4	1.13.1	11.3.0
+200k-k1	200k	1	39	0-49999	1.79335	0-3	50000	0.0	/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	Quadro RTX 8000	GPU-5182ddb4-13ad-f781-f39b-233c550fd019	ai-astros	550.67	"3.9.23 | packaged by conda-forge | (main, Jun  4 2025, 17:57:12) 
+[GCC 13.3.0]"	1.12.1+cu113	11.3	8302	1.26.4	1.13.1	11.3.0
+210k-k0	210k	0	35	0-49999	1.8371	0-3	50000	0.0	/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	Quadro RTX 8000	GPU-5182ddb4-13ad-f781-f39b-233c550fd019	ai-astros	550.67	"3.9.23 | packaged by conda-forge | (main, Jun  4 2025, 17:57:12) 
+[GCC 13.3.0]"	1.12.1+cu113	11.3	8302	1.26.4	1.13.1	11.3.0
+210k-k1	210k	1	39	0-49999	1.81901	0-3	50000	0.0	/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	Quadro RTX 8000	GPU-5182ddb4-13ad-f781-f39b-233c550fd019	ai-astros	550.67	"3.9.23 | packaged by conda-forge | (main, Jun  4 2025, 17:57:12) 
+[GCC 13.3.0]"	1.12.1+cu113	11.3	8302	1.26.4	1.13.1	11.3.0

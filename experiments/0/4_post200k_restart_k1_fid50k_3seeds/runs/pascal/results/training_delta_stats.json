@@ -1,0 +1,18 @@
+[
+  {
+    "complete": false,
+    "mean": 0.023360000000000047,
+    "n": 2,
+    "restart_k": 0,
+    "std": 0.002771858582251212,
+    "worsened_ranges": 2
+  },
+  {
+    "complete": false,
+    "mean": 0.021519999999999984,
+    "n": 2,
+    "restart_k": 1,
+    "std": 0.009404520189781145,
+    "worsened_ranges": 2
+  }
+]

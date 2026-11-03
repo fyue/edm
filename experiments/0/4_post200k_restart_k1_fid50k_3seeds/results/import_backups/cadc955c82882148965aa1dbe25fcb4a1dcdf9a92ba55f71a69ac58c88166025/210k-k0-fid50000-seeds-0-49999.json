@@ -1,0 +1,188 @@
+{
+  "actual_t_min": null,
+  "checkpoint": "210k",
+  "condition": "210k-k0",
+  "fid": 1.8371,
+  "fid_sec": 0.0,
+  "generate_sec": 0.0,
+  "images": "",
+  "main_steps": 18,
+  "network": "/data00/users/kyoukinkin/projects/edm/experiments/0/3_cifar10_cond_edm_post200k_extension/training-runs/cifar10-cond-ddpmpp-edm-seed0-post200k/network-snapshot-210000.pkl",
+  "nfe": 35,
+  "num_images": 50000,
+  "origin": "0-3",
+  "protocol": {
+    "S_churn": 0,
+    "condition": {
+      "actual_t_min": null,
+      "checkpoint": "210k",
+      "condition": "210k-k0",
+      "main_steps": 18,
+      "nfe": 35,
+      "restart_index": null,
+      "restart_k": 0,
+      "restart_steps": 0,
+      "t_max": 0.0,
+      "t_min": 0.0
+    },
+    "evaluation_runner": {
+      "sha256": "344454bfe29badd79a48e7fb5d9c82e29d36b84b1a73fbb612108043e52a3cf1",
+      "size": 21034
+    },
+    "experiment": "0-4",
+    "extension_runner": {
+      "sha256": "ebdb887fde39ab9fe67c71316b8340ddf166997bf6d10944cfde539d2a1aa988",
+      "size": 21378
+    },
+    "fid": {
+      "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+      "size": 7329
+    },
+    "fid_batch": 64,
+    "fid_ref": {
+      "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+      "size": 33571316
+    },
+    "gen_batch": 64,
+    "generate": {
+      "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+      "size": 55435
+    },
+    "gpu_loader": {
+      "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+      "size": 655
+    },
+    "gpu_waiter": {
+      "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+      "size": 3106
+    },
+    "gpu_worker": {
+      "sha256": "c8d61471f22165001804c14c0347e04c089c6c4d6cd177fb61cb497f756604c8",
+      "size": 212
+    },
+    "network": {
+      "sha256": "18b5d09751dbaabffcc60716775424ffbebf069d50ca7e7a6a53296e914c27ad",
+      "size": 223191863
+    },
+    "pause_controller": {
+      "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+      "size": 6178
+    },
+    "pause_eta": {
+      "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+      "size": 12867
+    },
+    "restart_noise": 1,
+    "rho": 7,
+    "runner": {
+      "sha256": "be9bce9c222215bc6cc813226e93e2dacb62b1a235769e586a3f267ec3c87979",
+      "size": 36022
+    },
+    "runtime": {
+      "cuda": "11.3",
+      "cudnn": 8302,
+      "driver": "550.67",
+      "gpu_name": "Quadro RTX 8000",
+      "gpu_uuid": "GPU-5182ddb4-13ad-f781-f39b-233c550fd019",
+      "hostname": "ai-astros",
+      "numerical_environment": {
+        "CUBLAS_WORKSPACE_CONFIG": null,
+        "NVIDIA_TF32_OVERRIDE": null
+      },
+      "numpy": "1.26.4",
+      "pci_bus_id": "00000000:1C:00.0",
+      "physical_gpu": "0",
+      "pillow": "11.3.0",
+      "python": "3.9.23 | packaged by conda-forge | (main, Jun  4 2025, 17:57:12) \n[GCC 13.3.0]",
+      "scipy": "1.13.1",
+      "torch": "1.12.1+cu113"
+    },
+    "seeds": "0-49999",
+    "sigma_max": 80,
+    "sigma_min": 0.002
+  },
+  "protocol_id": "cadc955c82882148965aa1dbe25fcb4a1dcdf9a92ba55f71a69ac58c88166025",
+  "restart_index": null,
+  "restart_k": 0,
+  "restart_steps": 0,
+  "seeds": "0-49999",
+  "source_path": "/data00/users/kyoukinkin/projects/edm/experiments/0/3_cifar10_cond_edm_post200k_extension/results/210k-k0-fid50000-seeds-0-49999.json",
+  "source_result": {
+    "fid": 1.8371,
+    "images": "/data00/users/kyoukinkin/projects/edm/experiments/0/3_cifar10_cond_edm_post200k_extension/images/210k-k0/fid-n50000-seeds-0-49999",
+    "kimg": 210000,
+    "log": "/data00/users/kyoukinkin/projects/edm/experiments/0/3_cifar10_cond_edm_post200k_extension/logs/210k-k0-0-49999.log",
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": null,
+        "checkpoint": "210k",
+        "condition": "210k-k0",
+        "main_steps": 18,
+        "nfe": 35,
+        "restart_index": null,
+        "restart_k": 0,
+        "restart_steps": 0,
+        "t_max": 0.0,
+        "t_min": 0.0
+      },
+      "experiment": "0-3",
+      "extension_runner": {
+        "sha256": "ebdb887fde39ab9fe67c71316b8340ddf166997bf6d10944cfde539d2a1aa988",
+        "size": 21378
+      },
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "network": {
+        "sha256": "18b5d09751dbaabffcc60716775424ffbebf069d50ca7e7a6a53296e914c27ad",
+        "size": 223191863
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "be9bce9c222215bc6cc813226e93e2dacb62b1a235769e586a3f267ec3c87979",
+        "size": 36022
+      },
+      "runtime": {
+        "cuda": "11.3",
+        "cudnn": 8302,
+        "driver": "550.67",
+        "gpu_name": "Quadro RTX 8000",
+        "gpu_uuid": "GPU-5182ddb4-13ad-f781-f39b-233c550fd019",
+        "hostname": "ai-astros",
+        "numerical_environment": {
+          "CUBLAS_WORKSPACE_CONFIG": null,
+          "NVIDIA_TF32_OVERRIDE": null
+        },
+        "numpy": "1.26.4",
+        "pci_bus_id": "00000000:1C:00.0",
+        "physical_gpu": "0",
+        "pillow": "11.3.0",
+        "python": "3.9.23 | packaged by conda-forge | (main, Jun  4 2025, 17:57:12) \n[GCC 13.3.0]",
+        "scipy": "1.13.1",
+        "torch": "1.12.1+cu113"
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002
+    },
+    "protocol_id": "eb369cf18a7900c648d7b93ef3d95b6437c750443f7c31c8012eaa144a75aaba",
+    "restart_k": 0,
+    "seeds": "0-49999"
+  },
+  "t_max": 0.0,
+  "t_min": 0.0
+}
