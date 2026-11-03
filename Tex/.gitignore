@@ -1,0 +1,15 @@
+# Build outputs (latexmk writes everything to build/).
+build/
+*.aux
+*.bbl
+*.blg
+*.dvi
+*.fdb_latexmk
+*.fls
+*.log
+*.out
+*.synctex.gz
+*.toc
+
+# Root .gitignore excludes *.png; keep paper figures versionable.
+!figures/**/*.png

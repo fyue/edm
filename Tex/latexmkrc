@@ -1,0 +1,11 @@
+# upLaTeX + upBibTeX + dvipdfmx で日本語論文をビルドする設定。
+# 使い方: Tex/ で `latexmk`（main.tex をビルド）、`latexmk -c`（中間ファイル削除）。
+$latex = 'uplatex -synctex=1 -halt-on-error -interaction=nonstopmode -file-line-error %O %S';
+$bibtex = 'upbibtex %O %S';
+$biber = 'biber --bblencoding=utf8 -u -U --output_safechars %O %S';
+$dvipdf = 'dvipdfmx %O -o %D %S';
+$makeindex = 'upmendex %O -o %D %S';
+$pdf_mode = 3;
+$max_repeat = 5;
+$out_dir = 'build';
+@default_files = ('main.tex');

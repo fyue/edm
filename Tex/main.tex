@@ -1,0 +1,78 @@
+\documentclass[uplatex,dvipdfmx,a4paper,11pt]{jsarticle}
+
+% 数式
+\usepackage{amsmath,amssymb}
+\usepackage{bm}
+% 画像・表（graphicx のドライバはクラスオプションの dvipdfmx を使う）
+\usepackage{graphicx}
+\usepackage{booktabs}
+\usepackage{subcaption}
+% ハイパーリンク・PDF しおり（pxjahyper は和文しおりの文字化け防止）
+\usepackage{hyperref}
+\usepackage{pxjahyper}
+\hypersetup{colorlinks=true, allcolors=blue}
+
+\graphicspath{{figures/}}
+
+
+\begin{document}
+
+\title{論文タイトル}
+\author{著者名}
+\date{\today}
+\maketitle
+
+\begin{abstract}
+  ここに概要を書く。
+\end{abstract}
+
+\section{はじめに}
+\label{sec:intro}
+
+拡散モデル~\cite{karras2022edm} は\ldots
+
+\section{関連研究}
+\label{sec:related}
+=
+\section{提案手法}
+\label{sec:method}
+
+式~\eqref{eq:ode} の確率流 ODE を考える。
+\begin{equation}
+  \mathrm{d}\bm{x} = -\dot{\sigma}(t)\,\sigma(t)\,\nabla_{\bm{x}} \log p(\bm{x}; \sigma(t))\,\mathrm{d}t
+  \label{eq:ode}
+\end{equation}
+
+\section{実験}
+\label{sec:experiments}
+
+図~\ref{fig:example} と表~\ref{tab:example} に結果を示す。
+
+\begin{figure}[tb]
+  \centering
+  \includegraphics[width=0.5\linewidth]{example-image}
+  \caption{図のサンプル（figures/ に置いた画像をファイル名で指定する）}
+  \label{fig:example}
+\end{figure}
+
+\begin{table}[tb]
+  \centering
+  \caption{表のサンプル}
+  \label{tab:example}
+  \begin{tabular}{lcc}
+    \toprule
+    手法 & NFE & FID $\downarrow$ \\
+    \midrule
+    ベースライン & 35 & 0.00 \\
+    提案手法 & 35 & 0.00 \\
+    \bottomrule
+  \end{tabular}
+\end{table}
+
+\section{おわりに}
+\label{sec:conclusion}
+
+\bibliographystyle{junsrt}
+\bibliography{references}
+
+\end{document}

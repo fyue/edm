@@ -1,0 +1,197 @@
+\documentclass[a4paper,11pt]{jsarticle}
+
+
+% 数式
+\usepackage{amsmath,amsfonts}
+\usepackage{bm}
+% 画像
+\usepackage[dvipdfmx]{graphicx}
+
+
+\begin{document}
+
+\title{機械学習演習 14-問題 1}
+\author{丸山 徹夜}
+\date{\today}
+\maketitle
+
+\section*{1-1}
+
+\begin{equation*}
+  \frac{\partial{E}}{\partial{w}}
+    = \frac{1}{2} \sum_{i=1}^{N} 2(w^T \phi(x_i) - y_i) \phi(x_i) + \frac{\alpha}{2}2w
+    = \sum_{i=1}^{N} (w^T \phi(x_i) - y_i) \phi(x_i) + \alpha w
+\end{equation*}
+
+\begin{equation*}
+  y = (y_1, y_2, \ldots, y_N)^Tとし、　
+  \hat{y} = (w^T \phi(x_1), w^T \phi(x_2), \ldots, w^T \phi(x_N))^Tとすると、
+\end{equation*}
+
+\begin{equation*}
+  \frac{\partial{E}}{\partial{w}} = \sum_{i=1}^{N} (\hat{y}_i - y_i) \phi(x_i) + \alpha w = \Phi^T (\hat{y} - y) + \alpha wに整理できる
+\end{equation*}
+
+\begin{equation*}
+  \Phi^T (\hat{y} - y) + \alpha w = 0
+\end{equation*}
+
+\begin{equation*}
+  \alpha wを右辺に移動し、左右両辺を -\alpha で割ると、
+\end{equation*}
+
+\begin{equation*}
+  w = - \frac{1}{\alpha} \Phi^T (\hat{y} - y)
+\end{equation*}
+
+\begin{equation*}
+  a = - \frac{1}{\alpha} (\hat{y} - y) とし、
+\end{equation*}
+
+\begin{equation*}
+  w = \Phi^T a
+\end{equation*}
+
+\begin{equation*}
+  \Rightarrow a_i = - \frac{1}{\alpha} (\hat{y}_i - y_i)
+      = - \frac{1}{\alpha} (w^T \phi(x_i) - y_i)
+\end{equation*}
+
+\section*{1-2}
+\subsection*{(a)}
+
+\begin{equation*}
+  \Phi = 
+    \begin{pmatrix}
+      \phi(x_1)^T \\
+      \vdots \\
+      \phi(x_N)^T 
+    \end{pmatrix}、
+  \Phi^T = 
+    \begin{pmatrix}
+      \phi(x_1) & \cdots & \phi(x_N)
+    \end{pmatrix}
+\end{equation*}
+
+\begin{equation*}
+  \Phi^T \Phi = 
+    \begin{pmatrix}
+      \phi(x_1) & \cdots & \phi(x_N)
+    \end{pmatrix}
+    \begin{pmatrix}
+      \phi(x_1)^T \\
+      \vdots \\
+      \phi(x_N)^T 
+    \end{pmatrix}
+  = 
+    \sum_{i=1}^{N} \phi(x_i) \phi(x_i)^T
+\end{equation*}
+
+\subsection*{(b)}
+\begin{equation*}
+  \sum_{i=1}^{N} a^T \Phi \phi(x_i) a^T \Phi \phi(x_i) = 
+  \sum_{i=1}^{N} a^T \Phi \phi(x_i) (a^T \Phi \phi(x_i))^T = 
+\end{equation*}
+
+\begin{equation*}
+  \sum_{i=1}^{N} a^T \Phi \phi(x_i) \phi(x_i)^T \Phi^T a =
+  a^T \Phi (\sum_{i=1}^{N} \phi(x_i) \phi(x_i)^T) \Phi^T a =
+  a^T \Phi \Phi^T \Phi \Phi^T a
+\end{equation*}
+
+\subsection*{(c)}
+
+\begin{equation*}
+  \sum_{i=1}^{N} \phi(x_i)y_i =
+    (\phi(x_1), \ldots, \phi(x_N))
+    \begin{pmatrix}
+      y_1 \\
+      \vdots \\
+      y_N
+    \end{pmatrix}
+  = \Phi^T y
+\end{equation*}
+
+\subsection*{(d)}
+
+\begin{equation*}
+  \sum_{i=1}^{N} y_i^2 =
+    (y_1, \ldots, y_N)
+    \begin{pmatrix}
+      y_1 \\
+      \vdots \\
+      y_N
+    \end{pmatrix}
+  = y^T y
+\end{equation*}
+
+\section*{1-3}
+\begin{equation*}
+  E(\Phi^T a)
+    = \frac{1}{2} \sum_{i=1}^{N} ((\Phi^T a)^T \phi(x_i) - y_i)^2 + \frac{\alpha}{2} (\Phi^T a)^T \Phi^T a
+    = \frac{1}{2} \sum_{i=1}^{N} (a^T \Phi \phi(x_i) - y_i)^2 + \frac{\alpha}{2} a^T \Phi \Phi^T a
+\end{equation*}
+\begin{equation*}
+  = \frac{1}{2} \sum_{i=1}^{N} (a^T \Phi \phi(x_i) a^T \Phi \phi(x_i) - 2a^T \Phi \phi(x_i) y_i + y_i^2) + \frac{\alpha}{2} a^T \Phi \Phi^T a
+\end{equation*}
+\begin{equation*}
+  E(a) = \frac{1}{2} a^T \Phi \Phi^T \Phi \Phi^T a - a^T \Phi \Phi^T y + \frac{1}{2} y^T y + \frac{\alpha}{2} a^T \Phi \Phi^T a
+\end{equation*}
+
+\section*{1-4}
+\begin{equation*}
+  K = \Phi \Phi^Tとして、
+\end{equation*}
+\begin{equation*}
+  E(a) = \frac{1}{2} a^T K K a - a^T K y + \frac{1}{2} y^T y + \frac{\alpha}{2} a^T K a
+\end{equation*}
+
+\section*{1-5}
+\begin{equation*}
+  a_i = - \frac{1}{\alpha} (w^T \phi(x_i) - y_i) \Rightarrow a = - \frac{1}{\alpha} (\Phi w - y)
+\end{equation*}
+
+$wに \Phi^T a を代入すると、$
+\begin{equation*}
+  a = - \frac{1}{\alpha} (\Phi \Phi^T a - y)
+\end{equation*}
+$aについて整理すると、$
+\begin{equation*}
+  (K + \alpha I_N) a = y
+\end{equation*}
+$左右両辺に(K + \alpha I_N)^{-1}をかけると$
+\begin{equation*}
+  a = (K + \alpha I_N)^{-1} y
+\end{equation*}
+
+\section*{1-6}
+
+双対問題のパラメータベクトルλに対するラグランジュ関数がハードマージンSVMの場合、ソフトマージン SVMの場合ともに下記の関数で表します。
+\begin{equation*}
+  L(\lambda) = - \frac{1}{2} \sum_{i \in SV} \sum_{j \in SV} \lambda_i \lambda_j t_i t_j x_i^T x_j + \sum_{i \in SV} \lambda_i
+\end{equation*}
+
+$i, j \notin SVの場合、λ_i = 0, λ_j = 0 $
+
+\begin{equation*}
+  L(\lambda) = - \frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \lambda_i \lambda_j t_i t_j x_i^T x_j + \sum_{i=1}^{N} \lambda_i
+\end{equation*}
+
+$x_i, x_jを、\phi(x_i), \phi(x_j)にそれぞれ置き換えると、$
+
+\begin{equation*}
+  L(\lambda)
+    = - \frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \lambda_i \lambda_j t_i t_j \phi(x_i)^T \phi(x_j) + \sum_{i=1}^{N} \lambda_i
+    = - \frac{1}{2} \sum_{i=1}^{N} \sum_{j=1}^{N} \lambda_i \lambda_j t_i t_j k(x_i, x_j) + \sum_{i=1}^{N} \lambda_i
+\end{equation*}
+
+線形識別関数：
+\begin{equation*}
+  f(x)
+    = \sum_{i \in SV} \lambda_i t_i x_i^T x + b
+    = \sum_{i=1}^{N} \lambda_i t_i \phi(x_i)^T \phi(x) + b
+    = \sum_{i=1}^{N} \lambda_i t_i k(x_i, x) + b
+\end{equation*}
+
+\end{document}
+
