@@ -1,0 +1,5 @@
+# Machine-local recovery state and temporary FID inventories.
+runs/**/progress/
+runs/**/archives/
+runs/**/runner_compatibility/
+runs/**/runner_compatibility_history/
