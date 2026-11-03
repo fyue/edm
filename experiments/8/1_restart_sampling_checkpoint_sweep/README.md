@@ -1,5 +1,7 @@
 # Experiment 8-1: Restart Sampling Checkpoint Sweep
 
+学習途中の4 checkpointでRestart（K=1,2,5、t_min=0.06）と通常ODEをFID-1kで比べる予備評価。学習不足ほど改善が大きく（5.5kのK=5で同NFE比+2.21）、200kのK=5では悪化した。
+
 ## 目的
 
 CIFAR-10 class-conditional EDMの学習途中checkpointに対し、Restart Samplingが通常の

@@ -1,5 +1,7 @@
 # 実験8-12：NFE=55・t_min=0.14固定のK sweep
 
+補完実験。NFE=55固定（N_main=28−2K）・t_min=0.14でK=0〜8を走査する。FID-50kの最適Kは20k:8、40k〜140k:4〜7、160k以降:1。主スケジュールも変わるのでKだけの効果ではない。
+
 実験0-1のCIFAR-10 class-conditional EDM（DDPM++、学習seed=0）を使い、固定計算量で主経路とRestartへの計算配分を比較する。実験8-10のt_min=0.06固定比較、実験8-11のN_main=18固定比較とは条件が異なる。両PCの全270評価は完了し、2026-10-20に統合した。統合結果と再生成手順は[results/README.md](results/README.md)を参照。PCごとの元結果は`runs/*/results/`に記録する。
 
 ## 再現条件

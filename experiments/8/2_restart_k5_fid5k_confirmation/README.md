@@ -1,5 +1,7 @@
 # Experiment 8-2: Selected Restart K FID-5k Confirmation
 
+8-1の傾向をFID-5kで再確認する。K=5の同NFE ODE比の改善は5.5k +1.58、20k +0.33で、120k・200kでは−0.11、−0.24と悪化した。
+
 ## 目的
 
 Experiment 8-1のFID-1k screeningで観測した「学習不足modelほどRestartの改善幅が

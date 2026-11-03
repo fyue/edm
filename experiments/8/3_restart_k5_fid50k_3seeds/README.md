@@ -1,5 +1,7 @@
 # Experiment 8-3: Restart K=5 FID-50k over 3 Seed Ranges
 
+固定K=5（t_min=0.06、NFE 55）をFID-50k×3生成seed範囲で正式評価する。同NFE ODE比の改善は5.5k +1.718、20k +0.318、120k −0.048、200k −0.181で、学習後期では悪化する。
+
 ## 目的
 
 Experiment 8-2のFID-5kで確認した「Restartは学習不足checkpointでは改善し、学習後期

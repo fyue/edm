@@ -1,5 +1,7 @@
 # Experiment 0-1: CIFAR-10 Conditional EDM Exact 10k Retraining
 
+全データ・学習seed 0で0→200kを1プロセスで連続学習し、10k刻み20点の均一なcheckpoint系列を作る。完了済みで、8-4・8-6・8-10〜8-13の評価対象（本実験ではFIDを評価しない）。
+
 ## 目的
 
 修論本番用にCIFAR-10 class-conditional EDM/DDPM++をseed 0から200kまで再学習し、

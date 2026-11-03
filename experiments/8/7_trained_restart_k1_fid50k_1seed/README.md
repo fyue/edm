@@ -1,5 +1,7 @@
 # Experiment 8-7: Trained Restart K=1 vs. Equal-NFE ODE, FID-50k
 
+十分学習した2モデル（3-10の170k、公式pretrained）でRestart K=1と同NFE（39）のODEをFID-50kで比べる。差は−0.014、+0.006でほぼ同等だった。
+
 ## 目的と実験条件
 
 十分学習した2 checkpointについて、Restart K=1と同計算量の通常ODEを比較する。

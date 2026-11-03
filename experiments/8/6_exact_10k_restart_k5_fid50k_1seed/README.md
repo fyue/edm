@@ -1,5 +1,7 @@
 # Experiment 8-6: Progressive Exact-10k Restart K=5 FID Evaluation
 
+0-1の10k〜120kでK=5（t_min=0.06）と同NFE ODEをFID-5k→25k→50kと段階的に比べる。FID-25kの改善は10k +0.712から100k +0.012へほぼ単調に縮小した（25kは10k〜100kのみ、50kは未実施）。
+
 ## 目的
 
 Experiment 0-1で同一学習系列から保存した`10k, 20k, ..., 120k`の12 checkpointを、

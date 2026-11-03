@@ -1,5 +1,7 @@
 # Experiment 8-4: Restart K Sweep at 10k Checkpoint Intervals
 
+0-1の10k刻みcheckpointでK=0〜8（main 18、t_min=0.06）を走査し、最適Kの変化を調べる。FID-5kの最適Kはばらつきが大きく、FID-25k（80k以降）では多くが1。FID-50kは20kのみで未完了。
+
 ## 目的
 
 厳密な10k刻み再学習系列の利用可能な全checkpointで`K=0,1,...,8`を走査し、
