@@ -1,3 +1,0 @@
-checkpoint	baseline_mean	baseline_std	restart_mean	restart_std	improvement_mean
-200k	1.80167	0.00469	1.78823	0.01145	0.01344
-210k	1.82735	0.00915	1.81113	0.00786	0.01622

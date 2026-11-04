@@ -1,4 +1,0 @@
-checkpoint	baseline_fid	best_k	min_fid	improvement	near_optimal_ks	mean_k	fid_gap_threshold
-20k	2.8036	6	2.60379	0.19980999999999982	6	6.0	0.02
-40k	3.20907	0	3.20907	0.0	0	0.0	0.02
-60k	2.84704	0	2.84704	0.0	0	0.0	0.02

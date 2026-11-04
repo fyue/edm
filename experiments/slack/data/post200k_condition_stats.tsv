@@ -1,5 +1,0 @@
-condition	checkpoint	restart_k	nfe	n	mean	std	complete
-200k-k0	200k	0	35	1	1.80678		False
-200k-k1	200k	1	39	1	1.79335		False
-210k-k0	210k	0	35	1	1.8371		False
-210k-k1	210k	1	39	1	1.81901		False

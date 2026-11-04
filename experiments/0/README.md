@@ -8,7 +8,7 @@
 
 - **0-1**：全データ、seed 0、10k〜200kの10k刻みcheckpoint（[checkpoint_manifest.tsv](1_cifar10_cond_edm_10k_retraining/results/checkpoint_manifest.tsv)）。実験8-4・8-6・8-10〜8-13の評価対象モデル。
 - **0-2（30k subset）**：FID-50k（seed 0-49999）は 10k 5.42342、20k 2.81792、30k 2.52083、40k 3.09847、**50k 2.34864（最良）**、60k 2.75990、その後100k 4.44395まで悪化。約50k以降の悪化は過学習的な挙動と解釈している。出典：[fid_summary.tsv](2_cifar10_cond_edm_30k_subset/results/fid_summary.tsv)。
-- **0-3（200k以降）**：K=0のFIDは 200k 1.80678、210k 1.83710、220k 2.00929。220kではK=1が2.05315で悪化（seed 0-49999の1範囲。出典：[slack/summary.md](../slack/summary.md)、[comparison.tsv](3_cifar10_cond_edm_post200k_extension/results/comparison.tsv)）。
+- **0-3（200k以降）**：K=0のFIDは 200k 1.80678、210k 1.83710、220k 2.00929。220kではK=1が2.05315で悪化（seed 0-49999の1範囲。出典：[comparison.tsv](3_cifar10_cond_edm_post200k_extension/results/comparison.tsv)）。
 - **0-4**：200k・210kでのK=1の3 seed評価。Slackでは小さな改善が報告されている。ただしこのPCには初回seed範囲の4評価しかなく（n=1、K=1の改善は200k +0.01343、210k +0.01809。出典：[improvement_stats.tsv](4_post200k_restart_k1_fid50k_3seeds/results/improvement_stats.tsv)）、最終値として使わない（元PCの結果と要照合）。
 - **0-5（10k subset）**：実行中。20kでFID 2.82997（[run_status.tsv](5_cifar10_cond_edm_10k_subset/results/run_status.tsv)、30,000 kimgまで学習予定）。
 

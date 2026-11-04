@@ -47,7 +47,6 @@ CIFAR-10 class-conditional EDM（DDPM++）を中心とした実験の置き場�
 
 - [reports/](reports/)：横断的な報告（例：[2026-09-17 AB軌道・FM・Restart](reports/2026-09-17_additional_experiments_report.md)、[2026-10-02の計画](reports/2026-10-02.plan.md)）。
 - `<グループ>/report/`：グループ別の報告。8は`report/<MMDD>/`の日付別。
-- [slack/](slack/README.md)：指導教員とのRestart研究の議論、合意事項、必要な図（2026-11-03時点）。**最新の方針はここを優先する。**
 - [spring_semester_report.md](spring_semester_report.md)：春学期のまとめ。
 
 ## 更新ルール

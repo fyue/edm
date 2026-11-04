@@ -125,10 +125,6 @@ results列は `results/` または `runs/*/results/` にREADME以外の出力が
 
 資料（実験READMEなし）：[2026-09-17_additional_experiments_report.md](reports/2026-09-17_additional_experiments_report.md)、[2026-10-02.plan.md](reports/2026-10-02.plan.md)、`reports/assets/`、`reports/scripts/`
 
-## slack
-
-- [加藤先生とのRestart研究の議論・必要図](slack/README.md)：2026-11-03 JST時点の整理。まず概要と合意事項、次に必要図一覧と対応事項を参照する。
-
 ## 直下の資料
 
 - [spring_semester_report.md](spring_semester_report.md)

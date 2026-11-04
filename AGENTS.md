@@ -6,7 +6,7 @@
 
 ## 実験の把握
 
-実験について調べるときは、ディレクトリを探索する前に `experiments/README.md`（グループの役割・系譜・最新方針の参照先）と `experiments/INDEX.md`（全実験一覧、自動生成）を読み、該当するグループの `README.md`、実験の `README.md`、`results/` の順に絞り込んでください。`training-runs/`、`fid-evals/`、`generated/`、`images/`、`logs/` は再帰的に読みません。Restart研究の最新方針は `experiments/slack/summary.md` を優先します。
+実験について調べるときは、ディレクトリを探索する前に `experiments/README.md`（グループの役割・系譜・最新方針の参照先）と `experiments/INDEX.md`（全実験一覧、自動生成）を読み、該当するグループの `README.md`、実験の `README.md`、`results/` の順に絞り込んでください。`training-runs/`、`fid-evals/`、`generated/`、`images/`、`logs/` は再帰的に読みません。
 
 新しい実験を作ったときや結果が確定したときは、実験READMEのH1直後の段落に目的（確定後は結論も）を1〜2文で書き、グループREADMEの「主要な結論」と「実験一覧と役割」を出典付きで更新し、`python scripts/build_experiment_index.py` でINDEXを再生成してください。INDEXは手で編集しません。`--check` で更新漏れを確認できます。
 
