@@ -2,7 +2,7 @@
 //
 // Usage (from the EDM repository root, after scripts/prepare_figures.py):
 //   NODE_PATH=<dir with pptxgenjs and jszip> PPTX_SKILL_DIR=<pptx skill dir> \
-//     node experiments/8/report/1024/background/scripts/build_report.js
+//     node experiments/8/report/background/scripts/build_report.js
 //
 // Paper figures are cited on each slide; the numbers quoted were checked against the papers:
 // DDPM (arXiv:2006.11239), Score SDE (2011.13456), EDM (2206.00364), Restart (2306.14878).
@@ -13,8 +13,8 @@ const pptxgen = require("pptxgenjs");
 const JSZip = require(require.resolve("jszip", { paths: [require.resolve("pptxgenjs")] }));
 const { applyTheme } = require(path.join(process.env.PPTX_SKILL_DIR, "scripts", "apply_theme.js"));
 
-const REPORT_DIR = path.join("experiments", "8", "report", "1024", "background");
-const ASSETS = path.join(REPORT_DIR, "assets");
+const REPORT_DIR = path.join("experiments", "8", "report");
+const ASSETS = path.join(REPORT_DIR, "background", "assets");
 const OUT = path.join(REPORT_DIR, "restart_background_claude.pptx");
 
 const FONT = "Hiragino Sans";
@@ -142,7 +142,7 @@ pres.addSection({ title: "背景" });
 	});
 
 	card(s, 8.6, 1.2, W - MX - 8.6, 1.95, TINT, "formula");
-	text(s, "ノイズの加え方", { x: 8.85, y: 1.33, w: 3.8, h: 0.3, fontSize: 12, bold: true, color: NAVY });
+	text(s, "ノイズの加え方（本研究での書き方）", { x: 8.85, y: 1.33, w: 3.8, h: 0.3, fontSize: 12, bold: true, color: NAVY });
 	text(s, [{ text: "x" }, sub("σ"), { text: " = x" }, sub("0"), { text: " + σ ε" }], { x: 8.85, y: 1.7, w: 3.8, h: 0.5, fontSize: 24, bold: true, color: NAVY, align: "center" });
 	text(s, "ε：標準正規ノイズ　σ：ノイズの大きさ", { x: 8.85, y: 2.35, w: 3.8, h: 0.3, fontSize: 12, color: MUTED, align: "center" });
 	text(s, [
@@ -151,12 +151,13 @@ pres.addSection({ title: "背景" });
 		{ text: "＝ ノイズの乗った画像から、元の画像を推定する関数" },
 	], { x: MX, y: 2.6, w: 7.8, h: 0.7, fontSize: 15, paraSpaceAfter: 2 });
 
-	const fh = picture(s, "edm_fig1.png", MX, 3.85, CW, "figure EDM Fig 1");
-	text(s, "(a) CIFAR-10の画像に、σを大きくしながらノイズを加えたもの。(b) 理想的なデノイザ D(x; σ) の出力。σが大きいほど、元の画像の情報が失われる。",
-		{ x: MX, y: 3.85 + fh + 0.1, w: CW, h: 0.5, fontSize: 12, color: MUTED });
-	source(s, "Karras et al., 2022（EDM）, Fig. 1");
+	const fw = 10;
+	const fh = picture(s, "ddpm_fig2.png", (W - fw) / 2, 3.6, fw, "figure DDPM Fig 2");
+	text(s, "x_T（純粋なノイズ）から x_0（画像）へ。右向き p_θ：ネットワークによるノイズ除去（生成）、左向きの破線 q：ノイズの付加（加工）",
+		{ x: MX, y: 3.6 + fh + 0.15, w: CW, h: 0.3, fontSize: 12, color: MUTED, align: "center" });
+	source(s, "Ho et al., 2020（DDPM）, Fig. 2");
 
-	s.addNotes("拡散モデルは、画像にノイズを少しずつ加えて最後は純粋なノイズにする加工過程と、その逆に、ノイズから少しずつノイズを取り除いて画像を作る生成過程からなります。下の図は本研究と同じCIFAR-10で、左がσを大きくしながらノイズを加えた画像です。ネットワークが学習するのは、ノイズの乗った画像から元の画像を推定する関数で、デノイザと呼びます。右がその理想的な出力です。生成時は、このデノイザを何度も呼び出して、ノイズを少しずつ取り除いていきます。");
+	s.addNotes("拡散モデルは、画像にノイズを少しずつ加えて最後は純粋なノイズにする加工過程と、その逆に、ノイズから少しずつノイズを取り除いて画像を作る生成過程からなります。下の図の左端のx_Tが純粋なノイズ、右端のx_0が画像です。左向きの破線がノイズを加える加工、右向きの矢印がノイズを取り除く生成にあたります。ネットワークが学習するのは、ノイズの乗った画像から元の画像を推定する関数で、デノイザと呼びます。生成時は、このデノイザを何度も呼び出して、ノイズを少しずつ取り除いていきます。");
 }
 
 // ---------------------------------------------------------------------------- 3. DDPM
@@ -165,32 +166,29 @@ pres.addSection({ title: "背景" });
 	const s = pres.addSlide({ masterName: "CONTENT", sectionTitle: "背景" });
 	s.addText("DDPM（Ho et al., 2020）", { placeholder: "title" });
 
-	const lw = 6.9;
-	picture(s, "ddpm_fig2.png", MX, 1.35, lw, "figure DDPM Fig 2");
-	text(s, "x_T（ノイズ）から x_0（画像）へ、1ステップずつノイズを取り除く", { x: MX, y: 2.6, w: lw, h: 0.3, fontSize: 12, color: MUTED, align: "center" });
-
+	const lw = 5.6;
 	const points = [
 		["生成", "ノイズを取り除く処理を T = 1000 ステップ繰り返す"],
 		["品質", "CIFAR-10でFID 3.17。当時のGANに匹敵する画質"],
 	];
 	points.forEach(([label, body], i) => {
-		const y = 3.2 + i * 0.6;
+		const y = 1.4 + i * 0.95;
 		chip(s, label, MX, y, 0.8);
-		text(s, body, { x: MX + 1.0, y: y + 0.01, w: lw - 1.0, h: 0.4, fontSize: 15 });
+		text(s, body, { x: MX + 1.0, y: y + 0.01, w: lw - 1.0, h: 0.7, fontSize: 15 });
 	});
-	card(s, MX, 4.55, lw, 1.45, TINT, "problem");
-	chip(s, "課題", MX + 0.25, 4.72, 0.8, ORANGE);
+	card(s, MX, 3.3, lw, 1.95, TINT, "problem");
+	chip(s, "課題", MX + 0.25, 3.47, 0.8, ORANGE);
 	text(s, [
 		{ text: "1枚の生成にネットワークを1000回呼ぶ必要があり、遅い", options: { bold: true, breakLine: true } },
 		{ text: "→ 品質を保ったまま、少ないステップで生成したい", options: { color: NAVY } },
-	], { x: MX + 0.25, y: 5.12, w: lw - 0.5, h: 0.8, fontSize: 15, paraSpaceAfter: 4 });
+	], { x: MX + 0.25, y: 3.9, w: lw - 0.5, h: 1.25, fontSize: 15, paraSpaceAfter: 4 });
 
 	const rx = MX + lw + 0.4, rw = W - MX - rx;
 	const fh = picture(s, "ddpm_fig1.png", rx, 1.35, rw, "figure DDPM Fig 1");
 	text(s, "DDPMの生成画像（左：CelebA-HQ 256×256、右：CIFAR-10）", { x: rx, y: 1.35 + fh + 0.08, w: rw, h: 0.3, fontSize: 11, color: MUTED });
-	source(s, "Ho et al., 2020（DDPM）, Fig. 1, Fig. 2");
+	source(s, "Ho et al., 2020（DDPM）, Fig. 1");
 
-	s.addNotes("拡散モデルが注目されるきっかけになったのが、2020年のDDPMです。上の図のように、ノイズのx_Tから画像のx_0へ、1ステップずつノイズを取り除いて生成します。CIFAR-10でFID 3.17と、当時のGANに匹敵する画質を出しました。一方で、このステップを1000回繰り返すので、1枚作るのにネットワークを1000回呼ぶ必要があり、とても遅いという課題がありました。ここから、品質を保ったまま少ないステップで生成する方法が研究されていきます。");
+	s.addNotes("拡散モデルが注目されるきっかけになったのが、2020年のDDPMです。前のページの図は、このDDPMの論文のものです。右の画像のように、CIFAR-10でFID 3.17と、当時のGANに匹敵する画質を出しました。一方で、ノイズを取り除くステップを1000回繰り返すので、1枚作るのにネットワークを1000回呼ぶ必要があり、とても遅いという課題がありました。ここから、品質を保ったまま少ないステップで生成する方法が研究されていきます。");
 }
 
 // ---------------------------------------------------------------------------- 4. SDE and ODE

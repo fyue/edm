@@ -11,7 +11,7 @@ import subprocess
 
 from PIL import Image
 
-OUT_DIR = os.path.join('experiments', '8', 'report', '1024', 'background', 'assets')
+OUT_DIR = os.path.join('experiments', '8', 'report', 'background', 'assets')
 PAPER_DIR = '/tmp/deck_bg/papers'
 DPI = 300
 
