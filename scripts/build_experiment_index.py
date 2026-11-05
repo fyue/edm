@@ -139,6 +139,10 @@ def build_index(experiments: Path) -> str:
         ]
         for child in children:
             rel = child.relative_to(experiments).as_posix()
+            if child.name == "report":
+                # Report READMEs document presentations, not nested experiments.
+                materials.append(f"`{rel}/`")
+                continue
             readme = child / "README.md"
             # Stage directories (e.g. 4/stage0/) hold experiments one level deeper.
             nested = sorted(

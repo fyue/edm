@@ -1,0 +1,114 @@
+{
+ "fixed_main18": [
+  {
+   "main_steps": 18,
+   "nfe": 35,
+   "actual_t_min": null,
+   "restart_index": null
+  },
+  {
+   "main_steps": 18,
+   "nfe": 39,
+   "actual_t_min": 0.13951646873101678,
+   "restart_index": 13
+  },
+  {
+   "main_steps": 18,
+   "nfe": 43,
+   "actual_t_min": 0.13951646873101678,
+   "restart_index": 13
+  },
+  {
+   "main_steps": 18,
+   "nfe": 47,
+   "actual_t_min": 0.13951646873101678,
+   "restart_index": 13
+  },
+  {
+   "main_steps": 18,
+   "nfe": 51,
+   "actual_t_min": 0.13951646873101678,
+   "restart_index": 13
+  },
+  {
+   "main_steps": 18,
+   "nfe": 55,
+   "actual_t_min": 0.13951646873101678,
+   "restart_index": 13
+  },
+  {
+   "main_steps": 18,
+   "nfe": 59,
+   "actual_t_min": 0.13951646873101678,
+   "restart_index": 13
+  },
+  {
+   "main_steps": 18,
+   "nfe": 63,
+   "actual_t_min": 0.13951646873101678,
+   "restart_index": 13
+  },
+  {
+   "main_steps": 18,
+   "nfe": 67,
+   "actual_t_min": 0.13951646873101678,
+   "restart_index": 13
+  }
+ ],
+ "fixed_nfe55": [
+  {
+   "main_steps": 28,
+   "nfe": 55,
+   "actual_t_min": null,
+   "restart_index": null
+  },
+  {
+   "main_steps": 26,
+   "nfe": 55,
+   "actual_t_min": 0.14864397747384864,
+   "restart_index": 19
+  },
+  {
+   "main_steps": 24,
+   "nfe": 55,
+   "actual_t_min": 0.10903976726944489,
+   "restart_index": 18
+  },
+  {
+   "main_steps": 22,
+   "nfe": 55,
+   "actual_t_min": 0.14488970285315433,
+   "restart_index": 16
+  },
+  {
+   "main_steps": 20,
+   "nfe": 55,
+   "actual_t_min": 0.0989733831956025,
+   "restart_index": 15
+  },
+  {
+   "main_steps": 18,
+   "nfe": 55,
+   "actual_t_min": 0.13951646873101678,
+   "restart_index": 13
+  },
+  {
+   "main_steps": 16,
+   "nfe": 55,
+   "actual_t_min": 0.08508720268939021,
+   "restart_index": 12
+  },
+  {
+   "main_steps": 14,
+   "nfe": 55,
+   "actual_t_min": 0.13119736304372648,
+   "restart_index": 10
+  },
+  {
+   "main_steps": 12,
+   "nfe": 55,
+   "actual_t_min": 0.065014599416395,
+   "restart_index": 9
+  }
+ ]
+}
