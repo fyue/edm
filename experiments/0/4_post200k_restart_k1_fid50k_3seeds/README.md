@@ -2,6 +2,8 @@
 
 200k・210kでRestart K=1のFID改善が3つの生成seed範囲で再現するかをFID-50kで確かめる。このPCには初回範囲の4評価のみ（K=1の改善は200k +0.01343、210k +0.01809）で、3範囲の結果は元PCと要照合。
 
+Slackには[2026-10-27の3生成seed範囲の報告](https://kato-ai-lab.slack.com/archives/C082JD35X5W/p1793028436537769)がある（[原本・TSの索引](../../reports/slack_sources.md#s6)）。このPCの[improvement_stats.tsv](results/improvement_stats.tsv)はn=1であり、報告内容との照合は未完了。報告値で評価データを補完していない。
+
 固定した200k・210kの各モデルで、Restart K=1のFID改善が生成seed範囲を変えても
 再現するかを確認する。学習は行わず、実験0-3のモデル・コード・成果物は読み取りのみとする。
 3 seedは3回の再学習ではなく、固定モデルからの3つの生成seed範囲を意味する。

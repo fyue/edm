@@ -1,6 +1,8 @@
 # 実験8-13：最適KとK=0のFID-50k・3シード比較
 
-8-11の最適KとK=0をFID-50k×3生成seed範囲で比べる。平均改善幅は20k 0.381、60k 0.105、180k 0.019、200k 0.013。100k・140kはこのPCではn=1（Slackでは完了と報告）。
+8-11の最適KとK=0をFID-50k×3生成seed範囲で比べる。平均改善幅は20k 0.381、60k 0.105、180k 0.019、200k 0.013。100k・140kはこのPCではn=1（Slackでは[完了と報告](https://kato-ai-lab.slack.com/archives/C082JD35X5W/p1793027847627969)）。
+
+Slack報告の原本・TSは[参照索引](../../reports/slack_sources.md#s6)から確認できる。ローカルの[improvement_stats.tsv](results/improvement_stats.tsv)との不一致は未照合であり、報告値で評価データを補完していない。
 
 8-11で選択した最適Kを固定し、固定モデルにおける生成シード間のFID変動とpaired改善幅を確認する。学習seedは0のままであり、3回の再学習ではない。
 

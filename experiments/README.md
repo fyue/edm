@@ -9,6 +9,8 @@ CIFAR-10 class-conditional EDM（DDPM++）を中心とした実験の置き場�
 3. `<グループ>/README.md`：グループの問い、主要な結論（数値と出典）、重要な実験。
 4. `<グループ>/<実験>/README.md`：条件、実行方法、再現条件。数値は`results/*.tsv|json`で確認する。
 
+議論の経緯は[Slack参照索引](reports/slack_sources.md)から原文と関連する添付を確認する。話題・日付・実験IDで探せる索引であり、特定の要約や解釈を分析より優先するものではない。原本の`slack_origin/`はローカルにのみ保持し、Gitには含めない。原本がないPCでは索引のSlack直接リンクを利用する。報告内容とローカル結果の不一致は、両方の出典を付けて未照合として扱う。
+
 `training-runs/`、`fid-evals/`、`generated/`、`images/`、`logs/`は大容量の成果物なので読まない（Git対象外）。
 
 ## グループ
@@ -45,6 +47,7 @@ CIFAR-10 class-conditional EDM（DDPM++）を中心とした実験の置き場�
 
 ## 報告・議論の記録
 
+- [Slack参照索引](reports/slack_sources.md)：研究に関する原文・添付への入口（ローカル原本とSlack直接リンク）。
 - [reports/](reports/)：横断的な報告（例：[2026-09-17 AB軌道・FM・Restart](reports/2026-09-17_additional_experiments_report.md)、[2026-10-02の計画](reports/2026-10-02.plan.md)）。
 - `<グループ>/report/`：グループ別の報告。8は`report/<MMDD>/`の日付別。
 - [spring_semester_report.md](spring_semester_report.md)：春学期のまとめ。

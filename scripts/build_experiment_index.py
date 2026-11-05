@@ -115,7 +115,11 @@ def build_index(experiments: Path) -> str:
         "",
     ]
 
-    groups = sorted((p for p in experiments.iterdir() if p.is_dir()), key=lambda p: natural_key(p.name))
+    # The complete Slack archive is local-only; index its versioned reference note instead.
+    groups = sorted(
+        (p for p in experiments.iterdir() if p.is_dir() and p.name != "slack_origin"),
+        key=lambda p: natural_key(p.name),
+    )
     for group in groups:
         rel_group = group.relative_to(experiments).as_posix()
         if (group / "README.md").exists() and not any(

@@ -7,12 +7,12 @@
 ## 主要な結論
 
 - **固定K=5（t_min=0.06、NFE=55）**：3 seed平均で、5.5kと20kでは同NFEの通常ODEより改善（+1.7179、+0.3176）、120kと200kでは悪化（−0.0483、−0.1808）。出典：8-3、[reports/2026-09-17_additional_experiments_report.md](../reports/2026-09-17_additional_experiments_report.md)。
-- **t_min**：初期checkpointでは0.06、170kでは0.14が有利。2026-10-07以降の主設定は **t_min=0.14、t_max=0.30**。0.06は付録的な比較として残す（8-8）。
+- **t_min**：初期checkpointでは0.06、170kでは0.14が有利。2026-10-07以降の主設定は **t_min=0.14、t_max=0.30**。0.06は付録的な比較として残す（8-8）。出典：[2026-10-07の返信](https://kato-ai-lab.slack.com/archives/D08LCS5CPM3/p1791362856017499)、[比較経緯の索引](../reports/slack_sources.md#s5)。
 - **主実験 8-11（N_main=18固定、NFE=35+4K）**：FID-50k（seed 0-49999）での最適Kは 20k:7、40k〜120k:3、140k:1、160k:3、180k・200k:1。学習が進むほど最適Kが小さい傾向。出典：[11_.../results/optimal_k.tsv](11_restart_fixed_main18_tmin014_k_sweep/results/optimal_k.tsv)。
 - **補完実験 8-12（NFE=55固定、N_main=28−2K）**：最適Kは 20k:8、40k:6、60k:4、80k:6、100k:4、120k・140k:7、160k〜200k:1。Kだけの効果ではなく主スケジュールも変わる点に注意。出典：[12_.../results/optimal_k.tsv](12_restart_fixed_nfe55_tmin014_k_sweep/results/optimal_k.tsv)。
-- **3 seed確認 8-13（8-11の最適K vs K=0）**：平均改善幅は 20k 0.38073、60k 0.10470、180k 0.01933、200k 0.01344。baseline FIDが悪いモデルほど改善が大きい。ローカルの [improvement_stats.tsv](13_restart_optimal_k_fid50k_3seeds/results/improvement_stats.tsv) では100k・140kがn=1（Slackでは6点すべて完了と報告。同期の確認が必要）。
-- **30,000枚学習 8-14**：学習不足段階では改善し、十分学習すると悪化する傾向。40kはイレギュラー。指導教員の解釈は「データ不足そのものはRestartでは救えない」。この解釈は今回の条件に限る。
-- **Kの傾向図**：最良FIDとの差が0.02以下のKを単純平均する方式を優先する（2026-11-02）。
+- **3 seed確認 8-13（8-11の最適K vs K=0）**：平均改善幅は 20k 0.38073、60k 0.10470、180k 0.01933、200k 0.01344。baseline FIDが悪いモデルほど改善が大きい。ローカルの [improvement_stats.tsv](13_restart_optimal_k_fid50k_3seeds/results/improvement_stats.tsv) では100k・140kがn=1（Slackの[2026-10-27報告](https://kato-ai-lab.slack.com/archives/C082JD35X5W/p1793027847627969)では6点すべて完了と報告。[原本・TSの索引](../reports/slack_sources.md#s6)。同期の確認が必要）。
+- **30,000枚学習 8-14**：学習不足段階では改善し、十分学習すると悪化する傾向。40kはイレギュラー。指導教員の解釈は「データ不足そのものはRestartでは救えない」。この解釈は今回の条件に限る。出典：[2026-11-01の報告](https://kato-ai-lab.slack.com/archives/C082JD35X5W/p1793500915020579)、[2026-11-02の返信](https://kato-ai-lab.slack.com/archives/C082JD35X5W/p1793628822297069)、[原本・添付の索引](../reports/slack_sources.md#s6)。
+- **Kの傾向図**：最良FIDとの差が0.02以下のKを単純平均する方式を優先する（2026-11-02）。出典：[平均を用いた図の提案](https://kato-ai-lab.slack.com/archives/C082JD35X5W/p1793608887039959)、[返信](https://kato-ai-lab.slack.com/archives/C082JD35X5W/p1793628822297069)、[提案2案と添付の索引](../reports/slack_sources.md#s7)。0.02の閾値は[現行プロットコード](11_restart_fixed_main18_tmin014_k_sweep/scripts/plot_results.py)の仕様であり、返信で指定された値ではない。
 
 ## 実験一覧と役割
 

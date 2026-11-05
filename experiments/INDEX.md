@@ -123,7 +123,7 @@ results列は `results/` または `runs/*/results/` にREADME以外の出力が
 
 ## reports
 
-資料（実験READMEなし）：[2026-09-17_additional_experiments_report.md](reports/2026-09-17_additional_experiments_report.md)、[2026-10-02.plan.md](reports/2026-10-02.plan.md)、`reports/assets/`、`reports/scripts/`
+資料（実験READMEなし）：[2026-09-17_additional_experiments_report.md](reports/2026-09-17_additional_experiments_report.md)、[2026-10-02.plan.md](reports/2026-10-02.plan.md)、[slack_sources.md](reports/slack_sources.md)、`reports/assets/`、`reports/scripts/`
 
 ## 直下の資料
 
