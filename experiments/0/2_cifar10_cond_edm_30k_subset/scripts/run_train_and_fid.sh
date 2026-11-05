@@ -137,7 +137,8 @@ validate_existing_run() {
 
     local options="$RUN_DIR/training_options.json"
     [[ -s "$options" ]] || fail "Missing training options for existing run: $options"
-    "$PYTHON" - "$options" "$DATASET_MAX_SIZE" "$DATASET_RANDOM_SEED" "$SEED" <<'PY'
+    "$PYTHON" - "$options" "$DATASET_MAX_SIZE" "$DATASET_RANDOM_SEED" "$SEED" <<'PY' || \
+        fail "Refusing to resume with incompatible options: $options"
 import json
 import sys
 
