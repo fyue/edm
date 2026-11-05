@@ -86,3 +86,15 @@ FID-5k・25k・50kを各14×5.5インチ、PNGは180dpi（2520×990px）、SVG�
 ```
 
 出力はFID-5k・25k・50kのPNG/SVGで、従来の統合図名に`_fid_weighted_k_tau0p02`を付ける。温度を変更するとファイル名にも反映する。既存の図と元データは保持する。
+
+### 4パネル図の候補点・Best K・単純平均K
+
+`--plot-kind mean-k-overview`は従来の16×10インチの4パネル図を維持し、左下だけを`near-optimal-dots`の右パネルと同じ表示へ置き換える。濃青（FID差0.01以内）・薄青（0.01超〜0.02以内）の候補点、Best Kの黒点、単純平均Kのオレンジ線をすべて描く。タイトル・軸・凡例・グリッドも同じ描画関数を共用する。同じcheckpoint・評価枚数で最良FIDとの差が0.02以内のKを等重みで1回ずつ平均し、丸めず表示する。Best Kは同値なら小さいKを選ぶ。全Kが揃わないcheckpointでは線を途切れさせる。平均Kは近い性能を持つ候補の中心を示す記述量で、最適Kや統計的同等性の推定値ではない。
+
+FID-5k・25k・50kのPNG（180dpi）/SVGを、元の統合図名に`_mean_k`を付けて出力する。元の図・2パネル図・結果表は保持し、GPU処理・FID再計算は行わない。
+
+```bash
+/home/kyoukinkin/data/conda-envs/edm/bin/python \
+  experiments/8/11_restart_fixed_main18_tmin014_k_sweep/scripts/plot_results.py \
+  --plot-kind mean-k-overview
+```

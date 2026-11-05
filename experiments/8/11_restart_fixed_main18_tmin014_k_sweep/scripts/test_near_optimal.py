@@ -10,6 +10,74 @@ import plot_results as plotting
 
 
 class NearOptimalTests(unittest.TestCase):
+    def test_mean_overview_preserves_other_panels_and_handles_missing(self):
+        import matplotlib
+        matplotlib.use("Agg")
+        import matplotlib.pyplot as plt
+        import numpy as np
+
+        group = {k: {"fid": 2.1} for k in range(9)}
+        group.update({1: {"fid": 2.0}, 2: {"fid": 2.01}, 4: {"fid": 2.02},
+                      8: {"fid": 2.0200001}})
+        groups = {(checkpoint, 50000): group for checkpoint in plotting.experiment.CHECKPOINTS}
+        original = plotting.make_figure(groups, 50000)
+        mean = plotting.make_figure(groups, 50000, mean_k=True)
+        try:
+            np.testing.assert_allclose(mean.get_size_inches(), [16, 10])
+            self.assertEqual(len(mean.axes), 5)
+            axis = mean.axes[2]
+            np.testing.assert_allclose(axis.lines[0].get_ydata(), [7 / 3] * 10)
+            self.assertEqual(axis.lines[0].get_label(), "Mean K (FID gap <= 0.02)")
+            self.assertEqual(axis.lines[0].get_color(), "#ff7f0e")
+            reference = plotting.make_dots_figure(groups, 50000)
+            try:
+                source = reference.axes[1]
+                self.assertEqual(axis.get_title(), source.get_title())
+                self.assertEqual(axis.get_xlabel(), source.get_xlabel())
+                self.assertEqual(axis.get_ylabel(), source.get_ylabel())
+                np.testing.assert_allclose(axis.get_xlim(), source.get_xlim())
+                np.testing.assert_allclose(axis.get_ylim(), source.get_ylim())
+                np.testing.assert_allclose(axis.get_xticks(), source.get_xticks())
+                np.testing.assert_allclose(axis.get_yticks(), source.get_yticks())
+                np.testing.assert_allclose(axis.lines[0].get_xydata(), source.lines[0].get_xydata())
+                self.assertEqual(len(axis.collections), 3)
+                for target_points, source_points in zip(axis.collections, source.collections):
+                    np.testing.assert_allclose(target_points.get_offsets(), source_points.get_offsets())
+                    np.testing.assert_allclose(target_points.get_facecolors(), source_points.get_facecolors())
+                    np.testing.assert_allclose(target_points.get_sizes(), source_points.get_sizes())
+                self.assertEqual([t.get_text() for t in axis.legend_.texts],
+                                 [t.get_text() for t in source.legend_.texts])
+                self.assertEqual([l.get_visible() for l in axis.get_xgridlines()],
+                                 [l.get_visible() for l in source.get_xgridlines()])
+            finally:
+                plt.close(reference)
+            for index in (0, 1, 3):
+                before, after = original.axes[index], mean.axes[index]
+                np.testing.assert_allclose(before.get_xlim(), after.get_xlim())
+                np.testing.assert_allclose(before.get_ylim(), after.get_ylim())
+                self.assertEqual(before.get_title(), after.get_title())
+                for a, b in zip(before.lines, after.lines):
+                    np.testing.assert_allclose(a.get_xydata(), b.get_xydata())
+                    self.assertEqual(a.get_color(), b.get_color())
+                for a, b in zip(before.collections, after.collections):
+                    np.testing.assert_allclose(a.get_offsets(), b.get_offsets())
+                    np.testing.assert_allclose(a.get_facecolors(), b.get_facecolors())
+                for a, b in zip(before.images, after.images):
+                    np.testing.assert_allclose(a.get_array(), b.get_array())
+                    self.assertEqual((a.norm.vmin, a.norm.vmax), (b.norm.vmin, b.norm.vmax))
+            axis.clear()
+            single = {k: {"fid": 2.0 if k == 6 else 2.1} for k in range(9)}
+            plotting.draw_k_distribution(axis, {("20k", 50000): group,
+                                       ("40k", 50000): {0: {"fid": 2.0}},
+                                       ("60k", 50000): single}, 50000)
+            np.testing.assert_allclose(axis.lines[0].get_ydata()[:3], [7 / 3, np.nan, 6], equal_nan=True)
+            from matplotlib.path import Path
+            self.assertEqual(sum(code == Path.MOVETO for _, code in
+                                 axis.lines[0].get_path().iter_segments()), 2)
+        finally:
+            plt.close(original)
+            plt.close(mean)
+
     def test_fid_weighted_all_candidates_temperature_and_missing(self):
         import math
         import matplotlib
