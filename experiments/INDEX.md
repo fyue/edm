@@ -14,6 +14,7 @@ results列は `results/` または `runs/*/results/` にREADME以外の出力が
 | [0-3](0/3_cifar10_cond_edm_post200k_extension/README.md) | 実験0-3：200k以降の継続学習 | 実験0-1の200kから学習率0.001のまま210k・220kまで継続学習し、FIDが改善するかを調べる。FID-50k（seed 0-49999）ではK=0が200k 1.80678→210k 1.83710→220k 2.00929と悪化し、K=1も同様だった。 | ✓ |
 | [0-4](0/4_post200k_restart_k1_fid50k_3seeds/README.md) | 実験0-4：200k・210kのRestart K=1効果、FID-50k・3生成seed範囲 | 200k・210kでRestart K=1のFID改善が3つの生成seed範囲で再現するかをFID-50kで確かめる。このPCには初回範囲の4評価のみ（K=1の改善は200k +0.01343、210k +0.01809）で、3範囲の結果は元PCと要照合。 | ✓ |
 | [0-5](0/5_cifar10_cond_edm_10k_subset/README.md) | Experiment 0-5: CIFAR-10 Conditional EDM on a 10k Subset | 0-2と同じ条件で学習データを10,000枚に減らし、30k（kimg）まで学習してデータ量の影響を調べる。30kまで完了し、FID-50kは10k 4.63680、20k 2.82997（最良）、30k 3.77162だった。 | ✓ |
+| [0-6](0/6_cifar10_cond_edm_30k_subset_continuous/README.md) | Experiment 0-6: CIFAR-10 Conditional EDM on a 30k Subset, Continuous Training | 0-2と同じ3万枚を、0-1と同じく途中で止めずに1プロセスで100kまで学習し、0-2のFID悪化が再開による乱数の再生に影響されていないかを切り分ける。このPCには10kのsnapshot/stateが保存されており、100kまでの完了は未確認。 |  |
 
 ## 1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18
 
