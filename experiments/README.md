@@ -24,7 +24,7 @@ CIFAR-10 class-conditional EDM（DDPM++）を中心とした実験の置き場�
 | [5](5/README.md) | pretrainedでのsampler比較（PNDM・RK4・AB） | 完了 |
 | [6](6/README.md) | 前向きノイズ付加後のノルム分布 | 完了 |
 | [7](7/README.md) | Linear Flow MatchingとEDMの比較 | 完了 |
-| [0](0/README.md) | 修論用の学習系列：全データの10k刻み（0-1）、30k/10k subset（0-2/0-5）、200k以降（0-3/0-4） | 0-5は実行中 |
+| [0](0/README.md) | 修論用の学習系列：全データの10k刻み（0-1）、30k/10k subset（0-2/0-5）、200k以降（0-3/0-4） | 0-5は完了 |
 | [8](8/README.md) | **Restart Sampling（修論の主実験）** | 8-14は実行中 |
 
 番号は作成順ではない。グループ0はグループ8の基準モデルを作るため、後から作成した。

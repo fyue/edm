@@ -7,6 +7,7 @@
 ## 主要な結論
 
 - **固定K=5（t_min=0.06、NFE=55）**：3 seed平均で、5.5kと20kでは同NFEの通常ODEより改善（+1.7179、+0.3176）、120kと200kでは悪化（−0.0483、−0.1808）。出典：8-3、[reports/2026-09-17_additional_experiments_report.md](../reports/2026-09-17_additional_experiments_report.md)。
+- **8-4の追加FID-50k**：20k・40k・60kの部分評価を保存。K=0〜8が揃っていないため、この表だけから最適Kは確定しない。出典：[restart_fid_summary.tsv](4_restart_k_sweep_10k_interval/results/fid50k/restart_fid_summary.tsv)。
 - **t_min**：初期checkpointでは0.06、170kでは0.14が有利。2026-10-07以降の主設定は **t_min=0.14、t_max=0.30**。0.06は付録的な比較として残す（8-8）。出典：[2026-10-07の返信](https://kato-ai-lab.slack.com/archives/D08LCS5CPM3/p1791362856017499)、[比較経緯の索引](../reports/slack_sources.md#s5)。
 - **主実験 8-11（N_main=18固定、NFE=35+4K）**：FID-50k（seed 0-49999）での最適Kは 20k:7、40k〜120k:3、140k:1、160k:3、180k・200k:1。学習が進むほど最適Kが小さい傾向。出典：[11_.../results/optimal_k.tsv](11_restart_fixed_main18_tmin014_k_sweep/results/optimal_k.tsv)。
 - **補完実験 8-12（NFE=55固定、N_main=28−2K）**：最適Kは 20k:8、40k:6、60k:4、80k:6、100k:4、120k・140k:7、160k〜200k:1。Kだけの効果ではなく主スケジュールも変わる点に注意。出典：[12_.../results/optimal_k.tsv](12_restart_fixed_nfe55_tmin014_k_sweep/results/optimal_k.tsv)。
@@ -24,7 +25,7 @@
 | [8-14](14_restart_subset30k_k_sweep/README.md) | データ不足ケース（実験0-2の30k subset）でのK sweep。進行中 |
 | [8-10](10_restart_fixed_nfe55_k_sweep/README.md) | NFE=55固定、t_min=0.06（旧設定） |
 | [8-8](8_restart_tmin_comparison/README.md) | t_min 0.06と0.14の比較（K=5） |
-| [8-4](4_restart_k_sweep_10k_interval/README.md) | 10k刻みcheckpointでのK sweep（t_min=0.06） |
+| [8-4](4_restart_k_sweep_10k_interval/README.md) | 10k刻みcheckpointでのK sweep（t_min=0.06）。FID-50kは20k・40k・60kで部分評価（[保存表](4_restart_k_sweep_10k_interval/results/fid50k/restart_fid_summary.tsv)） |
 | 8-6, 8-7 | 0-1の10k刻み系列でのK=5、十分学習したモデルでのK=1と同NFE ODEの比較 |
 | 8-1〜8-3 | 初期のスクリーニング（FID-1k、FID-5k）から固定K=5のFID-50k・3 seed評価まで |
 

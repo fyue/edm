@@ -1,6 +1,8 @@
 # Experiment 8-4: Restart K Sweep at 10k Checkpoint Intervals
 
-0-1の10k刻みcheckpointでK=0〜8（main 18、t_min=0.06）を走査し、最適Kの変化を調べる。FID-5kの最適Kはばらつきが大きく、FID-25k（80k以降）では多くが1。FID-50kは20kのみで未完了。
+0-1の10k刻みcheckpointでK=0〜8（main 18、t_min=0.06）を走査し、最適Kの変化を調べる。FID-5kの最適Kはばらつきが大きく、FID-25k（80k以降）では多くが1。FID-50kは20k・40k・60kの部分評価で、走査は未完了。
+
+2026-11-05時点の[FID-50k保存表](results/fid50k/restart_fid_summary.tsv)には、20k・40kのK={1,2,3,4,6,7,8}と60kのK={1,2,3,4}がある。この表だけでは各checkpointのK=0〜8が揃わないため、最適Kは確定しない（Heun 18 main steps、t_min=0.06、t_max=0.30、生成seeds `0-49999`）。
 
 ## 目的
 

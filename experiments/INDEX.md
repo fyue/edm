@@ -13,7 +13,7 @@ results列は `results/` または `runs/*/results/` にREADME以外の出力が
 | [0-2](0/2_cifar10_cond_edm_30k_subset/README.md) | Experiment 0-2: CIFAR-10 Conditional EDM on a 30k Subset | CIFAR-10の30,000枚subsetで学習し、データ量が学習進行とFIDに与える影響を調べる。100kまでのFID-50kは50k時点の2.34864が最良で、その後100kでは4.44395へ悪化した（評価結果）。 | ✓ |
 | [0-3](0/3_cifar10_cond_edm_post200k_extension/README.md) | 実験0-3：200k以降の継続学習 | 実験0-1の200kから学習率0.001のまま210k・220kまで継続学習し、FIDが改善するかを調べる。FID-50k（seed 0-49999）ではK=0が200k 1.80678→210k 1.83710→220k 2.00929と悪化し、K=1も同様だった。 | ✓ |
 | [0-4](0/4_post200k_restart_k1_fid50k_3seeds/README.md) | 実験0-4：200k・210kのRestart K=1効果、FID-50k・3生成seed範囲 | 200k・210kでRestart K=1のFID改善が3つの生成seed範囲で再現するかをFID-50kで確かめる。このPCには初回範囲の4評価のみ（K=1の改善は200k +0.01343、210k +0.01809）で、3範囲の結果は元PCと要照合。 | ✓ |
-| [0-5](0/5_cifar10_cond_edm_10k_subset/README.md) | Experiment 0-5: CIFAR-10 Conditional EDM on a 10k Subset | 0-2と同じ条件で学習データを10,000枚に減らし、30k（kimg）まで学習してデータ量の影響を調べる。実行中で、FID-50kは10k 4.63680、20k 2.82997。 | ✓ |
+| [0-5](0/5_cifar10_cond_edm_10k_subset/README.md) | Experiment 0-5: CIFAR-10 Conditional EDM on a 10k Subset | 0-2と同じ条件で学習データを10,000枚に減らし、30k（kimg）まで学習してデータ量の影響を調べる。30kまで完了し、FID-50kは10k 4.63680、20k 2.82997（最良）、30k 3.77162だった。 | ✓ |
 
 ## 1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18
 
@@ -109,7 +109,7 @@ results列は `results/` または `runs/*/results/` にREADME以外の出力が
 | [8-1](8/1_restart_sampling_checkpoint_sweep/README.md) | Experiment 8-1: Restart Sampling Checkpoint Sweep | 学習途中の4 checkpointでRestart（K=1,2,5、t_min=0.06）と通常ODEをFID-1kで比べる予備評価。学習不足ほど改善が大きく（5.5kのK=5で同NFE比+2.21）、200kのK=5では悪化した。 | ✓ |
 | [8-2](8/2_restart_k5_fid5k_confirmation/README.md) | Experiment 8-2: Selected Restart K FID-5k Confirmation | 8-1の傾向をFID-5kで再確認する。K=5の同NFE ODE比の改善は5.5k +1.58、20k +0.33で、120k・200kでは−0.11、−0.24と悪化した。 | ✓ |
 | [8-3](8/3_restart_k5_fid50k_3seeds/README.md) | Experiment 8-3: Restart K=5 FID-50k over 3 Seed Ranges | 固定K=5（t_min=0.06、NFE 55）をFID-50k×3生成seed範囲で正式評価する。同NFE ODE比の改善は5.5k +1.718、20k +0.318、120k −0.048、200k −0.181で、学習後期では悪化する。 | ✓ |
-| [8-4](8/4_restart_k_sweep_10k_interval/README.md) | Experiment 8-4: Restart K Sweep at 10k Checkpoint Intervals | 0-1の10k刻みcheckpointでK=0〜8（main 18、t_min=0.06）を走査し、最適Kの変化を調べる。FID-5kの最適Kはばらつきが大きく、FID-25k（80k以降）では多くが1。FID-50kは20kのみで未完了。 | ✓ |
+| [8-4](8/4_restart_k_sweep_10k_interval/README.md) | Experiment 8-4: Restart K Sweep at 10k Checkpoint Intervals | 0-1の10k刻みcheckpointでK=0〜8（main 18、t_min=0.06）を走査し、最適Kの変化を調べる。FID-5kの最適Kはばらつきが大きく、FID-25k（80k以降）では多くが1。FID-50kは20k・40k・60kの部分評価で、走査は未完了。 | ✓ |
 | [8-6](8/6_exact_10k_restart_k5_fid50k_1seed/README.md) | Experiment 8-6: Progressive Exact-10k Restart K=5 FID Evaluation | 0-1の10k〜120kでK=5（t_min=0.06）と同NFE ODEをFID-5k→25k→50kと段階的に比べる。FID-25kの改善は10k +0.712から100k +0.012へほぼ単調に縮小した（25kは10k〜100kのみ、50kは未実施）。 | ✓ |
 | [8-7](8/7_trained_restart_k1_fid50k_1seed/README.md) | Experiment 8-7: Trained Restart K=1 vs. Equal-NFE ODE, FID-50k | 十分学習した2モデル（3-10の170k、公式pretrained）でRestart K=1と同NFE（39）のODEをFID-50kで比べる。差は−0.014、+0.006でほぼ同等だった。 | ✓ |
 | [8-8](8/8_restart_tmin_comparison/README.md) | 実験8-8：Restart t_min 比較（K=5） | Restartのt_min=0.06と0.14をK=5で比べる（20k・40k・60k、3-10の170k）。FID-50kでは20k・40kで0.06、60k・170kで0.14がわずかに良い（差0.01〜0.09）。 | ✓ |
