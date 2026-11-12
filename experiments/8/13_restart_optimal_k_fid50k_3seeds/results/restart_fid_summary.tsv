@@ -12,9 +12,17 @@ condition	checkpoint	restart_k	nfe	num_images	seeds	fid	origin	fid_ref	fid_sec
 60k-k3	60k	3	47	50000	50000-99999	1.9912	generated	/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	278.2383495941758
 60k-k3	60k	3	47	50000	100000-149999	1.99496	generated	/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	292.9804458320141
 100k-k0	100k	0	35	50000	0-49999	1.881	8-11	/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	0.0
+100k-k0	100k	0	35	50000	50000-99999	1.85952	generated	/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	281.5200017914176
+100k-k0	100k	0	35	50000	100000-149999	1.87041	generated	/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	266.6232514567673
 100k-k3	100k	3	47	50000	0-49999	1.83599	8-11	/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	0.0
+100k-k3	100k	3	47	50000	50000-99999	1.80561	generated	/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	252.87861417979002
+100k-k3	100k	3	47	50000	100000-149999	1.84002	generated	/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	253.2316273599863
 140k-k0	140k	0	35	50000	0-49999	1.86544	8-11	/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	0.0
+140k-k0	140k	0	35	50000	50000-99999	1.85187	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	131.18454057583585
+140k-k0	140k	0	35	50000	100000-149999	1.8592	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	126.03834212501533
 140k-k1	140k	1	39	50000	0-49999	1.82146	8-11	/data00/users/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	0.0
+140k-k1	140k	1	39	50000	50000-99999	1.8223	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	126.09523560106754
+140k-k1	140k	1	39	50000	100000-149999	1.84102	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	126.10604165913537
 180k-k0	180k	0	35	50000	0-49999	1.83353	8-11	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	0.0
 180k-k0	180k	0	35	50000	50000-99999	1.83016	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	125.69542048103176
 180k-k0	180k	0	35	50000	100000-149999	1.82123	generated	/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz	126.09499833500013

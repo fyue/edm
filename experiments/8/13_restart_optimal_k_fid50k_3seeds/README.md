@@ -1,8 +1,8 @@
 # 実験8-13：最適KとK=0のFID-50k・3シード比較
 
-8-11の最適KとK=0をFID-50k×3生成seed範囲で比べる。平均改善幅は20k 0.381、60k 0.105、180k 0.019、200k 0.013。100k・140kはこのPCではn=1（Slackでは[完了と報告](https://kato-ai-lab.slack.com/archives/C082JD35X5W/p1793027847627969)）。
+8-11の最適KとK=0をFID-50k×3生成seed範囲で比べる。全6 checkpoint・36評価が揃い、平均改善幅は20k 0.38073、60k 0.10470、100k 0.04310、140k 0.03058、180k 0.01933、200k 0.01344だった。
 
-Slack報告の原本・TSは[参照索引](../../reports/slack_sources.md#s6)から確認できる。ローカルの[improvement_stats.tsv](results/improvement_stats.tsv)との不一致は未照合であり、報告値で評価データを補完していない。
+Slack報告の原本・TSは[参照索引](../../reports/slack_sources.md#s6)から確認できる。2026-11-07に `runs/early` の20件と `runs/late` の16件の条件別完了JSONを統合し、[improvement_stats.tsv](results/improvement_stats.tsv)を更新した。条件・シード範囲の重複、記録されたコード・参照統計・batch設定の不一致、同一checkpoint内のモデルSHA256の不一致はなく、全6点の平均・標本標準偏差は[10月27日のSlack報告](https://kato-ai-lab.slack.com/archives/C082JD35X5W/p1793027847627969)と小数点以下5桁で一致した。報告値による補完は行っていない。
 
 8-11で選択した最適Kを固定し、固定モデルにおける生成シード間のFID変動とpaired改善幅を確認する。学習seedは0のままであり、3回の再学習ではない。
 
@@ -94,6 +94,8 @@ touch experiments/8/13_restart_optimal_k_fid50k_3seeds/STOP_AFTER_CURRENT_CONDIT
   experiments/8/13_restart_optimal_k_fid50k_3seeds/runs/late
 ```
 
+今回の保存済み結果は `early` が20k・60k・100kの全範囲と140kの初回範囲（20件）、`late` が140kの追加2範囲と180k・200kの全範囲（16件）を持つ。checkpoint単位で完全に分かれていなくても、条件とシード範囲の組が重複しなければ統合できる。統合時は上の `--result-roots` にこの2ディレクトリを指定し、取り込み済み初回12件がある実験直下を入力へ追加しない。
+
 転送には `results/*-fid50000-seeds-*.json` だけが必要。集計にモデル・画像は不要。同じ条件・シード範囲の重複は値が一致していてもエラー。シードで分担する場合も、既存範囲の取り込み担当を重複させない。集計出力を保存しただけでは他PCの評価完了マーカーにならない。
 
 結果は `results/` に出力する。
@@ -103,6 +105,8 @@ touch experiments/8/13_restart_optimal_k_fid50k_3seeds/STOP_AFTER_CURRENT_CONDIT
 - `paired_improvements.tsv/.json`：各範囲の `FID(K=0) − FID(最適K)`。
 - `improvement_stats.tsv/.json`：6 checkpointの改善幅の平均・標本標準偏差・正の改善となった範囲数。
 - `fid50k_3seeds.png/.svg`：実測点と、3範囲が揃った場合の平均±標本標準偏差。改善幅にゼロ線を表示する。
+
+図の横軸は実際の学習量（kimg）の数値軸で、K=0・最適Kとも同じcheckpoint位置に描く（横方向のずらしなし）。上段は全checkpoint、下段は100k〜200kの拡大図。生成seed範囲を白抜きの丸・上三角・下三角、平均を菱形、標本標準偏差をエラーバーで示し、平均を結ぶ線はK=0が灰色破線、最適Kが青実線とする。
 
 `n`は揃った範囲数、`complete=true`はn=3。途中集計にも平均は出すが、正式な3シード結果とは扱わず、n<2の標準偏差はnull/空欄にする。欠損した範囲をゼロで埋めない。
 
@@ -123,5 +127,5 @@ python experiments/8/4_restart_k_sweep_10k_interval/scripts/test_pause_eta.py -v
 
 - compileall、シェル構文、help・plan表示を確認。計画は36評価中12件再利用・24件追加、120万枚。
 - 新規CPUテスト9件、8-4の条件境界テスト17件・ETAテスト11件が成功。
-- 既存12評価を取り込み済み。`--verify-only` と `--aggregate-only` で12/36件を確認し、暫定PNGも確認した。現在の各条件はn=1で、標準偏差は未確定。
+- 既存12評価を取り込み済み。`--verify-only` と `--aggregate-only` で12/36件を確認し、暫定PNGも確認した。初期設定時点では各条件n=1で、標準偏差は未確定だった。
 - `--checkpoint-filter 20k --samples-only --sample-seeds 0-1` を別の一時出力先で試行したが、`nvidia-smi` がNVIDIAドライバと通信できず、共通GPU待機段階で停止した。実GPUでのK=0/K=7の生成確認は未完了。本番24評価は未起動。

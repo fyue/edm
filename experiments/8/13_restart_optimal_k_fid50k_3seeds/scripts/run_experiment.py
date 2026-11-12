@@ -210,31 +210,94 @@ def plot(out, lookup):
     import matplotlib
     matplotlib.use('Agg')
     import matplotlib.pyplot as plt
-    fig, axes = plt.subplots(1, 2, figsize=(12, 4))
-    xvalues = list(range(len(OPTIMAL)))
+    from matplotlib.lines import Line2D
+
+    fig, axes = plt.subplots(2, 2, figsize=(13, 8))
+    xvalues = [int(cp[:-1]) * 1000 for cp in OPTIMAL]
+    colors = {0: '#666666', 1: '#0072B2'}
+    markers = ('o', '^', 'v')
+
+    def draw(axis, x, values, color):
+        # Keep all observations at the actual training checkpoint (no jitter).
+        for seed_index, value in values:
+            axis.scatter(x, value, marker=markers[seed_index], s=32,
+                         facecolors='none', edgecolors=color, linewidths=1.1,
+                         zorder=4)
+        if len(values) == 3:
+            numbers = [value for _, value in values]
+            axis.errorbar(x, statistics.mean(numbers),
+                          yerr=statistics.stdev(numbers), fmt='D',
+                          markerfacecolor='white', markeredgecolor=color,
+                          markersize=5, ecolor=color, elinewidth=1,
+                          capsize=5, zorder=3)
+
+    means = {0: [], 1: []}
+    improvement_means = []
     for i, (cp, best) in enumerate(OPTIMAL.items()):
-        for k, offset, color in [(0, -0.12, 'tab:gray'), (best, 0.12, 'tab:blue')]:
-            values = [lookup[(f'{cp}-k{k}', s)]['fid'] for s in SEEDS if (f'{cp}-k{k}', s) in lookup]
-            axes[0].scatter([i + offset] * len(values), values, color=color, alpha=.65)
-            if len(values) == 3:
-                axes[0].errorbar(i + offset, statistics.mean(values), yerr=statistics.stdev(values), color=color, fmt='s', capsize=4)
-        diffs = [lookup[(f'{cp}-k0', s)]['fid'] - lookup[(f'{cp}-k{best}', s)]['fid'] for s in SEEDS
+        x = xvalues[i]
+        for group, k in [(0, 0), (1, best)]:
+            values = [(j, lookup[(f'{cp}-k{k}', s)]['fid'])
+                      for j, s in enumerate(SEEDS) if (f'{cp}-k{k}', s) in lookup]
+            means[group].append(statistics.mean(v for _, v in values) if len(values) == 3 else math.nan)
+            for axis in axes[:, 0]:
+                draw(axis, x, values, colors[group])
+        diffs = [(j, lookup[(f'{cp}-k0', s)]['fid'] - lookup[(f'{cp}-k{best}', s)]['fid'])
+                 for j, s in enumerate(SEEDS)
                  if (f'{cp}-k0', s) in lookup and (f'{cp}-k{best}', s) in lookup]
-        axes[1].scatter([i] * len(diffs), diffs, color='tab:blue', alpha=.65)
-        if len(diffs) == 3:
-            axes[1].errorbar(i, statistics.mean(diffs), yerr=statistics.stdev(diffs), fmt='s', color='black', capsize=4)
-    axes[0].set_ylabel('FID-50k')
-    axes[0].set_title('Gray: K=0; blue: fixed optimal K')
-    axes[1].set_ylabel('FID(K=0) - FID(optimal K)')
-    axes[1].axhline(0, color='gray', linewidth=1)
-    axes[1].set_title('Paired improvement; bars: mean +/- sample SD (n=3)')
-    for axis in axes:
+        improvement_means.append(statistics.mean(v for _, v in diffs) if len(diffs) == 3 else math.nan)
+        for axis in axes[:, 1]:
+            draw(axis, x, diffs, colors[1])
+    for axis in axes[:, 0]:
+        for group, label, style in [(0, 'K=0', '--'), (1, 'Fixed optimal K', '-')]:
+            axis.plot(xvalues, means[group], color=colors[group], linestyle=style,
+                      linewidth=1.2, alpha=.8, label=label, zorder=2)
+        axis.set_ylabel('FID-50k')
+    axes[0, 0].legend(loc='upper right', frameon=False)
+    for axis in axes[:, 1]:
+        axis.plot(xvalues, improvement_means, color=colors[1], linewidth=1.2,
+                  alpha=.8, zorder=2)
+        axis.set_ylabel('FID(K=0) - FID(optimal K)')
+        axis.axhline(0, color='#999999', linewidth=.8)
+    axes[0, 0].set_title('FID-50k: all checkpoints')
+    axes[0, 1].set_title('Paired improvement: all checkpoints')
+    axes[1, 0].set_title('FID-50k: 100k-200k detail')
+    axes[1, 1].set_title('Paired improvement: 100k-200k detail')
+    for axis in axes.flat:
         axis.set_xticks(xvalues)
         axis.set_xticklabels(list(OPTIMAL))
+        axis.set_xlim(12000, 208000)
         axis.set_xlabel('Training checkpoint (kimg)')
-    fig.tight_layout()
+        axis.grid(axis='y', color='#e8e8e8', linewidth=.6)
+        axis.set_axisbelow(True)
+    for col in range(2):
+        axis = axes[1, col]
+        axis.set_xlim(95000, 205000)
+        axis.set_xticks(xvalues[2:])
+        axis.set_xticklabels(list(OPTIMAL)[2:])
+        late_values = [v for line in axis.lines for x, v in zip(line.get_xdata(), line.get_ydata())
+                       if 100000 <= x <= 200000 and math.isfinite(v)]
+        # Include observations as well as the errorbar endpoints in the detail limits.
+        for cp, best in list(OPTIMAL.items())[2:]:
+            for s in SEEDS:
+                a, b = lookup.get((f'{cp}-k0', s)), lookup.get((f'{cp}-k{best}', s))
+                if col == 0:
+                    late_values.extend(r['fid'] for r in (a, b) if r is not None)
+                elif a is not None and b is not None:
+                    late_values.append(a['fid'] - b['fid'])
+        if late_values:
+            low, high = min(late_values), max(late_values)
+            padding = max((high - low) * .15, .005)
+            axis.set_ylim(min(low - padding, 0) if col == 1 else low - padding,
+                          high + padding)
+    seed_handles = [Line2D([], [], color='#333333', marker=marker, linestyle='none',
+                           markerfacecolor='none', label=f'Seeds {seed}')
+                    for marker, seed in zip(markers, SEEDS)]
+    seed_handles.append(Line2D([], [], color='#333333', marker='D', linestyle='-',
+                              markerfacecolor='white', label='Mean +/- sample SD (n=3)'))
+    fig.legend(handles=seed_handles, loc='lower center', ncol=4, frameon=False)
+    fig.tight_layout(rect=(0, .06, 1, 1), h_pad=2)
     for suffix in ('png', 'svg'):
-        fig.savefig(out / f'fid50k_3seeds.{suffix}')
+        fig.savefig(out / f'fid50k_3seeds.{suffix}', dpi=180)
     plt.close(fig)
 
 

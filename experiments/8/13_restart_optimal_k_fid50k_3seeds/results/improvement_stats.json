@@ -19,21 +19,21 @@
   },
   {
     "checkpoint": "100k",
-    "complete": false,
-    "mean": 0.045009999999999994,
-    "n": 1,
+    "complete": true,
+    "mean": 0.04310333333333335,
+    "n": 3,
     "optimal_k": 3,
-    "positive_ranges": 1,
-    "std": null
+    "positive_ranges": 3,
+    "std": 0.011875358240210512
   },
   {
     "checkpoint": "140k",
-    "complete": false,
-    "mean": 0.04397999999999991,
-    "n": 1,
+    "complete": true,
+    "mean": 0.030576666666666547,
+    "n": 3,
     "optimal_k": 1,
-    "positive_ranges": 1,
-    "std": null
+    "positive_ranges": 3,
+    "std": 0.012929425096783458
   },
   {
     "checkpoint": "180k",

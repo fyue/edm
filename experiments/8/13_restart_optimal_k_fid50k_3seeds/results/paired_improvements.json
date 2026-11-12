@@ -56,12 +56,44 @@
     "seeds": "0-49999"
   },
   {
+    "baseline_fid": 1.85952,
+    "checkpoint": "100k",
+    "improvement": 0.053910000000000124,
+    "optimal_fid": 1.80561,
+    "optimal_k": 3,
+    "seeds": "50000-99999"
+  },
+  {
+    "baseline_fid": 1.87041,
+    "checkpoint": "100k",
+    "improvement": 0.030389999999999917,
+    "optimal_fid": 1.84002,
+    "optimal_k": 3,
+    "seeds": "100000-149999"
+  },
+  {
     "baseline_fid": 1.86544,
     "checkpoint": "140k",
     "improvement": 0.04397999999999991,
     "optimal_fid": 1.82146,
     "optimal_k": 1,
     "seeds": "0-49999"
+  },
+  {
+    "baseline_fid": 1.85187,
+    "checkpoint": "140k",
+    "improvement": 0.029569999999999874,
+    "optimal_fid": 1.8223,
+    "optimal_k": 1,
+    "seeds": "50000-99999"
+  },
+  {
+    "baseline_fid": 1.8592,
+    "checkpoint": "140k",
+    "improvement": 0.018179999999999863,
+    "optimal_fid": 1.84102,
+    "optimal_k": 1,
+    "seeds": "100000-149999"
   },
   {
     "baseline_fid": 1.83353,

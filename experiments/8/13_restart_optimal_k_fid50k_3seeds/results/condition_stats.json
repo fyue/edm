@@ -37,39 +37,39 @@
   },
   {
     "checkpoint": "100k",
-    "complete": false,
+    "complete": true,
     "condition": "100k-k0",
-    "mean": 1.881,
-    "n": 1,
+    "mean": 1.87031,
+    "n": 3,
     "restart_k": 0,
-    "std": null
+    "std": 0.010740349156335625
   },
   {
     "checkpoint": "100k",
-    "complete": false,
+    "complete": true,
     "condition": "100k-k3",
-    "mean": 1.83599,
-    "n": 1,
+    "mean": 1.8272066666666666,
+    "n": 3,
     "restart_k": 3,
-    "std": null
+    "std": 0.018811492054947015
   },
   {
     "checkpoint": "140k",
-    "complete": false,
+    "complete": true,
     "condition": "140k-k0",
-    "mean": 1.86544,
-    "n": 1,
+    "mean": 1.8588366666666667,
+    "n": 3,
     "restart_k": 0,
-    "std": null
+    "std": 0.006792292200232105
   },
   {
     "checkpoint": "140k",
-    "complete": false,
+    "complete": true,
     "condition": "140k-k1",
-    "mean": 1.82146,
-    "n": 1,
+    "mean": 1.82826,
+    "n": 3,
     "restart_k": 1,
-    "std": null
+    "std": 0.011058462822653091
   },
   {
     "checkpoint": "180k",
