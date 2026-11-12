@@ -8,6 +8,8 @@
 
 実験について調べるときは、ディレクトリを探索する前に `experiments/README.md`（グループの役割・系譜・最新方針の参照先）と `experiments/INDEX.md`（全実験一覧、自動生成）を読み、該当するグループの `README.md`、実験の `README.md`、`results/` の順に絞り込んでください。`training-runs/`、`fid-evals/`、`generated/`、`images/`、`logs/` は再帰的に読みません。
 
+学習系列やcheckpointの比較・解釈では、[乱数再生の監査](experiments/reports/rng_replay_audit.md)で対象のcheckpointが再開時の乱数再生を受けているか確認してください。
+
 実験条件・数値は実験READMEと`results/`で確認し、議論の経緯は[Slack参照索引](experiments/reports/slack_sources.md)から原文と関連する添付を確認してください。索引は話題・日付・実験IDから原文を探すためのもので、特定の要約や解釈を分析より優先しません。`experiments/slack_origin/`は取得時の原本を保持するローカル専用・Git対象外の保存先です。原本がないPCでは索引のSlack直接リンクを利用します。報告内容とローカル結果が一致しない場合は、両方の出典と未照合であることを明記し、報告値で結果を上書きしません。
 
 新しい実験を作ったときや結果が確定したときは、実験READMEのH1直後の段落に目的（確定後は結論も）を1〜2文で書き、グループREADMEの「主要な結論」と「実験一覧と役割」を出典付きで更新し、`python scripts/build_experiment_index.py` でINDEXを再生成してください。INDEXは手で編集しません。`--check` で更新漏れを確認できます。
