@@ -4,11 +4,21 @@ upLaTeX（`jsarticle`）+ upBibTeX + dvipdfmx で日本語論文をビルドし�
 
 ## 構成
 
-- `main.tex`: 論文本体
+- `main.tex`: プリアンブルと章の読み込み（`jsreport`）
+- `chapters/`: 章ごとの本文。`main.tex` から `\input` する
 - `references.bib`: 参考文献（`junsrt` スタイル）
 - `figures/`: 図。dvipdfmx は SVG を読めないので、PDF か PNG に変換して置く
 - `latexmkrc`: ビルド設定。出力はすべて `build/`（git 管理外）
 - `sample.tex`: 参考用の過去の宿題
+
+## 後で修正が必要な箇所
+
+未完了の実験に依存する記述などには `TODO(要修正)` を付けます。本文に見せるものは
+`\todo{...}`（PDFに赤字で表示）、見せないものは `% TODO(要修正): ...` と書きます。
+
+```bash
+grep -rnE 'TODO\(要修正\)|\\todo\{' Tex/ --include='*.tex'
+```
 
 ## 必要なもの
 
