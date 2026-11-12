@@ -1,0 +1,2 @@
+# Resumable, machine-local runtime state.
+runs/**/progress/
