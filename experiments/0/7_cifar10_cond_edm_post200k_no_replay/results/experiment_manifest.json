@@ -1,0 +1,123 @@
+{
+  "experiment": "0-7",
+  "base_options": {
+    "dataset_kwargs": {
+      "class_name": "training.dataset.ImageFolderDataset",
+      "path": "datasets/cifar10-32x32.zip",
+      "use_labels": true,
+      "xflip": false,
+      "cache": true,
+      "resolution": 32,
+      "max_size": 50000
+    },
+    "data_loader_kwargs": {
+      "pin_memory": true,
+      "num_workers": 1,
+      "prefetch_factor": 2
+    },
+    "network_kwargs": {
+      "model_type": "SongUNet",
+      "embedding_type": "positional",
+      "encoder_type": "standard",
+      "decoder_type": "standard",
+      "channel_mult_noise": 1,
+      "resample_filter": [
+        1,
+        1
+      ],
+      "model_channels": 128,
+      "channel_mult": [
+        2,
+        2,
+        2
+      ],
+      "class_name": "training.networks.EDMPrecond",
+      "augment_dim": 9,
+      "dropout": 0.13,
+      "use_fp16": false
+    },
+    "loss_kwargs": {
+      "class_name": "training.loss.EDMLoss"
+    },
+    "optimizer_kwargs": {
+      "class_name": "torch.optim.Adam",
+      "lr": 0.001,
+      "betas": [
+        0.9,
+        0.999
+      ],
+      "eps": 1e-08
+    },
+    "augment_kwargs": {
+      "class_name": "training.augment.AugmentPipe",
+      "p": 0.12,
+      "xflip": 100000000.0,
+      "yflip": 1,
+      "scale": 1,
+      "rotate_frac": 1,
+      "aniso": 1,
+      "translate_frac": 1
+    },
+    "total_kimg": 200000,
+    "ema_halflife_kimg": 500,
+    "batch_size": 512,
+    "batch_gpu": 128,
+    "loss_scaling": 1.0,
+    "cudnn_benchmark": true,
+    "kimg_per_tick": 50,
+    "snapshot_ticks": null,
+    "state_dump_ticks": null,
+    "checkpoint_kimgs": [
+      10000,
+      20000,
+      30000,
+      40000,
+      50000,
+      60000,
+      70000,
+      80000,
+      90000,
+      100000,
+      110000,
+      120000,
+      130000,
+      140000,
+      150000,
+      160000,
+      170000,
+      180000,
+      190000,
+      200000
+    ],
+    "seed": 0,
+    "run_dir": "experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k"
+  },
+  "sha256": {
+    "experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/training_options.json": "c95b63f15534e2aa67d2d641b7e2e2d3a61ee3a293c871956267dc85c954885e",
+    "experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-200000.pkl": "ef52ec8b43a085f4be6174b397c965b1ba67e4e7a652164eae2a009d7f6c41ab",
+    "experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/training-state-200000.pt": "de6cb10557ce922c330b43c845565e230d38103bc622666f0461ca1bc47e6c9b",
+    "datasets/cifar10-32x32.zip": "15dced83957060f298ff3fe4419f032a8654af489c8e65a5f0ec3d1e2d902179",
+    "train.py": "e921f457354968de3b61d71fa3e4f7979fd0e20c3f73ea4f0121a821259f8c66",
+    "scripts/load_gpu_config.sh": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+    "scripts/wait_for_gpu_and_run.sh": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+    "training/__init__.py": "c206ac297b56e0acc8671f9f93170e3822abc87abcdf5886b65ea326ade8dac8",
+    "training/augment.py": "fd411af7c2d74489ce11a245293047369fc044d00a9aeed1c0bd46b322c8a8b5",
+    "training/dataset.py": "f46fe15ecd66206819e416ffca6ea22a06610405d6954ccc0fffc53092ab81c2",
+    "training/loss.py": "47b78423e887ef5a3d02ce5ba87898e213e169a4f7ca0652da11330c63bb854a",
+    "training/networks.py": "b12a8cf10ef1042d0decdcedcb503fe3bad668f2532a5a7a46bf98446dde0abb",
+    "training/training_loop.py": "c1f553b4538ef6286fa6c83c7041d72ee7360604382a7fb07244818036771bd8",
+    "torch_utils/__init__.py": "c206ac297b56e0acc8671f9f93170e3822abc87abcdf5886b65ea326ade8dac8",
+    "torch_utils/distributed.py": "d16a13aaa7c7bfb3b8067404d616cedafe22783ea4aae72169e41b29071d1a2b",
+    "torch_utils/misc.py": "d1b9ccfa41cbb0e232675d49d1875179cb010dbbd2a021584aa5d1614348ac83",
+    "torch_utils/persistence.py": "71589e7a4b5175047a48a4bc58e30438b58bea87e415e6873d13d7d438c44b38",
+    "torch_utils/training_stats.py": "0f16df14740b91a040870e8425dce37014142be7f7016e6871fe19a5585a19c6",
+    "dnnlib/__init__.py": "57a5dd0f58b26c72961c7a64e0a7806c722c6046e06e79ce64ea344b47ecd516",
+    "dnnlib/util.py": "00a0e339dc8eca358c9053ae6d93ab87b8d3f4df1e5dd30d3185558721986e1c",
+    "experiments/0/7_cifar10_cond_edm_post200k_no_replay/scripts/run_experiment.py": "299a84571ee7c297c3d178db89aa0bab7d1b706d3dacd4f40dd3b3c69e99b779",
+    "experiments/0/7_cifar10_cond_edm_post200k_no_replay/scripts/test_experiment.py": "425c377848507d330ff01feea7350c6913d186ee41170870375a4c24da9b5041",
+    "experiments/0/7_cifar10_cond_edm_post200k_no_replay/scripts/gpu_worker.sh": "c1de8f298ec04cef8e77ef1be6518cbd4f93be711248ec32338be5a0fc65cf1d",
+    "experiments/0/7_cifar10_cond_edm_post200k_no_replay/scripts/run.sh": "ff8f2c3caf82bd0126762fc3d7b4a0d5f461b99aad0146c7295b404cb137c794",
+    "experiments/0/7_cifar10_cond_edm_post200k_no_replay/scripts/schedule_after_gpu_free.sh": "f2660d0c611f1b86327e26ae44adcdeb9207c2ae3c41f31197dd3eeb9bb104e9",
+    "experiments/0/7_cifar10_cond_edm_post200k_no_replay/config/checkpoint_kimgs.txt": "6005ac583ca72abdacf45b15e43906a0e6c8030a04a0a50d19845536d5c5ee1d"
+  }
+}

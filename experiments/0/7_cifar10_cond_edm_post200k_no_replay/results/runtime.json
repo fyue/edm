@@ -1,0 +1,7 @@
+{
+  "timestamp": "2026-11-12T14:36:59.757918+09:00",
+  "python": "3.9.23 | packaged by conda-forge | (main, Jun  4 2025, 17:57:12) \n[GCC 13.3.0]",
+  "torch": "1.12.1+cu113",
+  "cuda": "11.3",
+  "gpu": "0, Quadro RTX 8000, GPU-5182ddb4-13ad-f781-f39b-233c550fd019, 550.67"
+}

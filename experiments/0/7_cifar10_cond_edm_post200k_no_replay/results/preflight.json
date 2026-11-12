@@ -1,0 +1,41 @@
+{
+  "timestamp": "2026-11-11T13:47:56.049431+09:00",
+  "base_checkpoint": {
+    "kimg": 200000,
+    "snapshot": "/data00/users/kyoukinkin/projects/edm/experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/network-snapshot-200000.pkl",
+    "state": "/data00/users/kyoukinkin/projects/edm/experiments/0/1_cifar10_cond_edm_10k_retraining/training-runs/cifar10-cond-ddpmpp-edm-seed0-10k/training-state-200000.pt",
+    "snapshot_bytes": 223191847,
+    "state_bytes": 669425733
+  },
+  "start_kimg": 200000,
+  "target_kimg": 300000,
+  "first_seed": 200000,
+  "checkpoint_kimgs": [
+    210000,
+    220000,
+    230000,
+    240000,
+    250000,
+    260000,
+    270000,
+    280000,
+    290000,
+    300000
+  ],
+  "checks": {
+    "cpu_tests": 7,
+    "compileall": "passed",
+    "shell_syntax": "passed",
+    "runner_help": "passed",
+    "train_help": "passed",
+    "plan_only": "passed",
+    "dry_run": "passed"
+  },
+  "scheduling_observation": {
+    "session": "edm-exp0-7",
+    "status": "waiting_for_configured_gpu",
+    "check_interval_sec": 300,
+    "log": "logs/master.log"
+  },
+  "complete": false
+}
