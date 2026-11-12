@@ -1,0 +1,3104 @@
+[
+  {
+    "actual_t_min": null,
+    "checkpoint": "20k",
+    "condition": "20k-k0",
+    "elapsed_sec": 11806.318881792482,
+    "fid": 2.80974,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.08800913998857,
+    "gen_batch": 64,
+    "generate_sec": 11677.199900231324,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/20k-k0/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/20k-k0-fid50000.log",
+    "main_steps": 28,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-020000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": null,
+        "checkpoint": "20k",
+        "condition": "20k-k0",
+        "main_steps": 28,
+        "nfe": 55,
+        "restart_index": null,
+        "restart_k": 0,
+        "restart_steps": 0,
+        "t_max": 0.0,
+        "t_min": 0.0
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "839d450caf1848198533030ca212b9b3a379a975420fbcddfe5196536d658d3f",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "d4e195649c5bde408b407ece5fc979ef3f9c64d2beef424d77b3a9409d33c488",
+    "restart_index": null,
+    "restart_k": 0,
+    "restart_noise": 1,
+    "restart_steps": 0,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.0,
+    "t_min": 0.0
+  },
+  {
+    "actual_t_min": 0.14864397747384864,
+    "checkpoint": "20k",
+    "condition": "20k-k1",
+    "elapsed_sec": 11840.142987632658,
+    "fid": 2.74393,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 143.7794228522107,
+    "gen_batch": 64,
+    "generate_sec": 11693.307168769184,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/20k-k1/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/20k-k1-fid50000.log",
+    "main_steps": 26,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-020000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.14864397747384864,
+        "checkpoint": "20k",
+        "condition": "20k-k1",
+        "main_steps": 26,
+        "nfe": 55,
+        "restart_index": 19,
+        "restart_k": 1,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "839d450caf1848198533030ca212b9b3a379a975420fbcddfe5196536d658d3f",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "3a7e8ea3704677b61b2d698bfff715db6aadcb41b700f5865c1580b23a6a7749",
+    "restart_index": 19,
+    "restart_k": 1,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.10903976726944489,
+    "checkpoint": "20k",
+    "condition": "20k-k2",
+    "elapsed_sec": 11806.448550092522,
+    "fid": 2.65945,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.1294071576558,
+    "gen_batch": 64,
+    "generate_sec": 11677.274671488907,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/20k-k2/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/20k-k2-fid50000.log",
+    "main_steps": 24,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-020000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.10903976726944489,
+        "checkpoint": "20k",
+        "condition": "20k-k2",
+        "main_steps": 24,
+        "nfe": 55,
+        "restart_index": 18,
+        "restart_k": 2,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "839d450caf1848198533030ca212b9b3a379a975420fbcddfe5196536d658d3f",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "81061d529ed2926ab38dd03a9024c282446ce7fa54554a326cfbc1d5f3307caa",
+    "restart_index": 18,
+    "restart_k": 2,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.14488970285315433,
+    "checkpoint": "20k",
+    "condition": "20k-k3",
+    "elapsed_sec": 11821.411596263293,
+    "fid": 2.65214,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.0727193262428,
+    "gen_batch": 64,
+    "generate_sec": 11692.295981037896,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/20k-k3/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/20k-k3-fid50000.log",
+    "main_steps": 22,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-020000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.14488970285315433,
+        "checkpoint": "20k",
+        "condition": "20k-k3",
+        "main_steps": 22,
+        "nfe": 55,
+        "restart_index": 16,
+        "restart_k": 3,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "839d450caf1848198533030ca212b9b3a379a975420fbcddfe5196536d658d3f",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "ad4f0da01606c1a3311fbaa81714886522b25579ab6fe25926db16858d01c805",
+    "restart_index": 16,
+    "restart_k": 3,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.0989733831956025,
+    "checkpoint": "20k",
+    "condition": "20k-k4",
+    "elapsed_sec": 11797.178958942648,
+    "fid": 2.56641,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.0144795179367,
+    "gen_batch": 64,
+    "generate_sec": 11668.082255602349,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/20k-k4/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/20k-k4-fid50000.log",
+    "main_steps": 20,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-020000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.0989733831956025,
+        "checkpoint": "20k",
+        "condition": "20k-k4",
+        "main_steps": 20,
+        "nfe": 55,
+        "restart_index": 15,
+        "restart_k": 4,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "839d450caf1848198533030ca212b9b3a379a975420fbcddfe5196536d658d3f",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "9d7e57d53f2a57efa6da6c839c8b105f964e1ab351a457c8607ea7fe5d8e18a1",
+    "restart_index": 15,
+    "restart_k": 4,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.13951646873101678,
+    "checkpoint": "20k",
+    "condition": "20k-k5",
+    "elapsed_sec": 11807.359569256194,
+    "fid": 2.60894,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.00637852121145,
+    "gen_batch": 64,
+    "generate_sec": 11678.254529093858,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/20k-k5/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/20k-k5-fid50000.log",
+    "main_steps": 18,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-020000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.13951646873101678,
+        "checkpoint": "20k",
+        "condition": "20k-k5",
+        "main_steps": 18,
+        "nfe": 55,
+        "restart_index": 13,
+        "restart_k": 5,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "839d450caf1848198533030ca212b9b3a379a975420fbcddfe5196536d658d3f",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "a4d78feead19220c531a7229725058ad46b19b2eca5508f683b17c427b49babe",
+    "restart_index": 13,
+    "restart_k": 5,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.08508720268939021,
+    "checkpoint": "20k",
+    "condition": "20k-k6",
+    "elapsed_sec": 11812.255023800302,
+    "fid": 2.50834,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 125.98147649411112,
+    "gen_batch": 64,
+    "generate_sec": 11683.176574949175,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/20k-k6/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/20k-k6-fid50000.log",
+    "main_steps": 16,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-020000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.08508720268939021,
+        "checkpoint": "20k",
+        "condition": "20k-k6",
+        "main_steps": 16,
+        "nfe": 55,
+        "restart_index": 12,
+        "restart_k": 6,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "839d450caf1848198533030ca212b9b3a379a975420fbcddfe5196536d658d3f",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "7fa5d9a11637702253d6759a554965f91e5ab503a06c37580b32f5e361169a9b",
+    "restart_index": 12,
+    "restart_k": 6,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.13119736304372648,
+    "checkpoint": "20k",
+    "condition": "20k-k7",
+    "elapsed_sec": 11787.133867922239,
+    "fid": 2.57523,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 125.94389178603888,
+    "gen_batch": 64,
+    "generate_sec": 11658.124643585179,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/20k-k7/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/20k-k7-fid50000.log",
+    "main_steps": 14,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-020000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.13119736304372648,
+        "checkpoint": "20k",
+        "condition": "20k-k7",
+        "main_steps": 14,
+        "nfe": 55,
+        "restart_index": 10,
+        "restart_k": 7,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "839d450caf1848198533030ca212b9b3a379a975420fbcddfe5196536d658d3f",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "a7832aaefd3390eef0006209774e86980be1b321982734cd9652b13ddaf80f09",
+    "restart_index": 10,
+    "restart_k": 7,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.065014599416395,
+    "checkpoint": "20k",
+    "condition": "20k-k8",
+    "elapsed_sec": 11817.456760898698,
+    "fid": 2.52783,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.02163190068677,
+    "gen_batch": 64,
+    "generate_sec": 11688.343080209102,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/20k-k8/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/20k-k8-fid50000.log",
+    "main_steps": 12,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-020000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.065014599416395,
+        "checkpoint": "20k",
+        "condition": "20k-k8",
+        "main_steps": 12,
+        "nfe": 55,
+        "restart_index": 9,
+        "restart_k": 8,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "839d450caf1848198533030ca212b9b3a379a975420fbcddfe5196536d658d3f",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "32dbb2c111312610632a52cc3af35681f3984b8c1d8cf9e826e401408785d3c0",
+    "restart_index": 9,
+    "restart_k": 8,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": null,
+    "checkpoint": "40k",
+    "condition": "40k-k0",
+    "elapsed_sec": 11797.253213488031,
+    "fid": 2.19388,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 125.91842167684808,
+    "gen_batch": 64,
+    "generate_sec": 11668.193789001089,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/40k-k0/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/40k-k0-fid50000.log",
+    "main_steps": 28,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-040000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": null,
+        "checkpoint": "40k",
+        "condition": "40k-k0",
+        "main_steps": 28,
+        "nfe": 55,
+        "restart_index": null,
+        "restart_k": 0,
+        "restart_steps": 0,
+        "t_max": 0.0,
+        "t_min": 0.0
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "189901ee35e5d4021b293e583487d39a2717161623eb2f7407ee021193d7a671",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "bbda933e8b7b421d51880a6d3f51849453426b5ed1f972bb04463ffc7becfb8b",
+    "restart_index": null,
+    "restart_k": 0,
+    "restart_noise": 1,
+    "restart_steps": 0,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.0,
+    "t_min": 0.0
+  },
+  {
+    "actual_t_min": 0.14864397747384864,
+    "checkpoint": "40k",
+    "condition": "40k-k1",
+    "elapsed_sec": 11792.666555541568,
+    "fid": 2.15076,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.03330266615376,
+    "gen_batch": 64,
+    "generate_sec": 11663.522136165295,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/40k-k1/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/40k-k1-fid50000.log",
+    "main_steps": 26,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-040000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.14864397747384864,
+        "checkpoint": "40k",
+        "condition": "40k-k1",
+        "main_steps": 26,
+        "nfe": 55,
+        "restart_index": 19,
+        "restart_k": 1,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "189901ee35e5d4021b293e583487d39a2717161623eb2f7407ee021193d7a671",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "c9629466d0075fb0d708eb957ec97e3c094aa493c8fbd7f1c6000524e04be604",
+    "restart_index": 19,
+    "restart_k": 1,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.10903976726944489,
+    "checkpoint": "40k",
+    "condition": "40k-k2",
+    "elapsed_sec": 11742.207859354094,
+    "fid": 2.09945,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 125.97207317128778,
+    "gen_batch": 64,
+    "generate_sec": 11613.02279084688,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/40k-k2/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/40k-k2-fid50000.log",
+    "main_steps": 24,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-040000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.10903976726944489,
+        "checkpoint": "40k",
+        "condition": "40k-k2",
+        "main_steps": 24,
+        "nfe": 55,
+        "restart_index": 18,
+        "restart_k": 2,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "189901ee35e5d4021b293e583487d39a2717161623eb2f7407ee021193d7a671",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "8af0e5af32e0562cbefc95edfdf50730ce253e20b96f53cdcf6c9e76754d76b8",
+    "restart_index": 18,
+    "restart_k": 2,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.14488970285315433,
+    "checkpoint": "40k",
+    "condition": "40k-k3",
+    "elapsed_sec": 11777.491581533104,
+    "fid": 2.1246,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.01909915311262,
+    "gen_batch": 64,
+    "generate_sec": 11648.292285840958,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/40k-k3/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/40k-k3-fid50000.log",
+    "main_steps": 22,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-040000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.14488970285315433,
+        "checkpoint": "40k",
+        "condition": "40k-k3",
+        "main_steps": 22,
+        "nfe": 55,
+        "restart_index": 16,
+        "restart_k": 3,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "189901ee35e5d4021b293e583487d39a2717161623eb2f7407ee021193d7a671",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "f38085774d1e435e3c95c729dd46c9134c8a31656d19f7facdf23898a1836fac",
+    "restart_index": 16,
+    "restart_k": 3,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.0989733831956025,
+    "checkpoint": "40k",
+    "condition": "40k-k4",
+    "elapsed_sec": 11767.416661643889,
+    "fid": 2.08448,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 125.97018479509279,
+    "gen_batch": 64,
+    "generate_sec": 11638.288237269968,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/40k-k4/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/40k-k4-fid50000.log",
+    "main_steps": 20,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-040000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.0989733831956025,
+        "checkpoint": "40k",
+        "condition": "40k-k4",
+        "main_steps": 20,
+        "nfe": 55,
+        "restart_index": 15,
+        "restart_k": 4,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "189901ee35e5d4021b293e583487d39a2717161623eb2f7407ee021193d7a671",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "af15781f924281fceebffb528ca4f6d0b4dd6c6947e9141700f51da8c9f0c525",
+    "restart_index": 15,
+    "restart_k": 4,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.13951646873101678,
+    "checkpoint": "40k",
+    "condition": "40k-k5",
+    "elapsed_sec": 11737.084606088698,
+    "fid": 2.12287,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 125.88537524919957,
+    "gen_batch": 64,
+    "generate_sec": 11607.972121829167,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/40k-k5/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/40k-k5-fid50000.log",
+    "main_steps": 18,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-040000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.13951646873101678,
+        "checkpoint": "40k",
+        "condition": "40k-k5",
+        "main_steps": 18,
+        "nfe": 55,
+        "restart_index": 13,
+        "restart_k": 5,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "189901ee35e5d4021b293e583487d39a2717161623eb2f7407ee021193d7a671",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "14cd38e8662746a6ba1646f7931d7d9f2a6b25dc134d3f06d641a969a58c75ea",
+    "restart_index": 13,
+    "restart_k": 5,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.08508720268939021,
+    "checkpoint": "40k",
+    "condition": "40k-k6",
+    "elapsed_sec": 11777.388337738812,
+    "fid": 2.05574,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.044667635113,
+    "gen_batch": 64,
+    "generate_sec": 11648.088703815825,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/40k-k6/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/40k-k6-fid50000.log",
+    "main_steps": 16,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-040000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.08508720268939021,
+        "checkpoint": "40k",
+        "condition": "40k-k6",
+        "main_steps": 16,
+        "nfe": 55,
+        "restart_index": 12,
+        "restart_k": 6,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "189901ee35e5d4021b293e583487d39a2717161623eb2f7407ee021193d7a671",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "525df02a4283509b63bb333db60c62e4092fd70dd8c3cbc507057d26094c00b4",
+    "restart_index": 12,
+    "restart_k": 6,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.13119736304372648,
+    "checkpoint": "40k",
+    "condition": "40k-k7",
+    "elapsed_sec": 11792.000214830041,
+    "fid": 2.11177,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.12586539844051,
+    "gen_batch": 64,
+    "generate_sec": 11662.714513644576,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/40k-k7/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/40k-k7-fid50000.log",
+    "main_steps": 14,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-040000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.13119736304372648,
+        "checkpoint": "40k",
+        "condition": "40k-k7",
+        "main_steps": 14,
+        "nfe": 55,
+        "restart_index": 10,
+        "restart_k": 7,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "189901ee35e5d4021b293e583487d39a2717161623eb2f7407ee021193d7a671",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "c00ca769cc10dbeb1314090bc605d7bce24e1fcae59e82c4e5a3fab57258007d",
+    "restart_index": 10,
+    "restart_k": 7,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.065014599416395,
+    "checkpoint": "40k",
+    "condition": "40k-k8",
+    "elapsed_sec": 11802.28292879602,
+    "fid": 2.10658,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 125.95235031517223,
+    "gen_batch": 64,
+    "generate_sec": 11673.07140767295,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/40k-k8/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/40k-k8-fid50000.log",
+    "main_steps": 12,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-040000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.065014599416395,
+        "checkpoint": "40k",
+        "condition": "40k-k8",
+        "main_steps": 12,
+        "nfe": 55,
+        "restart_index": 9,
+        "restart_k": 8,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "189901ee35e5d4021b293e583487d39a2717161623eb2f7407ee021193d7a671",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "684dd2a5a7b698d5ab047791c606b64fb46f2cfd32f53628833a8493fb52568b",
+    "restart_index": 9,
+    "restart_k": 8,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": null,
+    "checkpoint": "60k",
+    "condition": "60k-k0",
+    "elapsed_sec": 11757.087859412655,
+    "fid": 2.12223,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.01554814586416,
+    "gen_batch": 64,
+    "generate_sec": 11627.795807617716,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/60k-k0/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/60k-k0-fid50000.log",
+    "main_steps": 28,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-060000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": null,
+        "checkpoint": "60k",
+        "condition": "60k-k0",
+        "main_steps": 28,
+        "nfe": 55,
+        "restart_index": null,
+        "restart_k": 0,
+        "restart_steps": 0,
+        "t_max": 0.0,
+        "t_min": 0.0
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "c62eff2adb80360f6bcf21e7dbef29850a0bb7c60918d2b53b8ab0fa87c984d1",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "791761fd82e1aeccea5efb41cc9785d3677e7146d231446015b475e7ed573daf",
+    "restart_index": null,
+    "restart_k": 0,
+    "restart_noise": 1,
+    "restart_steps": 0,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.0,
+    "t_min": 0.0
+  },
+  {
+    "actual_t_min": 0.14864397747384864,
+    "checkpoint": "60k",
+    "condition": "60k-k1",
+    "elapsed_sec": 11782.330511847045,
+    "fid": 2.0924,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.01018185215071,
+    "gen_batch": 64,
+    "generate_sec": 11652.990580026992,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/60k-k1/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/60k-k1-fid50000.log",
+    "main_steps": 26,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-060000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.14864397747384864,
+        "checkpoint": "60k",
+        "condition": "60k-k1",
+        "main_steps": 26,
+        "nfe": 55,
+        "restart_index": 19,
+        "restart_k": 1,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "c62eff2adb80360f6bcf21e7dbef29850a0bb7c60918d2b53b8ab0fa87c984d1",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "0d0832229373c8ac3ba4de21932c8d93487763d3da054308143aa32252417c74",
+    "restart_index": 19,
+    "restart_k": 1,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.10903976726944489,
+    "checkpoint": "60k",
+    "condition": "60k-k2",
+    "elapsed_sec": 11762.127902834676,
+    "fid": 2.05004,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.00159027474001,
+    "gen_batch": 64,
+    "generate_sec": 11632.880363165867,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/60k-k2/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/60k-k2-fid50000.log",
+    "main_steps": 24,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-060000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.10903976726944489,
+        "checkpoint": "60k",
+        "condition": "60k-k2",
+        "main_steps": 24,
+        "nfe": 55,
+        "restart_index": 18,
+        "restart_k": 2,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "c62eff2adb80360f6bcf21e7dbef29850a0bb7c60918d2b53b8ab0fa87c984d1",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "46a6d431f8e5d9433d633dd06b7b09c43765fa539ae12848141054659f1f572e",
+    "restart_index": 18,
+    "restart_k": 2,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.14488970285315433,
+    "checkpoint": "60k",
+    "condition": "60k-k3",
+    "elapsed_sec": 11733.083330262918,
+    "fid": 2.07,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.0109578310512,
+    "gen_batch": 64,
+    "generate_sec": 11602.936276515014,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/60k-k3/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/60k-k3-fid50000.log",
+    "main_steps": 22,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-060000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.14488970285315433,
+        "checkpoint": "60k",
+        "condition": "60k-k3",
+        "main_steps": 22,
+        "nfe": 55,
+        "restart_index": 16,
+        "restart_k": 3,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "c62eff2adb80360f6bcf21e7dbef29850a0bb7c60918d2b53b8ab0fa87c984d1",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "ee970ddbbf58468b929963386496656db9c571c88fea8728e695ddb016c7f8ef",
+    "restart_index": 16,
+    "restart_k": 3,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.0989733831956025,
+    "checkpoint": "60k",
+    "condition": "60k-k4",
+    "elapsed_sec": 11767.924542401452,
+    "fid": 2.02424,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 125.94181586615741,
+    "gen_batch": 64,
+    "generate_sec": 11638.658104245085,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/60k-k4/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/60k-k4-fid50000.log",
+    "main_steps": 20,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-060000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.0989733831956025,
+        "checkpoint": "60k",
+        "condition": "60k-k4",
+        "main_steps": 20,
+        "nfe": 55,
+        "restart_index": 15,
+        "restart_k": 4,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "c62eff2adb80360f6bcf21e7dbef29850a0bb7c60918d2b53b8ab0fa87c984d1",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "abc04d0ba2d6d6f64c2b0ab2e7541b10c99291f2ee03c19b33de68178c3eac50",
+    "restart_index": 15,
+    "restart_k": 4,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.13951646873101678,
+    "checkpoint": "60k",
+    "condition": "60k-k5",
+    "elapsed_sec": 11772.11956990743,
+    "fid": 2.0709,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 130.98854023916647,
+    "gen_batch": 64,
+    "generate_sec": 11637.849416443147,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/60k-k5/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/60k-k5-fid50000.log",
+    "main_steps": 18,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-060000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.13951646873101678,
+        "checkpoint": "60k",
+        "condition": "60k-k5",
+        "main_steps": 18,
+        "nfe": 55,
+        "restart_index": 13,
+        "restart_k": 5,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "c62eff2adb80360f6bcf21e7dbef29850a0bb7c60918d2b53b8ab0fa87c984d1",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "0bfe13cf4321356c3a4d7a66c5f920d2eff66c083d7bc790eb74f18e6563bf8b",
+    "restart_index": 13,
+    "restart_k": 5,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.08508720268939021,
+    "checkpoint": "60k",
+    "condition": "60k-k6",
+    "elapsed_sec": 11762.289059135132,
+    "fid": 2.02734,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 125.93419466819614,
+    "gen_batch": 64,
+    "generate_sec": 11633.029905669857,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/60k-k6/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/60k-k6-fid50000.log",
+    "main_steps": 16,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-060000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.08508720268939021,
+        "checkpoint": "60k",
+        "condition": "60k-k6",
+        "main_steps": 16,
+        "nfe": 55,
+        "restart_index": 12,
+        "restart_k": 6,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "c62eff2adb80360f6bcf21e7dbef29850a0bb7c60918d2b53b8ab0fa87c984d1",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "30329fb67cd1c671502a680db48e1eebe514432f58d3b4623856c4fe62f4ba73",
+    "restart_index": 12,
+    "restart_k": 6,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.13119736304372648,
+    "checkpoint": "60k",
+    "condition": "60k-k7",
+    "elapsed_sec": 11747.043613797054,
+    "fid": 2.07149,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 125.95571542996913,
+    "gen_batch": 64,
+    "generate_sec": 11617.825567443855,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/60k-k7/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/60k-k7-fid50000.log",
+    "main_steps": 14,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-060000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.13119736304372648,
+        "checkpoint": "60k",
+        "condition": "60k-k7",
+        "main_steps": 14,
+        "nfe": 55,
+        "restart_index": 10,
+        "restart_k": 7,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "c62eff2adb80360f6bcf21e7dbef29850a0bb7c60918d2b53b8ab0fa87c984d1",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "221489f262051f32931542fd67ee6af845b10f1217d5169d643e6cbdeb44435e",
+    "restart_index": 10,
+    "restart_k": 7,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.065014599416395,
+    "checkpoint": "60k",
+    "condition": "60k-k8",
+    "elapsed_sec": 11737.294793954585,
+    "fid": 2.08576,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 125.87424675188959,
+    "gen_batch": 64,
+    "generate_sec": 11607.994133857079,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/60k-k8/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/60k-k8-fid50000.log",
+    "main_steps": 12,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-060000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.065014599416395,
+        "checkpoint": "60k",
+        "condition": "60k-k8",
+        "main_steps": 12,
+        "nfe": 55,
+        "restart_index": 9,
+        "restart_k": 8,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "c62eff2adb80360f6bcf21e7dbef29850a0bb7c60918d2b53b8ab0fa87c984d1",
+        "size": 223191863
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "7703dca7b011698bf7a8b666d3b775124a6fd009f9eb4807e66e8898decc2e4f",
+    "restart_index": 9,
+    "restart_k": 8,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": null,
+    "checkpoint": "80k",
+    "condition": "80k-k0",
+    "elapsed_sec": 11757.328023412265,
+    "fid": 2.0661,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.0064124232158,
+    "gen_batch": 64,
+    "generate_sec": 11627.905695937108,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/80k-k0/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/80k-k0-fid50000.log",
+    "main_steps": 28,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-080000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": null,
+        "checkpoint": "80k",
+        "condition": "80k-k0",
+        "main_steps": 28,
+        "nfe": 55,
+        "restart_index": null,
+        "restart_k": 0,
+        "restart_steps": 0,
+        "t_max": 0.0,
+        "t_min": 0.0
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "4303c4623ab861fd97a2621fe890437d083fc1aa86a2142721e2587b1ec7ef41",
+        "size": 223191861
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "87c318c6c1217e76958f2a6fc5d66de1e91baf6f7f134c12158ef0a801115f17",
+    "restart_index": null,
+    "restart_k": 0,
+    "restart_noise": 1,
+    "restart_steps": 0,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.0,
+    "t_min": 0.0
+  },
+  {
+    "actual_t_min": 0.14864397747384864,
+    "checkpoint": "80k",
+    "condition": "80k-k1",
+    "elapsed_sec": 11747.019458454102,
+    "fid": 2.04159,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 125.92246764712036,
+    "gen_batch": 64,
+    "generate_sec": 11617.683541372884,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/80k-k1/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/80k-k1-fid50000.log",
+    "main_steps": 26,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-080000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.14864397747384864,
+        "checkpoint": "80k",
+        "condition": "80k-k1",
+        "main_steps": 26,
+        "nfe": 55,
+        "restart_index": 19,
+        "restart_k": 1,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "4303c4623ab861fd97a2621fe890437d083fc1aa86a2142721e2587b1ec7ef41",
+        "size": 223191861
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "3bbf332936441325d558eb4e164f2786396e2125cee8207598142909a99defe4",
+    "restart_index": 19,
+    "restart_k": 1,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.10903976726944489,
+    "checkpoint": "80k",
+    "condition": "80k-k2",
+    "elapsed_sec": 11732.119659923017,
+    "fid": 2.02848,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 125.89573030779138,
+    "gen_batch": 64,
+    "generate_sec": 11602.927739245351,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/80k-k2/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/80k-k2-fid50000.log",
+    "main_steps": 24,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-080000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.10903976726944489,
+        "checkpoint": "80k",
+        "condition": "80k-k2",
+        "main_steps": 24,
+        "nfe": 55,
+        "restart_index": 18,
+        "restart_k": 2,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "4303c4623ab861fd97a2621fe890437d083fc1aa86a2142721e2587b1ec7ef41",
+        "size": 223191861
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "4eba9f4368cc32123caf26b011813a2a2213ac8de8afbfcbc3c80bdb9d307966",
+    "restart_index": 18,
+    "restart_k": 2,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.14488970285315433,
+    "checkpoint": "80k",
+    "condition": "80k-k3",
+    "elapsed_sec": 11732.574469220359,
+    "fid": 2.05061,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.04502638010308,
+    "gen_batch": 64,
+    "generate_sec": 11603.01052914327,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/80k-k3/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/80k-k3-fid50000.log",
+    "main_steps": 22,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-080000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.14488970285315433,
+        "checkpoint": "80k",
+        "condition": "80k-k3",
+        "main_steps": 22,
+        "nfe": 55,
+        "restart_index": 16,
+        "restart_k": 3,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "4303c4623ab861fd97a2621fe890437d083fc1aa86a2142721e2587b1ec7ef41",
+        "size": 223191861
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "dc5bb602d8764dae5178900f06a6bd3bad2fa79034914b3e06ccff4443776b70",
+    "restart_index": 16,
+    "restart_k": 3,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.0989733831956025,
+    "checkpoint": "80k",
+    "condition": "80k-k4",
+    "elapsed_sec": 11752.236540980171,
+    "fid": 2.02498,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 125.94169508712366,
+    "gen_batch": 64,
+    "generate_sec": 11622.871924585197,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/80k-k4/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/80k-k4-fid50000.log",
+    "main_steps": 20,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-080000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.0989733831956025,
+        "checkpoint": "80k",
+        "condition": "80k-k4",
+        "main_steps": 20,
+        "nfe": 55,
+        "restart_index": 15,
+        "restart_k": 4,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "4303c4623ab861fd97a2621fe890437d083fc1aa86a2142721e2587b1ec7ef41",
+        "size": 223191861
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "2fb0d33c033c195b149a6e85f19f4280c21c06a3858dbb2c5089e2c556e81fa0",
+    "restart_index": 15,
+    "restart_k": 4,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  },
+  {
+    "actual_t_min": 0.13951646873101678,
+    "checkpoint": "80k",
+    "condition": "80k-k5",
+    "elapsed_sec": 11687.263276943006,
+    "fid": 2.05258,
+    "fid_batch": 64,
+    "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+    "fid_sec": 126.06873517809436,
+    "gen_batch": 64,
+    "generate_sec": 11557.89709631307,
+    "generated_images": 50000,
+    "gpu_name": "NVIDIA TITAN X (Pascal)",
+    "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/80k-k5/fid-n50000-seeds-0-49999",
+    "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/80k-k5-fid50000.log",
+    "main_steps": 18,
+    "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-080000.pkl",
+    "nfe": 55,
+    "num_images": 50000,
+    "protocol": {
+      "S_churn": 0,
+      "condition": {
+        "actual_t_min": 0.13951646873101678,
+        "checkpoint": "80k",
+        "condition": "80k-k5",
+        "main_steps": 18,
+        "nfe": 55,
+        "restart_index": 13,
+        "restart_k": 5,
+        "restart_steps": 3,
+        "t_max": 0.3,
+        "t_min": 0.14
+      },
+      "condition_pause": {
+        "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+        "size": 6178
+      },
+      "experiment": "8-15-nfe55",
+      "fid": {
+        "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+        "size": 7329
+      },
+      "fid_batch": 64,
+      "fid_ref": {
+        "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+        "size": 33571316
+      },
+      "gen_batch": 64,
+      "generate": {
+        "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+        "size": 55435
+      },
+      "gpu_config": {
+        "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+        "size": 655
+      },
+      "gpu_wait": {
+        "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+        "size": 3106
+      },
+      "network": {
+        "sha256": "4303c4623ab861fd97a2621fe890437d083fc1aa86a2142721e2587b1ec7ef41",
+        "size": 223191861
+      },
+      "pause_eta": {
+        "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+        "size": 12867
+      },
+      "restart_noise": 1,
+      "rho": 7,
+      "runner": {
+        "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+        "size": 31386
+      },
+      "seeds": "0-49999",
+      "sigma_max": 80,
+      "sigma_min": 0.002,
+      "watcher": {
+        "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+        "size": 14971
+      }
+    },
+    "protocol_id": "5ae55cb23e9be55bccbc01200ec3bf55bf7e5d7322dada157cdf5499fd5c7f59",
+    "restart_index": 13,
+    "restart_k": 5,
+    "restart_noise": 1,
+    "restart_steps": 3,
+    "reuse_source": "",
+    "reused_images": 0,
+    "rho": 7,
+    "seeds": "0-49999",
+    "t_max": 0.3,
+    "t_min": 0.14
+  }
+]

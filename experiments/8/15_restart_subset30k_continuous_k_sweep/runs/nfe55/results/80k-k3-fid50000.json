@@ -1,0 +1,94 @@
+{
+  "actual_t_min": 0.14488970285315433,
+  "checkpoint": "80k",
+  "condition": "80k-k3",
+  "elapsed_sec": 11732.574469220359,
+  "fid": 2.05061,
+  "fid_batch": 64,
+  "fid_ref": "/home/kyoukinkin/projects/edm/fid-refs/cifar10-32x32.npz",
+  "fid_sec": 126.04502638010308,
+  "gen_batch": 64,
+  "generate_sec": 11603.01052914327,
+  "generated_images": 50000,
+  "gpu_name": "NVIDIA TITAN X (Pascal)",
+  "images": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/images/80k-k3/fid-n50000-seeds-0-49999",
+  "log": "/home/kyoukinkin/projects/edm/experiments/8/15_restart_subset30k_continuous_k_sweep/runs/nfe55/logs/80k-k3-fid50000.log",
+  "main_steps": 22,
+  "network": "/home/kyoukinkin/projects/edm/experiments/0/6_cifar10_cond_edm_30k_subset_continuous/training-runs/cifar10-cond-ddpmpp-edm-seed0-subset30k-continuous/network-snapshot-080000.pkl",
+  "nfe": 55,
+  "num_images": 50000,
+  "protocol": {
+    "S_churn": 0,
+    "condition": {
+      "actual_t_min": 0.14488970285315433,
+      "checkpoint": "80k",
+      "condition": "80k-k3",
+      "main_steps": 22,
+      "nfe": 55,
+      "restart_index": 16,
+      "restart_k": 3,
+      "restart_steps": 3,
+      "t_max": 0.3,
+      "t_min": 0.14
+    },
+    "condition_pause": {
+      "sha256": "1082461dd667d38e09958845aa315a2949f55e917209277c3902f060c73b592e",
+      "size": 6178
+    },
+    "experiment": "8-15-nfe55",
+    "fid": {
+      "sha256": "704be0de2c77c0090fdb9787268360ef9d438ca83c6aca14aa6d4f51dcff364d",
+      "size": 7329
+    },
+    "fid_batch": 64,
+    "fid_ref": {
+      "sha256": "6a3d692b03afebea29afc3dcd2920552af6a6659682e662454e928a1b1ab6bd1",
+      "size": 33571316
+    },
+    "gen_batch": 64,
+    "generate": {
+      "sha256": "9c5c1e497408f2a247e2f585acfe216c69d269950f5f877cb262189f12e195a7",
+      "size": 55435
+    },
+    "gpu_config": {
+      "sha256": "c3bd5d5c43a6f39e7b712bccaaa1785ed10477ec16839e3e902bf2e97b78d726",
+      "size": 655
+    },
+    "gpu_wait": {
+      "sha256": "bb337ca1af8b81b10f525545f31f3057c60d746bf9adfedb628fc01e019b3553",
+      "size": 3106
+    },
+    "network": {
+      "sha256": "4303c4623ab861fd97a2621fe890437d083fc1aa86a2142721e2587b1ec7ef41",
+      "size": 223191861
+    },
+    "pause_eta": {
+      "sha256": "e1dfdb209c699f2d57dfd3e2c117e579b3540a33e97c87e0ab777f17b1381034",
+      "size": 12867
+    },
+    "restart_noise": 1,
+    "rho": 7,
+    "runner": {
+      "sha256": "db521bd5ef97147bccf729d91882ef98e2664c40674161e9efc7420c9267f6e4",
+      "size": 31386
+    },
+    "seeds": "0-49999",
+    "sigma_max": 80,
+    "sigma_min": 0.002,
+    "watcher": {
+      "sha256": "1d069cc6960c352f7c73b5d085f37e9da9d0a9950f96d79629b4658fa7a2cf61",
+      "size": 14971
+    }
+  },
+  "protocol_id": "dc5bb602d8764dae5178900f06a6bd3bad2fa79034914b3e06ccff4443776b70",
+  "restart_index": 16,
+  "restart_k": 3,
+  "restart_noise": 1,
+  "restart_steps": 3,
+  "reuse_source": "",
+  "reused_images": 0,
+  "rho": 7,
+  "seeds": "0-49999",
+  "t_max": 0.3,
+  "t_min": 0.14
+}
