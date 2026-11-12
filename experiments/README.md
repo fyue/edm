@@ -24,8 +24,8 @@ CIFAR-10 class-conditional EDM（DDPM++）を中心とした実験の置き場�
 | [5](5/README.md) | pretrainedでのsampler比較（PNDM・RK4・AB） | 完了 |
 | [6](6/README.md) | 前向きノイズ付加後のノルム分布 | 完了 |
 | [7](7/README.md) | Linear Flow MatchingとEDMの比較 | 完了 |
-| [0](0/README.md) | 修論用の学習系列：全データの10k刻み（0-1）、30k/10k subset（0-2/0-5）、30k subsetの連続学習（0-6）、200k以降（0-3/0-4） | 0-5は完了 |
-| [8](8/README.md) | **Restart Sampling（修論の主実験）** | 8-14は実行中 |
+| [0](0/README.md) | 修論用の学習系列：全データの10k刻み（0-1）、30k/10k subset（0-2/0-5）、30k subsetの連続学習（0-6）、200k以降（0-3/0-4）、未使用seedによる300k延長（0-7） | 0-5は完了 |
+| [8](8/README.md) | **Restart Sampling（修論の主実験）** | 8-14は実行中、8-15はcheckpoint監視 |
 
 番号は作成順ではない。グループ0はグループ8の基準モデルを作るため、後から作成した。
 
@@ -39,15 +39,17 @@ CIFAR-10 class-conditional EDM（DDPM++）を中心とした実験の置き場�
  公式pretrained → 5 (sampler比較), 4, 8-7
 0-1 (全データ 10k〜200k, 10k刻み)
  ├─ → 8-4, 8-6, 8-10, 8-11【主実験】, 8-12 → 8-13 (3 seed)
- └─ 200k → 0-3 (210k/220k) → 0-4 (3 seed)
+ ├─ 200k → 0-3 (210k/220k) → 0-4 (3 seed)
+ └─ 200k → 0-7（未使用seedで300kまで追加学習、GPU待機・進捗は実験README参照）
 0-2 (30k subset) → 8-14
-0-6 (同じ30k subset、連続学習) → 0-2の再開影響の切り分け
+0-6 (同じ30k subset、連続学習) → 8-15（checkpoint監視・直接FID-50k）→ 0-2の再開影響の切り分け
 7-1 → 7-2 (FM 20k) → 7-3 → 7-4, 7-5
 5-4, 5-11 → 5-13 (軌道距離)
 ```
 
 ## 報告・議論の記録
 
+- [乱数再生の監査](reports/rng_replay_audit.md)：`--seed`固定の再開で乱数列を再生した学習実験と、そのcheckpointを評価した実験の一覧。
 - [Slack参照索引](reports/slack_sources.md)：研究に関する原文・添付への入口（ローカル原本とSlack直接リンク）。
 - [reports/](reports/)：横断的な報告（例：[2026-09-17 AB軌道・FM・Restart](reports/2026-09-17_additional_experiments_report.md)、[2026-10-02の計画](reports/2026-10-02.plan.md)）。
 - `<グループ>/report/`：グループ別の報告。8は`report/<MMDD>/`の日付別。

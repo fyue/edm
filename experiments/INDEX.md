@@ -15,6 +15,7 @@ results列は `results/` または `runs/*/results/` にREADME以外の出力が
 | [0-4](0/4_post200k_restart_k1_fid50k_3seeds/README.md) | 実験0-4：200k・210kのRestart K=1効果、FID-50k・3生成seed範囲 | 200k・210kでRestart K=1のFID改善が3つの生成seed範囲で再現するかをFID-50kで確かめる。このPCには初回範囲の4評価のみ（K=1の改善は200k +0.01343、210k +0.01809）で、3範囲の結果は元PCと要照合。 | ✓ |
 | [0-5](0/5_cifar10_cond_edm_10k_subset/README.md) | Experiment 0-5: CIFAR-10 Conditional EDM on a 10k Subset | 0-2と同じ条件で学習データを10,000枚に減らし、30k（kimg）まで学習してデータ量の影響を調べる。30kまで完了し、FID-50kは10k 4.63680、20k 2.82997（最良）、30k 3.77162だった。 | ✓ |
 | [0-6](0/6_cifar10_cond_edm_30k_subset_continuous/README.md) | Experiment 0-6: CIFAR-10 Conditional EDM on a 30k Subset, Continuous Training | 0-2と同じ3万枚を、0-1と同じく途中で止めずに1プロセスで100kまで学習し、0-2のFID悪化が再開による乱数の再生に影響されていないかを切り分ける。このPCには10kのsnapshot/stateが保存されており、100kまでの完了は未確認。 |  |
+| [0-7](0/7_cifar10_cond_edm_post200k_no_replay/README.md) | 実験0-7：乱数再生を避けた200k→300k追加学習 | 0-1の200kから未使用seedで300kまで継続学習し、後続のRestart評価に使う10k刻みのcheckpointを作る。起動後はGPU待機・学習中として扱い、300k完了は検証結果で確認する。 | ✓ |
 
 ## 1-cifar10-cond-ddpmpp-edm-seed0-200k-fid2.18
 
@@ -117,14 +118,15 @@ results列は `results/` または `runs/*/results/` にREADME以外の出力が
 | [8-10](8/10_restart_fixed_nfe55_k_sweep/README.md) | 実験8-10：NFE=55固定で学習量とKを比較 | NFE=55固定・t_min=0.06で、K（K=5を除く）とmain stepsへの計算配分を比べる計画。本評価は未実行で、主設定はt_min=0.14の8-12に移った。 |  |
 | [8-11](8/11_restart_fixed_main18_tmin014_k_sweep/README.md) | 実験8-11：N_main=18・t_min=0.14固定のK sweep | 主実験。0-1の20k〜200kでN_main=18・t_min=0.14に固定してK=0〜8を走査する。FID-50kの最適Kは20k:7、40k〜120k:3、140k以降は主に1で、学習が進むほど小さい。 | ✓ |
 | [8-12](8/12_restart_fixed_nfe55_tmin014_k_sweep/README.md) | 実験8-12：NFE=55・t_min=0.14固定のK sweep | 補完実験。NFE=55固定（N_main=28−2K）・t_min=0.14でK=0〜8を走査する。FID-50kの最適Kは20k:8、40k〜140k:4〜7、160k以降:1。主スケジュールも変わるのでKだけの効果ではない。 | ✓ |
-| [8-13](8/13_restart_optimal_k_fid50k_3seeds/README.md) | 実験8-13：最適KとK=0のFID-50k・3シード比較 | 8-11の最適KとK=0をFID-50k×3生成seed範囲で比べる。平均改善幅は20k 0.381、60k 0.105、180k 0.019、200k 0.013。100k・140kはこのPCではn=1（Slackでは完了と報告）。 | ✓ |
+| [8-13](8/13_restart_optimal_k_fid50k_3seeds/README.md) | 実験8-13：最適KとK=0のFID-50k・3シード比較 | 8-11の最適KとK=0をFID-50k×3生成seed範囲で比べる。全6 checkpoint・36評価が揃い、平均改善幅は20k 0.38073、60k 0.10470、100k 0.04310、140k 0.03058、180k 0.01933、200k 0.01344だ… | ✓ |
 | [8-14](8/14_restart_subset30k_k_sweep/README.md) | 実験8-14：30,000枚学習の20k〜100kにおけるRestart K比較 | 0-2（30,000枚学習）の20k〜100kで8-11型・8-12型のK sweepを行い、全データ学習の結果と比べる。実行中（2026-11-03時点、100kのFID-50kは未完了）。 | ✓ |
+| [8-15](8/15_restart_subset30k_continuous_k_sweep/README.md) | 実験8-15：30,000枚の連続学習モデルによるRestart K走査 | 0-6の20k〜100k checkpointでmain18・nfe55のK=0〜8を直接FID-50kで評価し、0-2の再開による乱数再生と混在していた8-14の傾向を調べ直す。2026-11-12時点のローカル保存結果はnfe55が33/45件（20k・40k・60kは全K… | ✓ |
 
 資料（実験READMEなし）：`8/report/`
 
 ## reports
 
-資料（実験READMEなし）：[2026-09-17_additional_experiments_report.md](reports/2026-09-17_additional_experiments_report.md)、[2026-10-02.plan.md](reports/2026-10-02.plan.md)、[slack_sources.md](reports/slack_sources.md)、`reports/assets/`、`reports/scripts/`
+資料（実験READMEなし）：[2026-09-17_additional_experiments_report.md](reports/2026-09-17_additional_experiments_report.md)、[2026-10-02.plan.md](reports/2026-10-02.plan.md)、[rng_replay_audit.md](reports/rng_replay_audit.md)、[slack_sources.md](reports/slack_sources.md)、`reports/assets/`、`reports/scripts/`
 
 ## 直下の資料
 
